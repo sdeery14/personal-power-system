@@ -38,16 +38,18 @@
 
 | Item | Quantity | Est. Price | Product Search | Notes |
 |------|----------|-----------|----------------|-------|
-| **Anderson Powerpole PP45 Pairs** | 5 pairs | $15-25 | "Anderson Powerpole 45 amp" PowerWerx/Amazon | Red housings + contacts included |
-| **Powerwerx TRIcrimp Tool** | 1 | $80-120 | "Powerwerx TRIcrimp" PowerWerx.com/Amazon | Professional crimping tool PP15/30/45 |
+| **Anderson Powerpole PP45 Pairs** | 10 pairs | $25-40 | "45A Quick Connect Battery Connector 10 Pair AWG10-12" Amazon | Pre-bonded red+black pairs + contacts |
+| **Knoweasy Powerpole Crimper** | 1 | $30-50 | "Knoweasy Powerpole Crimper" Amazon | Budget alternative, PP15/30/45 compatible |
 
-**Note**: Each pair = 2 housings + 2 contacts (male/female genderless). Need 5 pairs for:
-- 1× Charge input
-- 1× Diesel heater output
-- 1× Fridge output
-- 2× Spare outputs
+**Configuration Notes**:
+- Each **bonded pair** = red housing + black housing clicked together (positive + negative)
+- Need **10 pairs total** for 5 circuits (2 ends per circuit: panel mount + cable plug)
+- Contacts included in 10-pair kit
+- Compatible with genuine Anderson Powerpole system
 
-**Priority 1 Subtotal**: ~$95-145
+**Alternative**: Powerwerx TRIcrimp ($80-120) for professional-grade tool if preferred
+
+**Priority 1 Subtotal**: ~$55-90
 
 ---
 
@@ -55,16 +57,19 @@
 
 | Gauge | Color | Length | Est. Price | Purpose |
 |-------|-------|--------|-----------|---------|
-| **4 AWG** | Red | 4 ft | $8-12 | Battery + to ANL fuse to Blue Sea input |
+| **4 AWG** | Red | 4 ft | $8-12 | Battery + to ANL fuse to Blue Sea positive bus |
+| **4 AWG** | **Black** | **6-8 ft** | **$12-18** | **Battery - to Victron shunt to Blue Sea negative bus** |
 | **10 AWG** | Red | 25 ft | $20-30 | Circuit positive wiring (all outputs + charge) |
-| **10 AWG** | Black | 25 ft | $20-30 | Circuit negative wiring |
+| **10 AWG** | Black | 25 ft | $20-30 | Individual circuit negative wiring |
 | **12 AWG** | Red | 20 ft | $12-18 | Powerpole pigtails |
 | **12 AWG** | Black | 20 ft | $12-18 | Powerpole pigtails |
 | **18-22 AWG** | Assorted | 10 ft | $2-4 | Sensing wires, low-current |
 
+**Critical**: Main negative wire (4 AWG black) carries ALL return current through Victron shunt - must match positive side capacity (100A+)
+
 **Wire Search Terms**: "Marine tinned copper wire [gauge]" or "automotive primary wire TXL"  
 **Supplier**: Amazon, auto parts store  
-**Priority 1 Wire Subtotal**: ~$74-112
+**Priority 1 Wire Subtotal**: ~$86-130
 
 ---
 
@@ -138,13 +143,18 @@
 ## Budget Summary
 
 | Category | Estimated Cost |
-|----------|---------------|
-| **Already Purchased** | $547-667 |
-| **Priority 1: Core Electrical** | $272-422 |
+|----------|---------------|44-350 |
 | **Priority 2: Victron BMV-712** | $200-250 |
 | **Priority 3: Consumables** | $48-90 |
 | **Tools (if needed)** | $0-70 |
-| **GRAND TOTAL** | **$1,067-1,499** |
+| **GRAND TOTAL** | **$1,039-1,427** |
+
+**Remaining to Purchase**: ~$492-760
+
+**Note**: Budget adjusted for:
+- Added 4 AWG black wire (main negative trunk): +$12-18
+- Switched to budget Knoweasy crimper vs TRIcrimp: -$50
+- Switched to generic Powerpole-compatible connectors: -$5-10 |
 
 **Remaining to Purchase**: ~$520-832 (Priority 1-3 + tools)
 
@@ -241,9 +251,9 @@
 ## Assembly Prerequisites Checklist
 
 Before starting assembly, verify you have:
-
-**Core Electrical**:
-- [ ] 100A ANL fuse (3×) + holder
+-compatible pairs (10×) with contacts
+- [ ] Knoweasy Powerpole crimper (or Powerwerx TRIcrimp if preferred)
+- [ ] Wire: **4 AWG red (4ft), 4 AWG black (6-8ft)**holder
 - [ ] Blue Sea 5026 fuse block
 - [ ] ST blade fuses (10A, 15A, 20A, 30A)
 - [ ] Anderson Powerpole PP45 pairs (5×)
