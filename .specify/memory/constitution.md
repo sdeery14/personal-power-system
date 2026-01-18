@@ -46,11 +46,13 @@ No design MAY introduce risk to people, vehicles, or buildings:
 
 Every major component (battery, charger, inverter, load, controller, enclosure) MUST be independently replaceable without redesigning the entire system.
 
-Interfaces between components MUST use standardized connectors:
+Interfaces between components SHOULD use standardized, widely available connectors:
 - Anderson Powerpole (15A, 30A, 45A) for DC power distribution
 - XT60/XT90 for high-current battery connections where appropriate
 - USB-C PD, cigarette lighter, or standard AC outlets for loads
 - Clear labeling (voltage, polarity, max current) at every interface point
+
+Any non-standard connector MUST be documented with rationale and replacement strategy.
 
 New components MUST document:
 - Electrical specifications (voltage range, current rating, power consumption)
@@ -172,6 +174,8 @@ Compute workloads as loads MUST respect:
 - Safety constraints (graceful shutdown, fault detection)
 - Energy budgets (discharge to no less than battery safe minimum SOC)
 
+A battery safe minimum state-of-charge MUST be defined and documented per battery chemistry.
+
 Automation MUST NOT obscure system state:
 - Current operating mode MUST be observable
 - Manual override MUST be available
@@ -184,7 +188,7 @@ Automation MUST NOT obscure system state:
 All electrical work MUST adhere to:
 - Component manufacturer ratings (voltage, current, temperature)
 - Industry standards for wiring (AWG sizing for current + temperature)
-- National Electrical Code (NEC) where applicable to mobile/portable DC systems
+- National Electrical Code (NEC) where applicable to mobile, portable, or inverter-fed AC systems
 
 This project explicitly does NOT:
 - Permanently modify household electrical systems
