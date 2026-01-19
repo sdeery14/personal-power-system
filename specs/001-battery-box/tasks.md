@@ -44,8 +44,8 @@
 - [ ] T015 [P] Drill 4× ventilation 25-30mm holes top corners with step bit
 - [ ] T016 Deburr all holes with deburring tool or sandpaper (HDPE edges), test-fit components before proceeding
 - [ ] T017 Cut and install ventilation mesh over 4× vent holes (1/8" or 1/4" grid, 10mm overlap), secure with epoxy/hot glue, verify net free area ~2000-2800mm²
-- [ ] T018 Prepare plywood battery base: cut 1/2" plywood to 14.5"×24.5" (fits 15"×25" tote internal dimensions with clearance), screw 4 strap loops to plywood at corners or mid-points for ratchet strap anchoring, place plywood in tote bottom
-- [ ] T019 Secure VEVOR battery: position battery in foam (520mm×238mm×218mm = 20.5"×9.4"×8.6") on plywood base lengthwise orientation, cut channels in top foam for M8 terminal access and wire routing clearance, secure with 2× ratchet straps over battery attached to plywood strap loops (foam distributes pressure across battery top), verify battery cannot move when tote tilted/shaken
+- [ ] T018 Prepare plywood battery base: cut 3/4" plywood to 14.5"×24.5" (fits 15"×25" tote internal dimensions with clearance), pre-drill pilot holes, screw 4 steel strap loops to plywood using included screws at corners or mid-points for cam buckle strap anchoring, place plywood in tote bottom
+- [ ] T019 Secure VEVOR battery: position battery in foam (520mm×238mm×218mm = 20.5"×9.4"×8.6") on plywood base lengthwise orientation, cut channels in top foam for M8 terminal access and wire routing clearance, secure with 2× cam buckle straps (6 ft recommended, route across 9.4" width) over battery attached to plywood strap loops (foam distributes pressure across battery top), verify battery cannot move when tote tilted/shaken
 - [ ] T020 Mount 100A ANL inline fuse holder within 18" of battery+ on tote side wall with zip ties, DO NOT install fuse yet
 - [ ] T021 Cut 4 AWG red wire ~4 ft, crimp M8 ring terminal (battery+ end) and ANL lug (holder end), route Battery+ → ANL holder input, verify 105A capacity > 100A fuse
 - [ ] T022 Mount Blue Sea 5026 on side wall left near battery with self-tapping screws through mounting flanges, verify 100A busbar and negative bus posts accessible
