@@ -96,10 +96,15 @@ Verify all components before starting assembly:
 - [ ] **Circuit Fuses**: Blade fuse assortment - 10A (2×), 15A (3×), 20A (2×), 30A (2×) + spares
 
 ### Connectors
-- [ ] **Output Connectors**: Anderson Powerpole-compatible PP45 (10 bonded red+black pairs for 5 circuits × 2 ends = panel mount + cable ends)
-- [ ] **Charging Connector**: Anderson Powerpole PP45 red+black bonded pair (labeled "CHARGE IN 30A")
+- [ ] **Panel-mount connectors** (2× KarlKers for Charge/Heater + generic Powerpole for remaining):
+  - 2× KarlKers panel-mount Powerpole units (ASIN B0F4L5FYQ2, $14.99 each = ~$30)
+    - Includes: housing, bonded red+black connector, 30A contacts, weather cover, threaded nut
+    - For Circuit 1 Charge In (30A) and Circuit 2 Heater (10A)
+  - 8× generic Anderson Powerpole PP45 bonded pairs (~$20-30)
+    - 3× pairs for Fridge/Spare circuits (panel or external use - decide during assembly)
+    - 5× pairs for cable ends to mate with KarlKers + other circuits
+  - Purchase: Amazon - KarlKers B0F4L5FYQ2, generic Powerpole contact sets
 - [ ] **Charging Adapter Cable**: VEVOR charger alligator clips → 12 AWG wire 3-6 ft → Powerpole PP45 (DIY assemble or pre-made)
-- [ ] **Rubber grommets**: 32mm diameter for Powerpole panel holes, strain relief
 
 ### Monitoring Components
 - [ ] **Battery Monitor**: Victron BMV-712 Smart kit (500A/50mV shunt, 52mm×52mm display, RJ12 cable, Bluetooth, optional temperature sensor)
@@ -133,8 +138,15 @@ Verify all components before starting assembly:
 **1.2 Mark and drill cutouts on Greenmade 27gal tote**
 - [ ] **Nilight panel**: Mark 4-6"×2-3" rectangular cutout on front panel center upper third (verify exact dimensions when panel received)
 - [ ] **Victron display**: Mark 52mm×52mm square cutout on front panel right of Nilight
-- [ ] **Powerpole connectors**: Mark 4-5× 32mm diameter holes on side panel left, vertical row, 3-4" spacing
-  - Labels: "HEATER 10A" (Circuit 2), "FRIDGE 15A" (Circuit 3), "SPARE 20A" (Circuit 5), "SPARE 15A" (Circuit 6), "CHARGE IN 30A" (Circuit 1)
+- [ ] **Powerpole connectors** (incremental v1 approach):
+  - **Phase 1 (2× KarlKers units)**: Mark 2× 1-1/8" (28.6mm) diameter holes on side panel left, top positions
+    - Top: "CHARGE IN 30A" (Circuit 1)
+    - Below: "HEATER 10A" (Circuit 2)
+    - Use 1-1/8" hole saw or 28-30mm step bit
+  - **Phase 2 (deferred to v1.1 after field validation)**: Mark 3× additional holes for Fridge/Spare circuits
+    - Option A: 28.6mm holes if adopting 3 more KarlKers units
+    - Option B: 32mm holes if using generic Powerpole with rubber grommets
+    - Option C: Skip panel-mount, use external cable connections
 - [ ] **Ventilation**: Mark 4× 25-30mm diameter holes on top corners (2 front, 2 rear for cross-flow)
 
 **1.3 Drill holes in HDPE tote**
@@ -231,30 +243,33 @@ Verify all components before starting assembly:
 
 **For each output circuit:**
 
-**5.1 Install circuit fuse holder**
-- [ ] Inline blade fuse holder or panel-mount holder
-- [ ] Position near busbar (or main fuse output if no busbar)
-- [ ] **DO NOT install fuse yet**
+### Step 6: Wire Output Circuits (Heater with KarlKers, Fridge/Spare deferred)
 
-**5.2 Positive wire run**
-- [ ] Cut red wire: Busbar → Fuse holder input (appropriate length)
-- [ ] Busbar end: Ring terminal
-- [ ] Fuse holder end: Blade terminal or ring terminal
+**6.1 Circuit 2 (Heater - 10A) - KarlKers panel-mount**
+- [ ] Install 10A ST blade fuse in Blue Sea circuit 2 position (**DO NOT install yet**, wait for Step 12)
+- [ ] Cut 10 AWG red wire: Blue Sea circuit 2 terminal → KarlKers panel connector (~3-4 ft to side panel)
+- [ ] Blue Sea end: Screw connection to circuit 2 positive terminal
+- [ ] Crimp 12 AWG red pigtail (6-12") from 10 AWG to KarlKers included 30A Powerpole red contact
+- [ ] Use Knoweasy Powerpole crimper, practice on scrap wire first, tug-test (should not pull out)
+- [ ] Cut 10 AWG black wire: Blue Sea negative bus → KarlKers panel connector (~3-4 ft)
+- [ ] Blue Sea end: Ring terminal to negative bus post
+- [ ] Crimp 12 AWG black pigtail (6-12") from 10 AWG to KarlKers included 30A Powerpole black contact
+- [ ] Insert crimped red+black contacts into KarlKers bonded housing (polarity keying prevents reversal)
+- [ ] Mount KarlKers unit in 28.6mm panel hole, secure with threaded nut from rear (hand-tight + 1/4 turn)
+- [ ] Install weatherproof rubber flip-up cover
+- [ ] Label external panel: "HEATER 10A - 12V OUTPUT"
 
-**5.3 Fuse holder to connector**
-- [ ] Cut red wire: Fuse holder output → Output connector positive
-- [ ] Crimp Anderson Powerpole contacts or solder XT60 connector
-- [ ] Route wire through cable gland (strain relief)
+**6.2 Circuit 3 (Fridge - 15A) - DEFERRED to v1.1**
+- [ ] **Decision point after field testing Charge/Heater circuits**:
+  - Option A: Order 1 more KarlKers unit, drill 28.6mm hole, mount same as Circuit 2
+  - Option B: Use generic Powerpole with 32mm hole + rubber grommet
+  - Option C: External cable connection (Blue Sea terminal → 10 AWG → cable-end Powerpole, no panel hole)
+- [ ] Wire when ready: Blue Sea circuit 3 (15A fuse) → 10 AWG red/black → Powerpole connector
 
-**5.4 Negative wire run**
-- [ ] Cut black wire: Battery negative → Output connector negative
-- [ ] Battery end: Ring terminal (M6/M8 to match battery post)
-- [ ] Connector end: Crimp Anderson Powerpole or solder XT60
-- [ ] Route through same cable gland as positive wire
-
-**5.5 Label wires**
-- [ ] Label each wire at both ends: "OUT1+", "OUT1-", "OUT2+", "OUT2-", etc.
-- [ ] Use wire labels or write on heat-shrink with marker
+**6.3 Circuits 5 & 6 (Spare 20A, Spare 15A) - DEFERRED to v1.1**
+- [ ] Reserve for future loads after validating v1 field performance
+- [ ] Can add panel-mount (KarlKers or generic) or external cables based on needs
+- [ ] Wire when ready: Blue Sea circuits 5/6 → 10 AWG → Powerpole connectors
 
 ### Step 7: Wire Nilight 4-in-1 Panel (Blue Sea Circuit 4)
 
@@ -307,32 +322,33 @@ Verify all components before starting assembly:
 **6.5 Label wires**
 - [ ] Label: "CHG_IN+", "CHG_IN-"
 
-### Step 8: Wire Charging Circuit (Blue Sea Circuit 1)
+### Step 8: Wire Charging Circuit (Blue Sea Circuit 1, KarlKers panel-mount)
 
 **8.1 Circuit 1 fuse installation**
 - [ ] Circuit 1 (Charge input 30A): Install 30A ST blade fuse in Blue Sea position 1
 - [ ] **DO NOT install fuse yet** (fuse installed last after all wiring complete)
 
 **8.2 Positive wire run (10 AWG red)**
-- [ ] Cut 10 AWG red wire: Blue Sea circuit 1 terminal → Side panel Powerpole "CHARGE IN 30A" connector (~3-4 ft)
+- [ ] Cut 10 AWG red wire: Blue Sea circuit 1 terminal → KarlKers "CHARGE IN 30A" panel connector (~3-4 ft to side panel top)
 - [ ] Blue Sea end: Screw connection to circuit 1 positive terminal
-- [ ] Powerpole end: Crimp 12 AWG red pigtail (6-12" from 10 AWG to Powerpole PP45 red contact)
+- [ ] Crimp 12 AWG red pigtail (6-12") from 10 AWG to KarlKers included 30A Powerpole red contact
 - [ ] Use Knoweasy Powerpole crimper, tug-test crimp
 
 **8.3 Negative wire run (10 AWG black)**
-- [ ] Cut 10 AWG black wire: Blue Sea negative bus → Side panel Powerpole "CHARGE IN 30A" connector (~3-4 ft)
+- [ ] Cut 10 AWG black wire: Blue Sea negative bus → KarlKers "CHARGE IN 30A" panel connector (~3-4 ft)
 - [ ] Blue Sea end: Ring terminal to negative bus post
-- [ ] Powerpole end: Crimp 12 AWG black pigtail (6-12" from 10 AWG to Powerpole PP45 black contact)
+- [ ] Crimp 12 AWG black pigtail (6-12") from 10 AWG to KarlKers included 30A Powerpole black contact
 
 **8.4 Mount charging connector**
-- [ ] Route red+black wire pair through 32mm rubber grommet in side panel hole
-- [ ] Click Powerpole red+black housings together (bonded pair)
-- [ ] Label connector "CHARGE IN 30A" (external label on tote)
+- [ ] Insert crimped red+black contacts into KarlKers bonded housing
+- [ ] Mount KarlKers unit in 28.6mm panel hole (top position), secure with threaded nut from rear (hand-tight + 1/4 turn)
+- [ ] Install weatherproof rubber flip-up cover (protects when not charging, reduces dust/moisture ingress)
+- [ ] Label external panel: "CHARGE IN 30A - CHARGER ONLY"
 
 **8.5 VEVOR charger adapter cable (DIY or pre-made)**
 - [ ] **Adapter cable required**: VEVOR 20A charger has alligator clips output, need adapter to Powerpole
-- [ ] Cable assembly: VEVOR alligator clips red+/black- → 12 AWG wire 3-6 ft → Powerpole PP45 red+black bonded pair
-- [ ] Crimp Powerpole contacts on wire end opposite alligator clips
+- [ ] Cable assembly: VEVOR alligator clips red+/black- → 12 AWG wire 3-6 ft → generic Powerpole PP45 red+black bonded pair
+- [ ] Crimp generic Powerpole contacts on wire end opposite alligator clips
 - [ ] Label adapter cable "CHARGER ADAPTER - DO NOT USE FOR LOADS" (prevents accidental use for output)
 - [ ] **CRITICAL: Verify polarity with multimeter before first use** (red=positive, black=negative)
 - [ ] Protection: 30A blade fuse in Circuit 1 + 100A ANL + VEVOR charger internal OVP/OCP + Powerpole mechanical keying
@@ -390,23 +406,26 @@ Verify all components before starting assembly:
 
 ### Step 10: Install Panel Connectors (Label External)
 
-### Step 10: Install Panel Connectors (Label External)
-
-**10.1 Verify all Powerpole connectors mounted**
-- [ ] 4-5× Powerpole connectors in side panel 32mm holes with rubber grommets
-- [ ] Each connector: Red+black bonded pair, genderless (can mate with matching cable-end Powerpole)
-- [ ] Strain relief: Rubber grommets + zip ties securing internal wiring to tote wall
+**10.1 Verify KarlKers panel-mount connectors installed (v1 Phase 1)**
+- [ ] Circuit 1: "CHARGE IN 30A" - KarlKers unit in 28.6mm hole (top position), threaded nut secure, weather cover functional
+- [ ] Circuit 2: "HEATER 10A" - KarlKers unit in 28.6mm hole (below charge), threaded nut secure, weather cover functional
+- [ ] Internal wiring strain relief: Zip ties securing 10 AWG wiring to tote wall
 
 **10.2 External connector labeling**
-- [ ] Circuit 2: Label "HEATER 10A - 12V OUTPUT" (permanent marker or label maker on tote exterior near connector)
-- [ ] Circuit 3: Label "FRIDGE 15A - 12V OUTPUT"
-- [ ] Circuit 5: Label "SPARE 20A - 12V OUTPUT"
-- [ ] Circuit 6: Label "SPARE 15A - 12V OUTPUT"
-- [ ] Circuit 1: Label "CHARGE IN 30A - 14.4V LiFePO4 ONLY" (red text to distinguish input from outputs)
+- [ ] Circuit 1: Label "CHARGE IN 30A - CHARGER ONLY (DO NOT CONNECT LOADS)" - red text to distinguish input
+- [ ] Circuit 2: Label "HEATER 10A - 12V OUTPUT" (permanent marker or label maker on tote exterior near KarlKers unit)
+- [ ] Future circuits (v1.1): Label when Fridge/Spare circuits added
 
 **10.3 Verify Nilight and Victron panel mounting**
 - [ ] Nilight 4-in-1 panel: Mounted in front panel center, accessible, labeled (optional: "USB PANEL")
 - [ ] Victron BMV-712 display: Mounted in front panel right of Nilight, 52mm square cutout, bezel secure
+
+**10.4 Field validation checklist (for v1.1 expansion planning)**
+- [ ] KarlKers mounting: Threaded nut tightness adequate? Vibration resistance during transport?
+- [ ] Weather cover: Easy to flip up/down? Seal quality in cold/wet conditions? UV resistance over time?
+- [ ] 28.6mm hole size: Drilling accuracy with available tools? Fit tolerance (too tight/loose)?
+- [ ] Overall satisfaction: Professional appearance? Worth $15 each vs $5 generic Powerpole?
+- [ ] **Decision for v1.1**: Add 3 more KarlKers units (~$45) OR use generic Powerpole (~$10-15) OR external cables (no panel holes)?
 
 ### Step 11: Final Wiring Check (Before Installing Fuses)
 

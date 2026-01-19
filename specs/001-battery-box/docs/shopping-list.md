@@ -34,22 +34,32 @@
 
 ---
 
-### Anderson Powerpole Connectors
+### Anderson Powerpole Connectors (Hybrid Approach: KarlKers + Generic)
 
 | Item | Quantity | Est. Price | Product Search | Notes |
 |------|----------|-----------|----------------|-------|
-| **Anderson Powerpole PP45 Pairs** | 10 pairs | $25-40 | "45A Quick Connect Battery Connector 10 Pair AWG10-12" Amazon | Pre-bonded red+black pairs + contacts |
+| **KarlKers Panel-Mount Powerpole Units** | 2 | $30 | "KarlKers Anderson Power Pole B0F4L5FYQ2" Amazon | For Charge + Heater circuits, includes housing/contacts/cover/nut |
+| **Generic Powerpole PP45 Pairs** | 8 pairs | $20-30 | "45A Quick Connect Battery Connector AWG10-12" Amazon | 3 for future Fridge/Spare, 5 for cable ends |
 | **Knoweasy Powerpole Crimper** | 1 | $30-50 | "Knoweasy Powerpole Crimper" Amazon | Budget alternative, PP15/30/45 compatible |
 
-**Configuration Notes**:
-- Each **bonded pair** = red housing + black housing clicked together (positive + negative)
-- Need **10 pairs total** for 5 circuits (2 ends per circuit: panel mount + cable plug)
-- Contacts included in 10-pair kit
-- Compatible with genuine Anderson Powerpole system
+**Configuration Notes - v1 Incremental Approach**:
+- **Phase 1 (immediate)**: 2× KarlKers panel-mount for Circuit 1 Charge (30A) + Circuit 2 Heater (10A)
+  - Each KarlKers includes: weatherproof housing, bonded red+black connector, 30A contacts, flip-up cover, threaded nut
+  - Drill 2× 1-1/8" (28.6mm) holes in tote side panel
+  - Secure from rear with threaded locking nut (hand-tight + 1/4 turn)
+- **Phase 2 (deferred to v1.1 after field validation)**: Add Fridge/Spare circuits based on needs
+  - Option A: Order 3 more KarlKers units (~$45) if satisfied with Phase 1 performance
+  - Option B: Use 3× generic Powerpole with 32mm holes + rubber grommets (~$10-15)
+  - Option C: External cable connections (no additional panel holes)
+- **Generic Powerpole pairs** needed for: 
+  - 1× VEVOR charger adapter cable (alligator clips → Powerpole)
+  - 2× cable ends to mate with KarlKers panel-mount units (for heater device + future loads)
+  - 3× future Fridge/Spare circuits (panel or external, decide post-validation)
+  - 2× spares for testing/mistakes
 
 **Alternative**: Powerwerx TRIcrimp ($80-120) for professional-grade tool if preferred
 
-**Priority 1 Subtotal**: ~$55-90
+**Priority 1 Subtotal**: ~$80-110 (includes 2× KarlKers $30 + generic Powerpole $20-30 + crimper $30-50)
 
 ---
 
@@ -133,7 +143,10 @@
 
 | Tool | Est. Price | Product Search | Notes |
 |------|-----------|----------------|-------|
-| Step drill bit set or hole saw | $15-40 | Hardware store/Amazon | For enclosure cutouts (Nilight panel ~4-6", Powerpole 1.25", BMV-712 52mm, ventilation 1") |
+| 1-1/8" hole saw or 28-30mm step bit | $10-25 | Hardware store/Amazon | For 2× KarlKers panel-mount (28.6mm holes) |
+| 52mm hole saw | $10-20 | Hardware store/Amazon | For Victron BMV-712 display cutout |
+| 32mm step bit (optional) | $10-25 | Hardware store/Amazon | Only if using generic Powerpole for Fridge/Spare circuits v1.1 |
+| Jigsaw or rotary tool bits | $0-30 | Already have or hardware store | For Nilight rectangular cutout ~4-6"×2-3" |
 | Wire strippers (if existing won't handle 10 AWG) | $15-30 | "Klein Tools 11063W" Amazon | Handles AWG10-20 |
 
 **Tools Subtotal**: ~$0-70 (depending on what you already have)
@@ -143,36 +156,44 @@
 ## Budget Summary
 
 | Category | Estimated Cost |
-|----------|---------------|44-350 |
+|----------|---------------|
+| **Already Purchased** | ~$547-667 |
+| **Priority 1: Core Electrical** (ANL, Blue Sea, Powerpole, wire, tools) | $274-385 |
 | **Priority 2: Victron BMV-712** | $200-250 |
 | **Priority 3: Consumables** | $48-90 |
 | **Tools (if needed)** | $0-70 |
-| **GRAND TOTAL** | **$1,039-1,427** |
+| **GRAND TOTAL** | **$1,069-1,462** |
 
-**Remaining to Purchase**: ~$492-760
+**Remaining to Purchase**: ~$522-795 (Priority 1-3 + tools)
 
-**Note**: Budget adjusted for:
+**Note - v1 Incremental Connector Approach**: 
+- Start with 2× KarlKers panel-mount ($30) for Charge + Heater circuits
+- Field validate: mounting ease, weather seal, vibration resistance, drilling accuracy
+- v1.1 expansion: Add 3 more KarlKers (~$45) OR use generic Powerpole (~$10-15) OR external cables
+- Budget accommodates either path, total still under $1,500 SC-009 success criteria
+
+**Budget adjusted for**:
+- 2× KarlKers panel-mount units vs 5× generic panel Powerpole: +$5 immediate (2×$15 vs 5×$5)
 - Added 4 AWG black wire (main negative trunk): +$12-18
 - Switched to budget Knoweasy crimper vs TRIcrimp: -$50
-- Switched to generic Powerpole-compatible connectors: -$5-10 |
-
-**Remaining to Purchase**: ~$520-832 (Priority 1-3 + tools)
+- Switched to generic Powerpole-compatible connectors: -$5-10
 
 ---
 
 ## Shopping Strategy
 
 ### Phase 1: Core Build (Order Immediately)
-**Budget**: ~$272-422
+**Budget**: ~$274-385 (updated with 2× KarlKers)
 - 100A ANL fuse + holder
 - Blue Sea 5026 fuse block
 - Blade fuse assortment
-- Anderson Powerpole PP45 connectors (5 pairs)
-- Powerwerx TRIcrimp tool
-- Wire (all gauges)
+- **2× KarlKers panel-mount Powerpole units** (Charge + Heater)
+- **8× generic Powerpole PP45 pairs** (cable ends + future circuits)
+- Knoweasy Powerpole crimper
+- Wire (all gauges: 4/10/12/18 AWG)
 - Ring terminals, heat-shrink, zip ties
 
-**Why First**: Cannot proceed with assembly without these components.
+**Why First**: Cannot proceed with assembly without these components. 2× KarlKers validates panel-mount approach before committing to 3 more units.
 
 ### Phase 2: Professional Monitoring (Order with Phase 1 or Shortly After)
 **Budget**: ~$200-250
@@ -183,10 +204,18 @@
 ### Phase 3: Consumables & Hardware (Order with Phase 1 or Pick Up Locally)
 **Budget**: ~$48-90
 - Electrical tape, dielectric grease, cleaning supplies
-- Cable glands, ventilation mesh, labels
+- Ventilation mesh, labels
 - Safety equipment
 
 **Why**: Needed during assembly, but many items available at local hardware store same-day if forgotten.
+
+### Phase 4 (v1.1): Expand Circuits After Field Validation
+**Budget**: ~$0-60 (deferred, depends on Phase 1 validation)
+- **Option A**: 3× KarlKers panel-mount units (~$45) if impressed with Phase 1 performance
+- **Option B**: 3× generic Powerpole with rubber grommets (~$10-15) if KarlKers unnecessary
+- **Option C**: External cable connections ($0, no panel holes, use existing generic Powerpole pairs)
+- Drill 28.6mm or 32mm holes as needed
+- Wire and crimp Fridge (Circuit 3, 15A), Spare (Circuit 5, 20A), Spare (Circuit 6, 15A)
 
 ---
 
