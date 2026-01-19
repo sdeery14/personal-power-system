@@ -32,32 +32,48 @@ This document establishes the "contracts" between battery box components - the e
 
 **Terminal Specifications:**
 - Type: M6 or M8 threaded posts, or manufacturer-specific connector
-- Torque: Per manufacturer specification (typically 4-6 Nm for M6)
+- Torque: Per manufacturer specification (typically 4-6 Nm for M6, 8-10 Nm for M8)
 - Wire attachment: Ring terminals, properly crimped
 
 ### Mechanical Contract
 
 **Physical Constraints:**
-- Maximum dimensions: 350mm × 180mm × 200mm (to fit standard enclosures)
-- Maximum weight: 15kg (for one-person portability when combined with enclosure)
+- Maximum dimensions: 550mm × 250mm × 220mm (to fit Greenmade 27gal tote: ~711×457×330mm internal)
+- Maximum weight: 30kg (for one-person portability when combined with enclosure ~3-5kg → total 28-35kg)
 - Mounting: Must have secure mounting points (brackets, straps, or integrated handles)
 
 **Thermal Requirements:**
-- Operating temperature: 0°C to 45°C (discharge), 0°C to 45°C (charge)
-- Heat dissipation: Natural convection through enclosure ventilation
-- No active cooling required for continuous 30A discharge
+- Operating temperature: 0°C to 45°C (discharge), 0°C to 45°C (charge, **do not charge below 0°C**)
+- Heat dissipation: Natural convection through enclosure ventilation (4× 25-30mm holes with mesh)
+- No active cooling required for continuous 30A discharge (target <40°C rise per SC-006)
 
 ### Behavioral Contract
 
 **State Reporting:**
-- Voltage must be externally measurable at battery terminals
-- Temperature must be measurable (integrated sensor or accessible surface)
+- Voltage must be externally measurable at battery terminals (measured by Victron BMV-712 shunt + Nilight panel)
+- Temperature must be measurable (integrated sensor or accessible surface for IR thermometer)
 - BMS fault state should be indicated (if BMS provides fault output)
 
 **Replacement Criteria:**
 - Any 12V LiFePO4 battery with integrated BMS meeting electrical specs
 - Chemistry must be LiFePO4 (not lead-acid, NMC, or other lithium)
 - Capacity minimum: 50Ah (smaller capacity acceptable if user requirements reduced)
+
+### v1 Implementation: VEVOR 200Ah LiFePO4
+
+**Satisfies Contract:**
+- ✅ Voltage: 12.8V nominal, 10.0-14.6V range per VEVOR BMS
+- ✅ Current: 100A continuous (exceeds 30A minimum, matches 100A ANL fuse)
+- ✅ Protection: VEVOR BMS includes OVP (~14.6V), UVP (~10.0V), OCP (100A), SCP, over-temp
+- ✅ Terminals: **M8 threaded posts** (4 AWG ring terminals, torque 8-10 Nm)
+- ✅ Dimensions: **520mm × 238mm × 218mm** (fits Greenmade tote with 7.5" front, 8.5" side, 4.5" top clearances)
+- ✅ Weight: **25kg** (total system 28-30kg within one-person limit)
+- ✅ Temperature: 0-45°C range per VEVOR spec, BMS internal over-temp protection
+- ✅ State reporting: Voltage via Victron BMV-712 + Nilight panel, temp via IR thermometer or Victron sensor
+- ✅ Chemistry: LiFePO4 (4S configuration, 3.2V/cell × 4 = 12.8V)
+- ✅ Capacity: 200Ah (far exceeds 50Ah minimum, provides 40+ hours diesel heater runtime)
+
+**Procurement**: VEVOR model 010230251465, purchased 2026-01-18, $450-550
 
 ---
 
@@ -68,12 +84,12 @@ This document establishes the "contracts" between battery box components - the e
 **Fuse Specifications:**
 - Type: ANL, Mega, or Class-T DC-rated fuse
 - Voltage rating: Minimum 32V DC
-- Current rating: 125% of maximum expected continuous load (e.g., 30A load → 40A fuse minimum)
+- Current rating: Match battery BMS rating or 125% of maximum expected continuous load
 - Interrupt rating: Minimum 1000A at 12V DC (short-circuit current capacity)
 
 **Placement:**
-- Location: Between battery positive terminal and all downstream circuits
-- Wire gauge: Match or exceed fuse rating (e.g., 50A fuse → 8 AWG minimum)
+- Location: **Within 18 inches of battery positive terminal** (NEC recommendation, minimize unfused wire)
+- Wire gauge: Match or exceed fuse rating (e.g., 100A fuse → 4 AWG minimum)
 - Connection: Crimped ring terminals, properly torqued
 
 ### Mechanical Contract
@@ -94,6 +110,24 @@ This document establishes the "contracts" between battery box components - the e
 - Same type and rating, or higher interrupt rating
 - Must be DC-rated (AC fuses have different characteristics)
 - Document replacement fuse specification in `docs/component-specs.md`
+
+### v1 Implementation: 100A ANL Fuse
+
+**Satisfies Contract:**
+- ✅ Type: ANL (automotive nickel link, DC-rated, fast-acting)
+- ✅ Voltage: 32V DC rated (exceeds 12V system, covers surge to 14.6V charging)
+- ✅ Current: **100A rating matches VEVOR BMS continuous discharge limit** (coordination: BMS primary, ANL backup)
+- ✅ Interrupt: ANL fuses rated for high DC interrupt (typically 5000A+ short-circuit current)
+- ✅ Placement: **Inline ANL holder within 18" of battery+ terminal** (4 AWG wire from Battery+ M8 post to ANL holder)
+- ✅ Wire gauge: **4 AWG** (105A ampacity at 40°C ambient, exceeds 100A fuse rating with margin)
+- ✅ Terminals: M8 ring terminal (battery end), ANL holder lugs (fuse ends), ring terminal or stud (Blue Sea busbar)
+- ✅ Holder: Inline ANL holder (4-6 AWG compatible, screw terminals)
+- ✅ Accessibility: Fuse can be replaced by removing ANL holder cover (hand-accessible)
+- ✅ Failure mode: Fuse opens cleanly on overcurrent (safe failure, isolates battery)
+
+**Procurement**: ANL fuse (~$5-8), inline ANL holder (~$10-15), M8 ring terminals (~$2-5 for pair)
+
+**Rationale**: 100A ANL coordinates with VEVOR 100A BMS (if BMS fails to protect, ANL fuse is backup for sustained 100A+ overcurrent)
 
 ---
 

@@ -11,15 +11,36 @@ Build a portable 12V DC power module (battery box) that safely delivers power to
 
 ## Technical Context
 
-**Language/Version**: N/A (hardware/physical implementation with optional monitoring software TBD)  
-**Primary Dependencies**: 12V LiFePO4 battery (50Ah+ capacity), appropriate BMS, AC charger (LiFePO4-compatible), fuses/protection devices, connectors (Anderson Powerpole or XT60), voltage meter, temperature sensor  
-**Storage**: Physical documentation (wiring diagrams, component specs, operating procedures) stored in `specs/001-battery-box/docs/`; optional future data logging to CSV files or time-series database  
-**Testing**: Physical integration testing (load testing, protection validation, temperature monitoring); no automated unit tests for hardware  
-**Target Platform**: Portable enclosure for camping/vehicle use; AC charging from 120V mains; DC output for 12V loads (5A-30A typical)  
-**Project Type**: Physical hardware build (not software single/web/mobile) - documentation-driven with assembly/wiring procedures  
-**Performance Goals**: Deliver 10A continuous load for 8+ hours (100Ah battery); voltage regulation within battery chemistry limits (11.5V-14.4V for LiFePO4); charging from 20%-95% SOC in ~8 hours at 10A charge rate  
-**Constraints**: All components within manufacturer ratings; fusing for overcurrent protection; thermal management to keep battery <45°C; portable by one person with reasonable effort; reversible assembly (no permanent modifications)  
-**Scale/Scope**: Single battery box unit; 3 user stories (power delivery, monitoring, charging); focus on manual operation and safety validation before future automation
+**Language/Version**: N/A (hardware/physical implementation with Victron VictronConnect app for BMV-712 monitoring)  
+**Primary Dependencies**: 
+- Battery: VEVOR 200Ah 12V LiFePO4 with integrated BMS (100A continuous discharge)
+- Charger: VEVOR 20A LiFePO4 charger (14.6V absorption voltage)
+- Fuse block: Blue Sea Systems 5026 (12 circuits, 100A busbar, marine-grade)
+- Battery monitor: Victron BMV-712 Smart with 500A shunt (Bluetooth, coulomb counting)
+- Connectors: Anderson Powerpole-compatible PP45 (45A, genderless, polarized)
+- Panel: Nilight 4-in-1 (USB-C PD, USB-A QC 3.0, 12V outlet, integrated voltmeter, ON/OFF switch)
+- Enclosure: Greenmade 27gal storage tote (30.4"×20.4"×14.7")
+
+**Storage**: Physical documentation (wiring diagrams, component specs, operating procedures) stored in `specs/001-battery-box/docs/`; Victron BMV-712 historical data logged via VictronConnect app (Bluetooth)  
+**Testing**: Physical integration testing (6-phase protocol: pre-power checks, initial power-up, load testing 5A→30A, charging validation, runtime validation, results documentation); no automated unit tests for hardware  
+**Target Platform**: Portable enclosure for camping/vehicle use; AC charging from 120V mains via VEVOR 20A charger; DC output for 12V loads (diesel heater 3-8A, fridge 5-10A, USB devices, accessories)  
+**Project Type**: Physical hardware build (not software) - documentation-driven with assembly/wiring procedures  
+**Performance Goals**: 
+- Runtime: 40+ hours diesel heater at 5A average (200Ah capacity)
+- Voltage regulation: 10.0V-14.6V (LiFePO4 BMS limits)
+- Charging: 20%-95% SOC (150Ah) in ~7.5 hours at 20A charge rate
+- Monitoring accuracy: SOC ±1%, voltage ±0.1V (Victron BMV-712 specifications)
+- Temperature: Battery surface <40°C under 30A continuous load
+
+**Constraints**: 
+- All components within manufacturer ratings (100A BMS, 45A connectors, 20A circuits)
+- Blue Sea 5026 fusing: 6 circuits allocated (charge 30A, heater 10A, fridge 15A, USB panel 20A, 2× spare 15-20A)
+- 100A ANL main fuse matches battery BMS rating
+- Thermal management via ventilation (4× 25-30mm holes with mesh)
+- Portable: One person, ~28-30kg total weight (battery 25kg + components/enclosure 3-5kg)
+- Reversible assembly: No permanent modifications to purchased components
+
+**Scale/Scope**: Single battery box unit; 3 user stories (power delivery P1, monitoring P2, charging P3); 6 fused circuits with 6 spare for future expansion (solar, inverter, lighting); focus on manual operation and safety validation before future automation
 
 ## Constitution Check
 
@@ -89,8 +110,9 @@ specs/001-battery-box/
 ├── contracts/           # Phase 1 output (/speckit.plan command)
 │   └── component-interfaces.md
 ├── docs/                # Implementation artifacts
+│   ├── component-selection.md    # ✅ Created: Component decisions with procurement details
+│   ├── shopping-list.md           # ✅ Created: Consolidated procurement with budget tracking
 │   ├── wiring-diagram.md (or .pdf/.png)
-│   ├── component-specs.md
 │   ├── assembly-procedure.md
 │   ├── operating-instructions.md
 │   └── test-results.md
