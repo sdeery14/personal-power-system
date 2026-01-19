@@ -162,6 +162,7 @@
 
 ### Field Improvements
 - **Foam reuse**: VEVOR shipping foam (1" fitted, top/bottom) can be repurposed for battery cushioning - saves $10-15, provides excellent vibration damping and strap pressure distribution
+- **Plywood base method**: Using 1/2" plywood (14.5"×24.5" for 15"×25" tote internal) as battery base distributes 55 lb weight across tote bottom, prevents HDPE flex/cracking, provides solid anchor points for strap loops (better than bolting through tote sides). Battery (520×238×218mm = 20.5"×9.4"×8.6") stays in foam with channels cut in top for M8 terminal access + wire routing. Tools available: circular saw to cut plywood, drill/screwdriver for strap loop screws.
 
 ### Procurement Notes
 - **Wire lengths**: Ordered slightly shorter than planned (4 AWG: 6ft vs 4ft red, 6ft vs 6-8ft black / 10 AWG: 20ft vs 25ft / 12 AWG: 15ft vs 20ft) - should still work, may need careful routing
