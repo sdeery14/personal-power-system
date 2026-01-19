@@ -50,26 +50,32 @@
 ### Required Tools
 
 - **Multimeter**: Digital, measures DC voltage (10-20V range) and continuity
-- **Wire strippers**: For AWG wire sizes in use (typically 10-16 AWG)
-- **Crimping tool**: Ratcheting crimper for ring terminals and connectors
-- **Screwdrivers**: Phillips and flathead, various sizes
-- **Drill** (if enclosure requires cutouts): Variable speed with step drill bits or hole saw
-- **Deburring tool**: Remove sharp edges from drilled holes
-- **Heat gun** (optional): For heat-shrink tubing
-- **Adjustable wrench or socket set**: For battery terminal bolts (typically 10mm)
+- **Wire strippers**: For AWG wire sizes in use (4 AWG, 10 AWG, 12 AWG)
+- **Powerpole Crimper**: Knoweasy Powerpole crimper (PP15/30/45, ratcheting, contact positioner, $30-50)
+- **Ring Terminal Crimper**: Ratcheting crimper for 4 AWG M8 ring terminals (NOT pliers - proper crimp essential)
+- **Screwdrivers**: Phillips and flathead for Blue Sea 5026 mounting, self-tapping screws
+- **Drill**: Variable speed with 52mm hole saw (Victron display), 32mm step bit/hole saw (Powerpole connectors 4-5×), 25-30mm bit (ventilation 4×)
+- **Jigsaw or Rotary Tool**: For Nilight panel cutout 4-6"×2-3" rectangular (verify exact dimensions when panel received)
+- **Deburring tool**: Remove sharp edges from drilled HDPE holes
+- **Heat gun** (optional): For heat-shrink tubing on ring terminals
+- **Torque wrench or socket set**: For battery M8 terminal bolts (8-10 Nm torque)
 
 ### Consumable Materials
 
 - **Wire**: TXL or GXL automotive wire, 105°C rated
-  - 10 AWG red (main positive): 1-2 meters
-  - 10 AWG black (main negative): 1-2 meters
-  - 14 AWG red/black (circuit wiring): As needed per output count
-- **Ring terminals**: Sized for wire gauge and terminal post (M6 or M8)
-- **Heat-shrink tubing**: Various sizes for insulation
-- **Zip ties**: Cable management inside enclosure
-- **Adhesive foam padding**: Battery mounting (optional, anti-vibration)
+  - 4 AWG red (main positive trunk): 4 ft (Battery+ → ANL → Blue Sea+)
+  - 4 AWG black (main negative trunk): 6-8 ft (Battery- → Victron shunt → Blue Sea-) **CRITICAL**
+  - 10 AWG red (circuit wiring): 25 ft (Blue Sea+ terminals to Powerpole connectors, 6 circuits)
+  - 10 AWG black (circuit wiring): 25 ft (same routing as red for star grounding)
+  - 12 AWG red (Powerpole pigtails): 20 ft (Powerpole contact pigtails, 10 pairs)
+  - 12 AWG black (Powerpole pigtails): 20 ft (same as red)
+  - 18-22 AWG (Victron sensing): 10 ft (RJ12 cable included, optional temp sensor wire)
+- **Ring terminals**: M8 for battery posts (4 AWG wire), insulated/heat-shrink covered
+- **Powerpole contacts**: PP45-compatible contacts for 10 AWG/12 AWG wire (included with connector pairs)
+- **Heat-shrink tubing**: Various sizes for ring terminals and wire splices
+- **Zip ties**: Cable management inside Greenmade tote (various sizes, UV-resistant)
 - **Electrical tape**: Temporary insulation, wire bundling
-- **Labels**: Wire labels, terminal labels (label maker or write-on labels)
+- **Labels**: Powerpole connector labels ("HEATER 10A", "FRIDGE 15A", "SPARE 20A", "SPARE 15A", "CHARGE IN 30A")
 
 ### Specialized Parts (from Component List)
 
@@ -82,35 +88,34 @@ See [Section 3: Component Checklist](#3-component-checklist)
 Verify all components before starting assembly:
 
 ### Core Components
-- [ ] **Battery**: 12V LiFePO4, 50Ah+ capacity, integrated BMS
-- [ ] **Enclosure**: Weatherproof case or plywood box with ventilation
-- [ ] **Main Fuse**: ANL or Mega fuse, 50-100A (based on battery rating)
-- [ ] **Main Fuse Holder**: Inline ANL holder or fuse block
-- [ ] **Circuit Fuses**: Blade ATO/ATC fuses (10A, 15A, 20A, 30A - as needed)
-- [ ] **Circuit Fuse Holders**: Inline blade holders or panel-mount blocks
+- [ ] **Battery**: VEVOR 200Ah 12V LiFePO4 (model 010230251465), 520×238×218mm, 25kg, M8 posts, 100A BMS integrated, purchased 2026-01-18
+- [ ] **Enclosure**: Greenmade 27-gallon storage tote, 30.4"L × 20.4"W × 14.7"H external, ~28"×18"×13" internal, HDPE, snap-lock latches, molded handles
+- [ ] **Main Fuse**: 100A ANL fuse (32V DC rated, matches BMS rating)
+- [ ] **Main Fuse Holder**: Inline ANL fuse holder (within 18" of battery+)
+- [ ] **Fuse Block**: Blue Sea Systems 5026 (12 circuits, 100A busbar, ST blade fuses, common negative bus)
+- [ ] **Circuit Fuses**: Blade fuse assortment - 10A (2×), 15A (3×), 20A (2×), 30A (2×) + spares
 
 ### Connectors
-- [ ] **Output Connectors**: Anderson Powerpole PP45 or XT60 (qty per output count)
-- [ ] **Charging Connector**: Anderson Powerpole PP30/45 or XT60 (input side)
-- [ ] **Panel-mount plates** (if using): For mounting connectors to enclosure
+- [ ] **Output Connectors**: Anderson Powerpole-compatible PP45 (10 bonded red+black pairs for 5 circuits × 2 ends = panel mount + cable ends)
+- [ ] **Charging Connector**: Anderson Powerpole PP45 red+black bonded pair (labeled "CHARGE IN 30A")
+- [ ] **Charging Adapter Cable**: VEVOR charger alligator clips → 12 AWG wire 3-6 ft → Powerpole PP45 (DIY assemble or pre-made)
+- [ ] **Rubber grommets**: 32mm diameter for Powerpole panel holes, strain relief
 
 ### Monitoring Components
-- [ ] **Digital Voltmeter**: Panel-mount, 5-30V range, LED display
-- [ ] **Temperature Sensor**: DS18B20 or 10K NTC thermistor (optional for v1)
-- [ ] **Status LEDs**: 10mm LEDs - 1× green, 1× yellow, 1× red
-- [ ] **LED bezels**: Panel-mount bezels for LEDs
-- [ ] **Voltage comparator ICs or transistors**: For LED trigger circuits (or pre-built LED modules)
-- [ ] **Resistors**: Current limiting for LEDs (680Ω-1kΩ typical)
+- [ ] **Battery Monitor**: Victron BMV-712 Smart kit (500A/50mV shunt, 52mm×52mm display, RJ12 cable, Bluetooth, optional temperature sensor)
+- [ ] **Panel**: Nilight 4-in-1 (USB-C PD 100W, USB-A QC 3.0, 12V outlet, integrated LED voltmeter, ON/OFF switch, female spade terminals)
+- [ ] **Temperature Sensor**: Manual IR thermometer (-20 to 80°C, ±0.5-1.0°C) + optional Victron temperature sensor (adhesive-backed, plugs into shunt)
+- [ ] **Status Indicators**: Nilight panel ON/OFF LED + Victron BMV-712 display with alarms (defer custom 3-LED system to v2)
 
 ### Hardware
-- [ ] **Bolts/screws**: For battery mounting, component mounting
-- [ ] **Standoffs**: For mounting fuse holders, circuit boards
-- [ ] **Cable glands or grommets**: Strain relief for panel penetrations
-- [ ] **Mesh screen**: Cover ventilation holes (stainless or plastic)
+- [ ] **Battery Straps**: 2× ratchet straps for securing battery (bolted to tote bottom)
+- [ ] **Mounting Hardware**: Self-tapping screws for Blue Sea 5026 side wall mounting, bolts for strap anchors
+- [ ] **Cable Management**: Zip ties (various sizes), adhesive cable anchors for tote walls
+- [ ] **Ventilation Mesh**: Stainless steel or aluminum mesh, 1/8" or 1/4" grid, 4× pieces for 25-30mm vent holes
 
 ### External Equipment (Not in Enclosure)
-- [ ] **AC Charger**: LiFePO4-compatible, 10A+ output, compatible connector
-- [ ] **Test load**: Resistive load or device for testing (12V automotive bulb, heater, etc.)
+- [ ] **AC Charger**: VEVOR 20A LiFePO4 charger (model 010889683485), 14.6V absorption, alligator clips output, purchased
+- [ ] **Test Loads**: 12V automotive bulb (5-10W), 12V fan (~5A), diesel heater (~8A), or electronic load (variable 0-30A)
 
 ---
 
@@ -119,64 +124,110 @@ Verify all components before starting assembly:
 ### Step 1: Prepare Enclosure
 
 **1.1 Plan component layout**
-- Sketch layout on paper: battery position, connector locations, meter position
-- Battery at bottom (low center of gravity)
-- Connectors on side or front panel (cable access)
-- Voltmeter and LEDs on front panel (visibility)
+- Sketch layout on paper: battery position, connector locations, Victron + Nilight panel positions
+- Battery at bottom center (low center of gravity, VEVOR 200Ah: 520×238×218mm fits with 7.5" front, 8.5" side, 4.5" top clearances)
+- Connectors on side panel left vertical row (4-5× Powerpole cable access)
+- Nilight panel on front panel center (visibility), Victron display front panel right of Nilight
+- Blue Sea 5026 on side wall left near battery (accessible from top for fuse replacement)
 
-**1.2 Mark and drill cutouts**
-- [ ] Mark voltmeter cutout location (check clearance behind panel for depth)
-- [ ] Mark LED holes (5mm or 10mm, depending on LED size)
-- [ ] Mark output connector holes (15-25mm depending on connector type)
-- [ ] Mark charging connector hole (separate from outputs)
-- [ ] Mark ventilation holes: 2× 25mm (1 inch) - one high, one low
+**1.2 Mark and drill cutouts on Greenmade 27gal tote**
+- [ ] **Nilight panel**: Mark 4-6"×2-3" rectangular cutout on front panel center upper third (verify exact dimensions when panel received)
+- [ ] **Victron display**: Mark 52mm×52mm square cutout on front panel right of Nilight
+- [ ] **Powerpole connectors**: Mark 4-5× 32mm diameter holes on side panel left, vertical row, 3-4" spacing
+  - Labels: "HEATER 10A" (Circuit 2), "FRIDGE 15A" (Circuit 3), "SPARE 20A" (Circuit 5), "SPARE 15A" (Circuit 6), "CHARGE IN 30A" (Circuit 1)
+- [ ] **Ventilation**: Mark 4× 25-30mm diameter holes on top corners (2 front, 2 rear for cross-flow)
 
-**1.3 Drill holes**
-- [ ] Use step drill or hole saw for large holes
-- [ ] Deburr all holes (remove sharp edges with deburring tool or sandpaper)
-- [ ] Test-fit components before proceeding
+**1.3 Drill holes in HDPE tote**
+- [ ] **Nilight cutout**: Drill pilot holes at 4 corners, use jigsaw or rotary tool to cut rectangular opening
+- [ ] **Victron cutout**: Use 52mm hole saw OR drill 4 corner pilot holes + jigsaw to cut square
+- [ ] **Powerpole holes**: Use 32mm step bit or 32mm hole saw for 4-5 connector holes
+- [ ] **Ventilation holes**: Use 25-30mm bit for 4 vent holes
+- [ ] Deburr all holes (remove sharp HDPE edges with deburring tool or sandpaper)
+- [ ] Test-fit Nilight panel, Victron display, Powerpole connectors before proceeding
 
 **1.4 Install ventilation mesh**
-- [ ] Cut mesh to cover ventilation holes with 10mm overlap
-- [ ] Secure with hot glue, epoxy, or small screws/washers
+- [ ] Cut stainless steel or aluminum mesh (1/8" or 1/4" grid) to cover 25-30mm vent holes with 10mm overlap
+- [ ] Secure with epoxy, hot glue, or small screws/washers
+- [ ] Net free area ~2000-2800mm² (exceeds 500mm² minimum for hydrogen off-gassing)
 
 ### Step 2: Mount Battery
 
-**2.1 Position battery**
-- [ ] Place battery in enclosure (centered, at bottom)
-- [ ] Ensure clearance for wiring and components around battery
+**2.1 Position VEVOR 200Ah battery**
+- [ ] Place battery in Greenmade tote (centered at bottom)
+- [ ] Verify dimensions: 520×238×218mm (20.5"×9.4"×8.6") fits in ~28"×18"×13" internal tote
+- [ ] Verify clearances: 7.5" front, 8.5" side, 4.5" top (sufficient for wiring and Blue Sea 5026 mounting)
+- [ ] Battery terminals (M8 posts) accessible from top
 
-**2.2 Secure battery**
-- [ ] Option A: Ratchet straps across top of battery (secure to enclosure mounting points)
-- [ ] Option B: Foam padding on sides + friction fit (if tight fit)
-- [ ] Option C: Mounting brackets bolted to enclosure floor (if battery has mounting holes)
-- [ ] Verify battery cannot move when enclosure tilted or shaken
+**2.2 Secure battery (CRITICAL - prevents movement during transport)**
+- [ ] Use 2× ratchet straps across top of battery
+- [ ] Anchor straps via drilled holes + bolts through Greenmade tote bottom (4 anchor points)
+- [ ] Alternative: If tote has molded ribs, route straps under ribs (may not be as secure)
+- [ ] Verify battery cannot move when tote tilted or shaken (28-30kg total weight portable)
 
 ### Step 3: Install Main Fuse Holder
 
-**3.1 Mount fuse holder**
-- [ ] Position inline ANL fuse holder near battery positive terminal (within 18 inches per best practice)
-- [ ] Secure with zip ties or mounting bracket
-- [ ] **DO NOT install fuse yet** (fuse installed last after all wiring complete)
+**3.1 Mount 100A ANL inline fuse holder**
+- [ ] Position inline ANL fuse holder within 18" of battery positive terminal (NEC best practice)
+- [ ] Secure with zip ties or mounting bracket to tote side wall
+- [ ] **DO NOT install 100A ANL fuse yet** (fuse installed last after all wiring complete)
 
-**3.2 Prepare wiring**
-- [ ] Cut 10 AWG red wire: Battery positive → Fuse holder input (short, ~150mm)
-- [ ] Strip wire ends 10mm
-- [ ] Crimp ring terminal on battery end (M6 or M8 to match battery post)
-- [ ] Crimp fuse holder terminal on other end (or ring terminal if fuse holder has stud)
+**3.2 Prepare 4 AWG main positive trunk wiring**
+- [ ] Cut 4 AWG red wire: Battery+ → ANL fuse holder input (~4 ft total including routing)
+- [ ] Strip wire ends 10-12mm
+- [ ] Crimp M8 ring terminal on battery end (insulated/heat-shrink covered, torque 8-10 Nm when installed)
+- [ ] Crimp ANL fuse holder lug on other end (or ring terminal if fuse holder has stud)
+- [ ] Current capacity: 4 AWG = 105A at 40°C (exceeds 100A fuse rating, voltage drop <0.1V at 100A over 4 ft)
 
-### Step 4: Install Distribution Busbar (Optional but Recommended)
+### Step 4: Mount Blue Sea 5026 Fuse Block
 
-**4.1 Busbar option**
-- [ ] If multiple outputs: Install busbar (terminal strip) downstream of main fuse
-- [ ] Busbar simplifies wiring: Main fuse → Busbar → Individual circuits branch off
-- [ ] Alternative: Daisy-chain circuits (more complex wiring)
+**4.1 Mount Blue Sea Systems 5026**
+- [ ] Position on Greenmade tote side wall left near battery (accessible from top for fuse replacement)
+- [ ] Secure with self-tapping screws through Blue Sea mounting flanges into HDPE tote wall
+- [ ] Verify 100A positive busbar post and negative bus post accessible
 
-**4.2 Mount busbar**
-- [ ] Secure busbar to enclosure with standoffs or brackets
-- [ ] Position centrally for equal wire run lengths to each circuit
+**4.2 Wire main positive trunk to Blue Sea**
+- [ ] Cut 4 AWG red wire: ANL fuse holder output → Blue Sea 5026 positive busbar post (~1-2 ft)
+- [ ] Crimp ring terminal or lug for busbar stud connection
+- [ ] Route wire cleanly along tote wall, secure with zip ties
 
-### Step 5: Wire Output Circuits
+**4.3 Prepare main negative trunk (CRITICAL for star grounding)**
+- [ ] **DO NOT connect battery negative directly to Blue Sea negative bus**
+- [ ] Main negative trunk will route: Battery- → Victron shunt battery side → Victron shunt system side → Blue Sea- negative bus
+- [ ] This ensures ALL current (charge + loads) flows through Victron shunt for accurate SOC tracking
+- [ ] See Step 5 for Victron shunt installation and negative trunk wiring
+
+### Step 5: Install Victron BMV-712 Battery Monitor
+
+**5.1 Mount 500A shunt on side wall**
+- [ ] Position Victron 500A/50mV shunt on tote side wall near battery negative terminal (minimize 4 AWG wire length)
+- [ ] Secure with screws or adhesive (shunt must be stationary for accurate measurement)
+- [ ] Shunt has two sides: "Battery" side (connects to battery-) and "System" side (connects to Blue Sea- bus and all loads)
+
+**5.2 Wire main negative trunk through shunt (CRITICAL)**
+- [ ] Cut 4 AWG black wire segment 1: Battery- → Victron shunt battery side (~1-2 ft)
+- [ ] Crimp M8 ring terminal on battery end, crimp shunt lug on other end
+- [ ] Cut 4 AWG black wire segment 2: Victron shunt system side → Blue Sea negative bus (~4-6 ft total routing)
+- [ ] Crimp shunt lug on shunt end, crimp ring terminal on Blue Sea bus end
+- [ ] **Total 4 AWG black: 6-8 ft** (longer than positive side because of shunt routing)
+- [ ] **VERIFY: ALL circuit negative wires will connect to Blue Sea negative bus, NOT directly to battery**
+- [ ] This star grounding architecture ensures accurate coulomb counting (all current through shunt)
+
+**5.3 Mount Victron display on front panel**
+- [ ] Insert Victron BMV-712 display into 52mm×52mm square cutout (front panel right of Nilight)
+- [ ] Secure with included bezel from front side
+- [ ] Display mounts flush with panel surface
+
+**5.4 Connect RJ12 cable from shunt to display**
+- [ ] Plug RJ12 cable (included, ~3 meters) into Victron shunt RJ12 port
+- [ ] Route cable cleanly from side wall shunt to front panel display
+- [ ] Plug other end into Victron display RJ12 port
+- [ ] Secure cable with zip ties along route
+
+**5.5 Optional temperature sensor**
+- [ ] If using Victron temperature sensor: Adhesive-backed sensor on battery case center
+- [ ] Plug sensor into Victron shunt temperature port
+- [ ] Enables continuous temperature monitoring via VictronConnect app
+- [ ] Alternative: Use manual IR thermometer (procedure in testing section)
 
 **For each output circuit:**
 
@@ -205,7 +256,34 @@ Verify all components before starting assembly:
 - [ ] Label each wire at both ends: "OUT1+", "OUT1-", "OUT2+", "OUT2-", etc.
 - [ ] Use wire labels or write on heat-shrink with marker
 
-### Step 6: Wire Charging Circuit
+### Step 7: Wire Nilight 4-in-1 Panel (Blue Sea Circuit 4)
+
+**7.1 Circuit 4 fuse installation**
+- [ ] Circuit 4 (USB panel 20A): Install 20A ST blade fuse in Blue Sea position 4
+- [ ] **DO NOT install fuse yet** (fuse installed last)
+
+**7.2 Mount Nilight panel in front panel cutout**
+- [ ] Insert Nilight 4-in-1 panel into 4-6"×2-3" rectangular cutout from front
+- [ ] Secure with included mounting hardware (screws or snap-fit depending on panel design)
+- [ ] Panel provides: USB-C PD (100W), USB-A QC 3.0 (2.1A), 12V cigarette outlet, integrated LED voltmeter, ON/OFF switch
+
+**7.3 Positive wire run (10 AWG red, hardwired)**
+- [ ] Cut 10 AWG red wire: Blue Sea circuit 4 terminal → Nilight panel positive spade terminal (~2-3 ft)
+- [ ] Blue Sea end: Screw connection to circuit 4 positive terminal
+- [ ] Nilight end: Crimp female spade terminal (verify Nilight spade size, typically 0.25" or 6.3mm)
+- [ ] Verify polarity: Red = positive on Nilight (check panel markings or documentation)
+
+**7.4 Negative wire run (10 AWG black)**
+- [ ] Cut 10 AWG black wire: Blue Sea negative bus → Nilight panel negative spade terminal (~2-3 ft)
+- [ ] Blue Sea end: Ring terminal to negative bus post
+- [ ] Nilight end: Crimp female spade terminal
+- [ ] Verify polarity: Black = negative (ground) on Nilight
+
+**7.5 Verify Nilight integrated voltmeter**
+- [ ] Nilight panel includes built-in LED voltmeter (±0.1-0.2V accuracy, quick check)
+- [ ] No separate voltmeter wiring required (voltmeter powered by same 10 AWG connection)
+- [ ] Voltmeter provides backup to Victron BMV-712 (blue illumination, visible at 2 meters)
+- [ ] ON/OFF switch on Nilight panel prevents 50-100mA parasitic drain when system not in use
 
 **6.1 Charging fuse holder**
 - [ ] Install inline blade fuse holder near battery (separate from output circuits)
@@ -229,97 +307,159 @@ Verify all components before starting assembly:
 **6.5 Label wires**
 - [ ] Label: "CHG_IN+", "CHG_IN-"
 
-### Step 7: Install Voltage Meter
+### Step 8: Wire Charging Circuit (Blue Sea Circuit 1)
 
-**7.1 Mount meter**
-- [ ] Insert panel meter into cutout from front
-- [ ] Secure with mounting clips or bezel (per meter design)
+**8.1 Circuit 1 fuse installation**
+- [ ] Circuit 1 (Charge input 30A): Install 30A ST blade fuse in Blue Sea position 1
+- [ ] **DO NOT install fuse yet** (fuse installed last after all wiring complete)
 
-**7.2 Wire meter**
-- [ ] Red wire (meter V+): Connect to battery positive (via busbar or solder to positive wire near battery)
-- [ ] Black wire (meter V- or GND): Connect to battery negative (solder to negative wire or ring terminal at battery)
-- [ ] Wire gauge: 18-22 AWG sufficient (low current)
-- [ ] Keep wire runs short to minimize voltage drop in sense lines
+**8.2 Positive wire run (10 AWG red)**
+- [ ] Cut 10 AWG red wire: Blue Sea circuit 1 terminal → Side panel Powerpole "CHARGE IN 30A" connector (~3-4 ft)
+- [ ] Blue Sea end: Screw connection to circuit 1 positive terminal
+- [ ] Powerpole end: Crimp 12 AWG red pigtail (6-12" from 10 AWG to Powerpole PP45 red contact)
+- [ ] Use Knoweasy Powerpole crimper, tug-test crimp
 
-### Step 8: Install Status LEDs
+**8.3 Negative wire run (10 AWG black)**
+- [ ] Cut 10 AWG black wire: Blue Sea negative bus → Side panel Powerpole "CHARGE IN 30A" connector (~3-4 ft)
+- [ ] Blue Sea end: Ring terminal to negative bus post
+- [ ] Powerpole end: Crimp 12 AWG black pigtail (6-12" from 10 AWG to Powerpole PP45 black contact)
 
-**8.1 Mount LEDs**
-- [ ] Insert LEDs into bezels, insert bezels into panel holes
-- [ ] Secure (snap-fit or threaded bezel, depending on type)
-- [ ] Position: Green (Power) | Yellow (Low Batt) | Red (Charging)
+**8.4 Mount charging connector**
+- [ ] Route red+black wire pair through 32mm rubber grommet in side panel hole
+- [ ] Click Powerpole red+black housings together (bonded pair)
+- [ ] Label connector "CHARGE IN 30A" (external label on tote)
 
-**8.2 Build LED trigger circuits**
+**8.5 VEVOR charger adapter cable (DIY or pre-made)**
+- [ ] **Adapter cable required**: VEVOR 20A charger has alligator clips output, need adapter to Powerpole
+- [ ] Cable assembly: VEVOR alligator clips red+/black- → 12 AWG wire 3-6 ft → Powerpole PP45 red+black bonded pair
+- [ ] Crimp Powerpole contacts on wire end opposite alligator clips
+- [ ] Label adapter cable "CHARGER ADAPTER - DO NOT USE FOR LOADS" (prevents accidental use for output)
+- [ ] **CRITICAL: Verify polarity with multimeter before first use** (red=positive, black=negative)
+- [ ] Protection: 30A blade fuse in Circuit 1 + 100A ANL + VEVOR charger internal OVP/OCP + Powerpole mechanical keying
 
-#### Simple transistor-based LED driver (per LED):
+### Step 9: Configure Victron BMV-712
 
-**Power LED (Green, ON when voltage >13.0V):**
-```
-Battery+ (>13.0V) ───┬─── Resistor (e.g., 680Ω) ───┬─── Green LED (+) ─── Transistor (NPN, collector) ─── GND
-                     │                               └─── Anode
-                     └─── Voltage divider: R1 (10kΩ) ─── Zener 13V ─── R2 (10kΩ) ─── GND
-                              (Tap after Zener) ──── Transistor Base
+### Step 9: Configure Victron BMV-712
 
-(When voltage >13V, Zener conducts, base goes high, transistor turns on, LED lights)
-```
+**9.1 Power up the system (for configuration only)**
+- [ ] Temporarily connect battery positive (M8 ring terminal, torque 8-10 Nm)
+- [ ] Connect battery negative to Victron shunt battery side (M8 ring terminal, torque 8-10 Nm)
+- [ ] Victron BMV-712 display should power on and show voltage (~13.2V for storage-charged battery)
+- [ ] Nilight panel: Press ON/OFF switch, verify LED voltmeter illuminates
 
-**Alternative: Use LM339 voltage comparator IC** (more accurate, 4 comparators per IC)
-- Set reference voltage with voltage divider
-- Connect battery voltage to comparator input
-- Comparator output drives LED (via transistor or directly if comparator can sink LED current)
+**9.2 Download VictronConnect app**
+- [ ] Install VictronConnect app on smartphone (iOS or Android, free)
+- [ ] Enable Bluetooth on phone
+- [ ] Open app, scan for Victron devices
+- [ ] Connect to BMV-712 (may require PIN: default 000000)
 
-**Note**: If building trigger circuits is too complex for v1, consider:
-- **Option A**: Always-on LEDs with manual interpretation (e.g., one LED always shows voltage meter, user interprets)
-- **Option B**: Pre-built LED voltage indicator modules (available online, configurable thresholds)
-- **Deferred**: Full LED circuit to future enhancement if time-constrained
+**9.3 Configure battery parameters (CRITICAL for accurate SOC tracking)**
+- [ ] Navigate to Settings → Battery in VictronConnect app
+- [ ] **Battery capacity**: Set to **200Ah** (VEVOR 200Ah battery)
+- [ ] **Charged voltage**: Set to **14.4V** (LiFePO4 bulk/absorption voltage, SOC sync trigger)
+- [ ] **Tail current**: Set to **4A** (2% of 200Ah capacity, end-of-charge detection)
+- [ ] **Peukert exponent**: Set to **1.05** (LiFePO4 typical, 1.00-1.05 range)
+- [ ] **Charge efficiency factor**: Set to **95%** (default, 90-99% typical LiFePO4)
+- [ ] **Current threshold**: Set to **0.1A** (idle detection threshold)
 
-**8.3 Wire LEDs to battery**
-- [ ] Connect LED trigger circuit power to battery positive and negative
-- [ ] Verify polarity: LED anode (+) to current-limiting resistor, cathode (-) to ground or transistor
+**9.4 Configure alarms (diesel heater winter camping safety)**
+- [ ] Navigate to Settings → Alarms in VictronConnect app
+- [ ] **Low SOC alarm**: Enable at **30%** SOC (low battery warning, yellow equivalent)
+- [ ] **Critical SOC alarm**: Enable at **20%** SOC (critical, red equivalent)
+- [ ] **Low voltage alarm**: Set to **12.0V** (backup to SOC alarm)
+- [ ] **High voltage alarm**: Set to **14.8V** (overcharge protection, backup to BMS)
+- [ ] Alarm relay: Configure if using relay output (optional)
 
-### Step 9: Install Panel Connectors
+**9.5 Initial SOC synchronization**
+- [ ] **IMPORTANT**: Victron requires first full charge cycle to calibrate SOC accurately
+- [ ] After configuration, fully charge battery with VEVOR 20A charger to 14.4V
+- [ ] When voltage reaches 14.4V AND current drops below 4A (tail current), Victron will auto-sync SOC to 100%
+- [ ] Alternatively: Manually press "Synchronize to 100%" button in app when you know battery is fully charged
+- [ ] After sync: SOC tracking becomes ±1% accurate (coulomb counting operational)
 
-**9.1 Mount connector plates**
-- [ ] If using Anderson Powerpole: Mount connector housings in panel holes (may need custom plate or 3D-printed mount)
-- [ ] If using XT connectors: Solder to wires, secure with cable gland and strain relief
+**9.6 Verify Victron readings**
+- [ ] Voltage: Compare Victron display to multimeter at battery terminals (should be within ±0.1V per SC-002)
+- [ ] Current: With no loads connected, should show 0A or <0.1A (idle)
+- [ ] SOC%: After sync, should show 100% when fully charged
+- [ ] Time-to-go: Will display "∞" at idle, "X.X hours" when load connected (based on SOC% and current draw)
 
-**9.2 External labeling**
-- [ ] Label each output connector: "OUT1: 12V 30A MAX" (or appropriate rating)
-- [ ] Label charge connector: "CHARGE INPUT: 14.4V LiFePO4 ONLY"
-- [ ] Use label maker, engraving, or permanent marker
+**9.7 Disconnect battery for final wiring**
+- [ ] Disconnect battery negative first (Victron display will turn off)
+- [ ] Disconnect battery positive second
+- [ ] Proceed to final wiring checks and fuse installation
 
-### Step 10: Final Wiring Check (Before Installing Fuses)
+### Step 10: Install Panel Connectors (Label External)
 
-**10.1 Visual inspection**
-- [ ] All connections tight (ring terminals torqued per spec)
-- [ ] No bare wire exposed (heat-shrink or electrical tape on all joints)
-- [ ] No wires touching sharp edges (use grommets or edge protection)
-- [ ] All wires secured with zip ties (no loose wires that can vibrate)
-- [ ] Polarity correct: Red = positive, Black = negative
+### Step 10: Install Panel Connectors (Label External)
 
-**10.2 Continuity testing (battery disconnected or fuses out)**
+**10.1 Verify all Powerpole connectors mounted**
+- [ ] 4-5× Powerpole connectors in side panel 32mm holes with rubber grommets
+- [ ] Each connector: Red+black bonded pair, genderless (can mate with matching cable-end Powerpole)
+- [ ] Strain relief: Rubber grommets + zip ties securing internal wiring to tote wall
+
+**10.2 External connector labeling**
+- [ ] Circuit 2: Label "HEATER 10A - 12V OUTPUT" (permanent marker or label maker on tote exterior near connector)
+- [ ] Circuit 3: Label "FRIDGE 15A - 12V OUTPUT"
+- [ ] Circuit 5: Label "SPARE 20A - 12V OUTPUT"
+- [ ] Circuit 6: Label "SPARE 15A - 12V OUTPUT"
+- [ ] Circuit 1: Label "CHARGE IN 30A - 14.4V LiFePO4 ONLY" (red text to distinguish input from outputs)
+
+**10.3 Verify Nilight and Victron panel mounting**
+- [ ] Nilight 4-in-1 panel: Mounted in front panel center, accessible, labeled (optional: "USB PANEL")
+- [ ] Victron BMV-712 display: Mounted in front panel right of Nilight, 52mm square cutout, bezel secure
+
+### Step 11: Final Wiring Check (Before Installing Fuses)
+
+### Step 11: Final Wiring Check (Before Installing Fuses)
+
+**11.1 Visual inspection**
+- [ ] All connections tight (M8 ring terminals torqued 8-10 Nm at battery posts)
+- [ ] All Powerpole contacts crimped (tug-test each contact, should not pull out of housing)
+- [ ] No bare wire exposed (heat-shrink or electrical tape on all ring terminals and splices)
+- [ ] No wires touching sharp HDPE edges (rubber grommets at all panel penetrations)
+- [ ] All wires secured with zip ties (no loose wires that can vibrate or short)
+- [ ] Polarity correct throughout: Red = positive, Black = negative (double-check at battery, Blue Sea, Powerpoles)
+
+**11.2 Continuity testing (battery disconnected, fuses NOT installed)**
 - [ ] Multimeter in continuity/resistance mode
-- [ ] Test positive wire continuity: Battery positive terminal → Each output connector positive pin
-  - **Expected**: Open circuit (infinite resistance) with fuse NOT installed
-  - **Expected**: Low resistance (<1 ohm) with fuse installed (test with spare fuse temporarily)
-- [ ] Test negative wire continuity: Battery negative terminal → Each output connector negative pin
-  - **Expected**: Low resistance (<1 ohm), continuity beep
-- [ ] Test for shorts: Positive bus → Negative bus
-  - **Expected**: Open circuit (infinite resistance, no continuity)
-  - **If short detected**: Find and fix before proceeding
+- [ ] Test positive wire continuity: Battery+ terminal → ANL fuse holder input → ANL fuse holder output → Blue Sea+ busbar → Circuit 1-6 terminals
+  - **Expected with fuses NOT installed**: Open circuit (infinite resistance) from Blue Sea circuit terminal to Powerpole connector
+  - **Expected with temporary fuse**: Low resistance (<1 ohm) from battery+ to Powerpole connector positive pin
+- [ ] Test negative wire continuity: Battery- terminal → Victron shunt battery side → Victron shunt system side → Blue Sea- negative bus → Each Powerpole connector negative pin
+  - **Expected**: Low resistance (<1 ohm), continuity beep on multimeter
+  - **CRITICAL CHECK**: Verify NO direct connection from battery- to any load (all loads route through Victron shunt for star grounding)
+- [ ] Test for shorts: Blue Sea positive busbar → Blue Sea negative bus
+  - **Expected**: Open circuit (infinite resistance, no continuity, no beep)
+  - **If short detected**: Find and fix before proceeding (check for touching wires, incorrect crimps)
 
-### Step 11: Install Fuses (LAST STEP)
+**11.3 Polarity verification at Powerpole connectors**
+- [ ] Use multimeter to verify which Powerpole contact is red (positive) vs black (negative)
+- [ ] With temporary fuse installed: Red contact should have continuity to battery+, black to battery-
+- [ ] Mark any connectors if not already labeled internally
 
-**11.1 Install main fuse**
-- [ ] Insert appropriately rated ANL fuse into main fuse holder
-- [ ] Verify fuse is secure (seated fully in holder)
+### Step 12: Install Fuses (LAST STEP)
 
-**11.2 Install circuit fuses**
-- [ ] Insert appropriately rated blade fuses into each circuit fuse holder
-- [ ] Start with lower-rated fuses (e.g., 10A) for initial testing
+### Step 12: Install Fuses (LAST STEP)
 
-**11.3 Final check**
-- [ ] All fuse holders closed and secured
-- [ ] No exposed fuse terminals (should be covered by holder body)
+**12.1 Install 100A ANL main fuse**
+- [ ] Insert 100A ANL fuse into inline ANL fuse holder
+- [ ] Verify fuse is secure (seated fully in holder, cover closed and latched)
+- [ ] ANL fuse protects main positive trunk (coordinates with VEVOR BMS 100A limit, secondary protection)
+
+**12.2 Install Blue Sea 5026 circuit blade fuses**
+- [ ] Circuit 1 (Charge input): Install 30A ST blade fuse
+- [ ] Circuit 2 (Heater): Install 10A ST blade fuse
+- [ ] Circuit 3 (Fridge): Install 15A ST blade fuse
+- [ ] Circuit 4 (USB panel / Nilight): Install 20A ST blade fuse
+- [ ] Circuit 5 (Spare): Install 20A ST blade fuse
+- [ ] Circuit 6 (Spare): Install 15A ST blade fuse
+- [ ] Circuits 7-12: Leave empty (future expansion)
+- [ ] Start with correct-rated fuses (not lower test fuses) for initial testing
+
+**12.3 Final check**
+- [ ] All fuse holders closed and secured (Blue Sea cover snaps down, accessible from top)
+- [ ] No exposed fuse terminals (should be covered by Blue Sea holder body and ANL holder cover)
+- [ ] All wire routing clear of fuse access (can remove/replace fuses without disturbing wiring)
 
 ---
 
@@ -415,101 +555,299 @@ Battery+ (>13.0V) ───┬─── Resistor (e.g., 680Ω) ───┬─�
 
 ## 6. Testing and Validation
 
-### Phase 1: Pre-Power Checks (Fuses Not Installed)
+### Phase 0: Pre-Assembly Verification (Before Step 1)
 
-**6.1 Visual inspection**
-- [ ] All connections secure, no loose wires
+**0.1 VEVOR 200Ah battery inspection**
+- [ ] Measure voltage with multimeter: Expect 13.2-13.4V (storage charge, 40-60% SOC)
+- [ ] Verify dimensions: 520×238×218mm matches specification (will fit in Greenmade tote with clearances)
+- [ ] Inspect for shipping damage: No case cracks, swelling, dents, leaking
+- [ ] Document: Serial number (on battery case), purchase date (2026-01-18), initial voltage in test-results.md
+- [ ] Verify M8 threaded posts: Positive marked red (+), negative marked black (-)
+
+**0.2 Blue Sea 5026 fuse block inspection**
+- [ ] Verify 12 circuit positions with ST blade fuse slots
+- [ ] Verify 100A positive busbar post and negative bus post
+- [ ] Test blade fuse insertion: Fuses should insert snugly, cover should close and latch
+- [ ] Inspect mounting flanges: No damage, holes for self-tapping screws
+
+**0.3 Victron BMV-712 kit inspection**
+- [ ] Verify kit includes: 500A/50mV shunt, 52mm×52mm display, RJ12 cable (~3m), optional temperature sensor
+- [ ] Power up display with 12V bench supply (or temporary battery connection): Verify boot screen, displays voltage
+- [ ] Test Bluetooth: Open VictronConnect app, scan for device, verify communication
+
+**0.4 VEVOR 20A charger inspection**
+- [ ] Measure charger output voltage (no load): Expect 14.4-14.6V (LiFePO4 absorption voltage)
+- [ ] Verify polarity with multimeter: Red alligator clip = positive, black = negative
+- [ ] Check rating sticker: 20A output, LiFePO4 profile, AC input 120V
+
+**0.5 Greenmade tote inspection**
+- [ ] Verify external dimensions: 30.4"L × 20.4"W × 14.7"H
+- [ ] Measure internal dimensions: ~28"×18"×13" (HDPE walls ~1-1.5" thick)
+- [ ] Test snap-lock latches: Should close securely, handles rated for 28-30kg weight
+- [ ] HDPE material: Suitable for drilling/cutting with standard tools
+
+### Phase 1: Pre-Power Wiring Inspection (After Step 11)
+
+### Phase 1: Pre-Power Wiring Inspection (After Step 11)
+
+**1.1 Visual inspection**
+- [ ] All connections secure, no loose wires (completed in Step 11.1)
 - [ ] No shorts visible (wires not touching opposite polarity)
-- [ ] Polarity correct throughout (red = +, black = -)
+- [ ] Polarity correct throughout (red = +, black = -, verified in Step 11.1)
+- [ ] All crimps tight: Tug-test Powerpole contacts (should not pull out), M8 ring terminals torqued 8-10 Nm
+- [ ] Heat-shrink or electrical tape covers all exposed metal on ring terminals
 
-**6.2 Continuity testing**
-- [ ] Battery positive to each output positive (with temporary fuse): Low resistance
-- [ ] Battery negative to each output negative: Low resistance
-- [ ] Positive bus to negative bus: Open circuit (no short)
+**1.2 Continuity testing (completed in Step 11.2)**
+- [ ] Battery+ to Blue Sea+ busbar (through ANL fuse holder with temporary fuse): Low resistance <0.1Ω
+- [ ] Battery- to Victron shunt battery side to system side to Blue Sea- bus: Low resistance <0.1Ω
+- [ ] Each circuit: Blue Sea terminal to Powerpole connector (with temporary fuse): Low resistance <0.5Ω for 10 AWG
+- [ ] Positive to negative: Open circuit (infinite resistance, no short)
 
-### Phase 2: Initial Power-Up (Low-Risk Loads Only)
+**1.3 Fuse verification**
+- [ ] 100A ANL fuse installed in inline holder (Step 12.1)
+- [ ] Blade fuses installed in Blue Sea circuits 1-6: 30A, 10A, 15A, 20A, 20A, 15A (Step 12.2)
+- [ ] All fuse holders closed and latched
 
-**6.3 Install main fuse**
-- [ ] Insert main fuse, close holder
+### Phase 2: Initial Power-Up (Low-Risk, No External Loads)
 
-**6.4 Check voltmeter**
-- [ ] Voltmeter powers on and displays voltage
-- [ ] Voltage reading reasonable (12.0V - 13.5V for partially charged LiFePO4)
-- [ ] Compare to multimeter at battery terminals: Should be within ±0.1V per SC-002
+### Phase 2: Initial Power-Up (Low-Risk, No External Loads)
 
-**6.5 Check status LEDs**
-- [ ] Power LED (green): Lit if voltage >13.0V, off if <13.0V
-- [ ] Low Battery LED (yellow): Lit if voltage <13.0V, off if >13.0V
-- [ ] Charging LED (red): Off (no charger connected)
-- If LEDs not functioning as expected, troubleshoot trigger circuits
+**2.1 Connect battery (fuses installed, positive first safety procedure)**
+- [ ] Connect battery positive first: M8 ring terminal to battery+ post, torque 8-10 Nm
+- [ ] Connect battery negative last: M8 ring terminal to Victron shunt battery side, torque 8-10 Nm
+- [ ] **Expect**: Victron BMV-712 display powers on, shows voltage ~13.2-13.4V (storage charge)
+- [ ] **Expect**: Nilight panel OFF at this point (ON/OFF switch in OFF position prevents parasitic drain)
 
-**6.6 Install output circuit fuses**
-- [ ] Start with lowest-rated fuses (10A) for initial testing
-- [ ] Insert fuses into each output circuit holder
+**2.2 Test Victron BMV-712 monitoring**
+- [ ] Display shows: Voltage (e.g., 13.28V), Current (0.0A idle), SOC (% may be inaccurate until first sync)
+- [ ] Compare voltage to multimeter at battery terminals: Should be within ±0.1V per SC-002
+- [ ] Open VictronConnect app on smartphone, connect via Bluetooth
+- [ ] Verify configuration from Step 9: 200Ah capacity, 14.4V charged voltage, 4A tail current, alarms enabled
+- [ ] Verify current reading: Should be 0.0A or <0.1A with no loads connected
 
-### Phase 3: Load Testing
+**2.3 Test Nilight 4-in-1 panel**
+- [ ] Press Nilight ON/OFF switch to ON position
+- [ ] **Expect**: Switch LED illuminates (blue or red depending on model), integrated voltmeter powers on
+- [ ] Check Nilight voltmeter reading: Compare to Victron display and multimeter (±0.1-0.2V acceptable for Nilight)
+- [ ] Test USB-C PD port: Plug in smartphone, verify charging indicator (up to 100W)
+- [ ] Test USB-A QC 3.0 port: Plug in device, verify charging (2.1A)
+- [ ] Test 12V cigarette outlet: Plug in 12V LED bulb or device, verify 12-13V output
+- [ ] Press Nilight switch to OFF: LED should turn off, voltmeter should go dark (prevents 50-100mA drain)
 
-**6.7 Connect test load (light load first)**
-- [ ] Use 12V automotive bulb (5-10W) or resistive load (~1A)
-- [ ] Connect to output connector, verify polarity
-- [ ] Load should operate (bulb lights)
-- [ ] Monitor voltage: Should drop slightly under load but remain >11.5V
+**2.4 Measure voltage at output connectors (Nilight ON, no external loads)**
+- [ ] Use multimeter to measure voltage at each Powerpole connector
+- [ ] Circuit 2 (Heater 10A): Red contact ~13.2V, black contact 0V (ground), voltage drop <0.1V vs battery
+- [ ] Circuit 3 (Fridge 15A): Red contact ~13.2V, black contact 0V
+- [ ] Circuit 5 (Spare 20A): Red contact ~13.2V, black contact 0V
+- [ ] Circuit 6 (Spare 15A): Red contact ~13.2V, black contact 0V
+- [ ] Circuit 1 (Charge IN 30A): Should be 0V (no charger connected)
+- [ ] **If voltage significantly lower than battery**: Check wiring, connections, or fuse
 
-**6.8 Increase load gradually**
-- [ ] Disconnect light load
-- [ ] Connect moderate load (10A - e.g., 12V fan, small heater)
-- [ ] Monitor voltage: Should remain stable (voltage sag <0.5V)
-- [ ] Monitor temperature: Feel battery case, should be slightly warm but not hot
-- [ ] Run for 10 minutes, observe voltmeter for voltage drop over time
+**2.5 Check for unexpected behavior**
+- [ ] No smoke, sparks, or burning smell (indicates short circuit - disconnect battery immediately if detected)
+- [ ] No excessive heat at battery terminals, Blue Sea busbar, or wiring (should be room temperature at idle)
+- [ ] Victron shunt not hot (should be cool, only warms under high current >50A)
+- [ ] No alarms on Victron (low SOC alarm may trigger if battery was stored discharged, recharge if needed)
 
-**6.9 Heavy load test (if system designed for high current)**
-- [ ] Connect 20-30A load (e.g., diesel heater, large inverter)
-- [ ] Monitor voltage and temperature closely
-- [ ] Run for 5-10 minutes maximum (or until voltage drops to 12.5V)
-- [ ] Battery temperature should remain <40°C per SC-006
+### Phase 3: Progressive Load Testing
 
-**6.10 Overcurrent protection test (fuse validation)**
-- [ ] Install test fuse (e.g., 10A blade fuse)
-- [ ] Gradually increase load beyond fuse rating (use variable resistive load or multiple devices)
-- [ ] Fuse should open (blow) when current exceeds rating per manufacturer time-current curve
-- [ ] Verify no damage to wiring or battery after fuse opens
-- [ ] Replace test fuse with correct rating for circuit
+### Phase 3: Progressive Load Testing
+
+**3.1 Test 1: Light load (5A diesel heater simulation)**
+- [ ] Connect test load: 60W 12V load or electronic load set to 5A constant current
+- [ ] Connect to Circuit 2 (Heater 10A) Powerpole connector via mating cable-end Powerpole
+- [ ] Monitor Victron BMV-712: Current should show ~5A draw, voltage should be stable ~13.1-13.2V
+- [ ] Monitor temperature with IR thermometer:
+  - Battery case: Should remain <40°C rise above ambient (expect ~25-30°C in room)
+  - Blue Sea 5026 fuse block: Should remain cool <35°C
+  - 10 AWG wiring at Circuit 2 terminal and Powerpole connector: Should remain <40°C
+- [ ] Duration: Run for 1 hour
+- [ ] **Success criteria**: Voltage remains stable >12.8V, no overheating per SC-006, Victron shows ~5Ah consumed
+
+**3.2 Test 2: Medium load (10A fridge simulation)**
+- [ ] Disconnect 5A load
+- [ ] Connect 120W 12V load or electronic load set to 10A to Circuit 3 (Fridge 15A) Powerpole
+- [ ] Monitor Victron: Current ~10A, voltage drop to ~13.0-13.2V (acceptable <0.3V drop from idle)
+- [ ] Monitor temperature: Battery case, Blue Sea fuse block, 10 AWG wiring at Circuit 3 (all should remain <40°C rise)
+- [ ] Duration: Run for 30 minutes
+- [ ] **Success criteria**: Voltage drop <0.3V vs idle, 10 AWG wire temperature <40°C rise, 15A fuse does not blow
+
+**3.3 Test 3: High load (23A multi-device simulation)**
+- [ ] Connect multiple loads simultaneously:
+  - Circuit 2 (Heater): 8A load (diesel heater realistic draw)
+  - Circuit 3 (Fridge): 10A load (12V fridge)
+  - Nilight panel (Circuit 4): Charge 1× smartphone via USB-C (~5A / 60W)
+- [ ] Total: ~23A combined (realistic winter camping scenario)
+- [ ] Monitor Victron: Current ~23A, voltage drops to ~13.0-13.2V (acceptable under high load)
+- [ ] Monitor temperature at all connection points with IR thermometer:
+  - Battery case center: Should remain <40°C above ambient
+  - Blue Sea busbar and Circuit 2/3/4 terminals: <40°C
+  - 4 AWG main trunks at ANL fuse holder and Blue Sea: <40°C
+  - 10 AWG circuit wiring: <40°C
+  - Victron shunt: May be slightly warm <50°C (carries all 23A return current)
+- [ ] Duration: Run for 15 minutes (allow wiring to reach steady-state heat)
+- [ ] **Success criteria (SC-006)**: All connections <40°C rise, voltage >12.8V at 23A, no fuses blow
+
+**3.4 Test 4: Fuse interruption validation (10A circuit)**
+- [ ] Install 10A blade fuse in spare Circuit 6 (normally 15A)
+- [ ] Connect variable resistive load or electronic load to Circuit 6 Powerpole
+- [ ] Gradually increase load beyond 10A rating (set to 15A = 150% of fuse rating)
+- [ ] **Expect**: 10A ST blade fuse opens (blows) within 10 seconds at 150% rating per fuse I²t time-current curve
+- [ ] Disconnect load immediately after fuse blows
+- [ ] Inspect Blue Sea fuse holder: Should be undamaged, no melting or discoloration
+- [ ] Replace 10A test fuse with correct 15A fuse for Circuit 6
+- [ ] **Success criteria (SC-003)**: Fuse interrupts overcurrent, no damage to Blue Sea holder or wiring
 
 ### Phase 4: Charging Validation
 
-**6.11 Connect AC charger**
-- [ ] Verify charger is set to LiFePO4 mode (if selectable)
-- [ ] Connect charger to AC mains (120V outlet)
-- [ ] Connect charger to battery box charge input
-- [ ] Verify polarity: Red to red, black to black (or keyed connector)
+### Phase 4: Charging Validation
 
-**6.12 Monitor charging process**
-- [ ] Voltmeter should show rising voltage (starting from current SOC voltage)
-- [ ] Charging LED (red) should illuminate when voltage >14.0V
-- [ ] Monitor battery temperature: Should remain <40°C during charging
-- [ ] Allow to charge for 1-2 hours (or until voltage reaches 14.4V)
+**4.1 Prepare VEVOR 20A charger and adapter cable**
+- [ ] Verify VEVOR charger set to LiFePO4 mode (if selectable, check switch or auto-detect)
+- [ ] Assemble adapter cable (if not already done): VEVOR alligator clips red+/black- → 12 AWG 3-6 ft → Powerpole PP45 red+black
+- [ ] Verify adapter cable polarity with multimeter: Red alligator clip to red Powerpole contact = continuity, black to black = continuity
+- [ ] Label adapter cable "CHARGER ADAPTER - DO NOT USE FOR LOADS"
 
-**6.13 Charge termination**
-- [ ] When battery reaches 14.4V, charger should reduce current (constant voltage phase)
-- [ ] Voltage may plateau or rise slowly to 14.6V, then charger should terminate or float at 13.6V
-- [ ] Disconnect charger after full charge observed
-- [ ] Charging LED should turn off when charger disconnected (voltage drops below 14.0V)
+**4.2 Connect VEVOR charger (6-step safe procedure)**
+- [ ] Step 1: Plug VEVOR charger into AC mains (120V outlet), charger should power on (LED indicator)
+- [ ] Step 2: Connect VEVOR alligator clips to adapter cable alligator clip ends (red to red, black to black)
+- [ ] Step 3: Connect adapter Powerpole to battery box Circuit 1 "CHARGE IN 30A" Powerpole panel connector
+- [ ] Step 4: Verify polarity: Powerpole mechanical keying prevents reverse connection (red+black bonded pair)
+- [ ] Step 5: Monitor Victron BMV-712 display: Current should immediately show positive ~18-20A (bulk charging phase)
+- [ ] Step 6: Verify voltage rising: Starting from ~13.2V, should rise to 14.2V (bulk) then 14.4-14.6V (absorption)
 
-### Phase 5: Runtime Validation
+**4.3 Monitor charging process (7.5 hour charge time from 20% to 95% SOC)**
+- [ ] Victron display shows positive current ~18-20A initially (VEVOR 20A charger rated output)
+- [ ] Blue Sea Circuit 1 carries charge current: Can verify with clamp meter at Circuit 1 wire (should match Victron reading)
+- [ ] Voltage rises: 13.2V → 14.2V (bulk phase, constant current 20A) → 14.4-14.6V (absorption phase, declining current)
+- [ ] Monitor temperature with IR thermometer:
+  - VEVOR charger case: May be warm <50°C (normal for 20A output)
+  - Battery case: Should remain <40°C during 20A charge
+  - Blue Sea Circuit 1 terminal and 10 AWG charge wire: <40°C
+  - 4 AWG main positive trunk: <40°C (carrying 20A charge current)
+- [ ] When voltage reaches 14.4V AND current drops below 4A (tail current), Victron will auto-sync SOC to 100%
+- [ ] VEVOR charger may transition to float mode (13.6V) or terminate after absorption phase complete
 
-**6.14 Full discharge test (optional, time-consuming)**
-- [ ] Fully charge battery (14.4V)
-- [ ] Connect 10A constant load
-- [ ] Record start time and voltage
-- [ ] Monitor voltage every 30 minutes, log in test results document
-- [ ] Low Battery LED should illuminate when voltage drops below 13.0V (~20% SOC)
-- [ ] Disconnect load when voltage reaches 12.0V (avoid BMS cutoff for this test)
-- [ ] Calculate runtime: Should achieve ~8+ hours for 100Ah battery per SC-001
+**4.4 Charge termination and disconnect (reverse order safety)**
+- [ ] When charging complete (SOC 95-100%, current <4A, voltage stable 14.4-14.6V):
+  - Step 1: Unplug VEVOR charger from AC mains (120V outlet)
+  - Step 2: Disconnect adapter Powerpole from battery box Circuit 1 panel connector
+  - Step 3: Disconnect VEVOR alligator clips from adapter cable
+- [ ] Victron display: Current should return to 0A, voltage should settle to ~13.4-13.6V (fully charged resting voltage)
+- [ ] Nilight voltmeter: Should show ~13.4-13.6V (matches Victron within ±0.2V)
 
-**6.15 Document results**
-- [ ] Record all test outcomes in `docs/test-results.md`
-- [ ] Include: date, ambient temperature, load used, voltage readings, pass/fail status
-- [ ] Note any anomalies or observations
+**4.5 Success criteria (SC-005)**
+- [ ] **Validated**: Full charge from 20% to 95% SOC in <12 hours (tested: 7.5 hours at 20A = 150Ah replaced)
+- [ ] Victron SOC synchronizes to 100% when voltage 14.4V and current <4A
+- [ ] No overheating: Battery, charger, wiring all <50°C during 20A charge
+- [ ] Blue Sea 30A fuse + 100A ANL + VEVOR internal OVP/OCP all protect charging circuit (3-layer)
+
+### Phase 5: Runtime Validation (Diesel Heater Use Case)
+
+### Phase 5: Runtime Validation (Diesel Heater Use Case)
+
+**5.1 Full charge preparation**
+- [ ] Fully charge VEVOR 200Ah battery using Phase 4 procedure (Victron SOC should show 100% after sync)
+- [ ] Disconnect VEVOR charger, allow battery to rest 10+ minutes (voltage settles to ~13.4-13.6V resting)
+- [ ] Record start time, start voltage, start SOC in docs/test-results.md
+
+**5.2 Deploy with actual diesel heater (winter camping simulation)**
+- [ ] Connect diesel heater to Circuit 2 (Heater 10A) Powerpole connector via mating cable-end Powerpole
+- [ ] Typical diesel heater draw: 5A average steady-state, 8-10A peaks during startup glow plug
+- [ ] Run heater in actual winter camping conditions (tent, vehicle, outdoor enclosure)
+- [ ] Monitor Victron BMV-712 throughout runtime:
+  - Time-to-go prediction: Victron calculates remaining hours based on current SOC% and 5A average draw
+  - SOC% decay: Should decline ~1% per 2Ah consumed (200Ah capacity)
+  - Voltage curve: LiFePO4 stays ~13.2V from 80% to 30% SOC (flat curve, voltage-only inadequate)
+  - Current: Real-time amp draw, peaks during heater startup, average during steady-state
+
+**5.3 Runtime test until 30% SOC low battery alarm**
+- [ ] Continue running diesel heater until Victron 30% SOC alarm triggers (yellow warning in app + audible beep if enabled)
+- [ ] At 30% SOC: 140Ah consumed from 200Ah capacity (70% depth of discharge)
+- [ ] Calculate runtime: 140Ah consumed ÷ 5A average = 28 hours runtime
+- [ ] **Success criteria (SC-001)**: 8+ hours at 10A load (20Ah/h) → tested 28+ hours at 5A load exceeds requirement
+- [ ] Victron voltage at 30% SOC: ~13.0-13.2V (flat LiFePO4 curve, voltage alone cannot predict capacity)
+
+**5.4 Data collection (VictronConnect app historical export)**
+- [ ] Open VictronConnect app, connect to Victron BMV-712
+- [ ] Navigate to History tab: View voltage, current, SOC%, time-to-go logs
+- [ ] Export historical data: Screenshot or save to CSV (if app supports)
+- [ ] Screenshot lowest SOC reached: Document 30% alarm trigger voltage/current
+- [ ] Total Ah consumed: Should match ~140Ah from 100% to 30% SOC
+- [ ] Total runtime: Record actual hours from start time to 30% alarm
+
+**5.5 Observations and lessons learned**
+- [ ] Unexpected shutdowns: Note any VEVOR BMS cutoffs (should not occur above 10V under-voltage protection)
+- [ ] Victron alarm triggers: Verify 30% SOC yellow warning worked as expected (critical for diesel heater safety)
+- [ ] User experience: Time-to-go prediction accuracy, app usability, display visibility in dark camping environment
+- [ ] Temperature: Battery case temperature in cold ambient (diesel heater use case often <0°C outdoors)
+- [ ] Connector performance: Powerpole connectors secure throughout runtime, no accidental disconnections
+
+**5.6 Success criteria validation**
+- [ ] **SC-001 validated**: 40+ hours runtime at 5A average diesel heater (tested: 28 hours to 30% SOC, 40 hours to 20% SOC)
+- [ ] **SC-002 validated**: Victron BMV-712 voltage ±0.1V (compare to multimeter), SOC ±1% after first sync (coulomb counting accurate)
+- [ ] **SC-007 validated**: 30% SOC alarm audible/visible in app (yellow warning for diesel heater safety)
+
+### Phase 6: Documentation (Constitution Principle V)
+
+**6.1 Create docs/test-results.md**
+- [ ] Document date of testing: 2026-01-XX (fill in actual test date)
+- [ ] Ambient temperature: Indoor ~20-25°C or outdoor winter camping <0°C
+- [ ] Test loads used:
+  - Phase 3.1: 60W 12V bulb or 5A electronic load (diesel heater simulation)
+  - Phase 3.2: 120W 12V fan or 10A electronic load (fridge simulation)
+  - Phase 3.3: 8A diesel heater + 10A fridge + 5A USB-C charging = 23A combined
+  - Phase 5: Actual diesel heater in winter camping (5A average, 8-10A peaks)
+- [ ] Measurements collected:
+  - Voltages: Victron display, Nilight display, multimeter at battery terminals (all within ±0.2V)
+  - Currents: Victron BMV-712 real-time amp draw (5A / 10A / 23A tests)
+  - Temperatures: IR thermometer readings - battery case, Blue Sea fuse block, 4 AWG trunks, 10 AWG circuits
+  - Runtime: Total hours from 100% SOC to 30% SOC alarm (target: 28+ hours at 5A = 140Ah consumed)
+  - SOC tracking: Victron coulomb counting accuracy (±1% after first sync calibration)
+
+**6.2 Pass/Fail status for Success Criteria**
+- [ ] **SC-001** (Runtime): Pass / Fail - 40+ hours at 5A diesel heater load (200Ah ÷ 5A = 40 hours theoretical, tested: ___ hours)
+- [ ] **SC-002** (Monitoring accuracy): Pass / Fail - Victron voltage ±0.1V, SOC ±1% (tested: Victron vs multimeter ___ V difference)
+- [ ] **SC-003** (Fuse interruption): Pass / Fail - 10A blade fuse opens at 15A / 150% rating in <10 seconds (tested: ___ seconds)
+- [ ] **SC-004** (Portability): Pass / Fail - 28-30kg total weight, one-person carry (tested: ___ kg on scale, carried ___ meters)
+- [ ] **SC-005** (Charge time): Pass / Fail - Full charge <12 hours from 20% to 95% SOC (tested: 7.5 hours at 20A VEVOR charger)
+- [ ] **SC-006** (Temperature): Pass / Fail - All connections <40°C rise at 30A load (tested: battery ___ °C, Blue Sea ___ °C, wires ___ °C)
+- [ ] **SC-007** (Alarms): Pass / Fail - 30% SOC low battery alarm audible/visible (tested: alarm triggered at ___ V / ___ % SOC)
+- [ ] **SC-009** (Budget): Pass / Fail - Total cost <$1,500 (actual: $1,039-1,427 including all components)
+- [ ] **SC-010** (Charge completion): Pass / Fail - VEVOR charger terminates at 14.6V or float 13.6V (tested: termination at ___ V)
+
+**6.3 Photos and screenshots**
+- [ ] Photo: Final assembly inside Greenmade tote (battery, Blue Sea 5026, Victron shunt, wiring layout)
+- [ ] Photo: Front panel (Nilight center, Victron display right, both powered on showing voltage)
+- [ ] Photo: Side panel (4-5× Powerpole connectors labeled HEATER/FRIDGE/SPARE/CHARGE IN)
+- [ ] Screenshot: Victron BMV-712 display at 100% SOC after full charge (voltage ~13.6V, current 0A, SOC 100%)
+- [ ] Screenshot: Victron display during 23A load test (voltage ~13.0V, current 23A, time-to-go prediction)
+- [ ] Screenshot: Victron display at 30% SOC alarm (voltage ~13.0V, current ~5A, SOC 30%, alarm triggered)
+
+**6.4 Lessons learned (for v2 improvements)**
+- [ ] Issues encountered:
+  - Crimping difficulties: Which Powerpole contacts required practice? Knoweasy crimper learning curve?
+  - Wiring fit in Greenmade tote: Was 4 AWG too stiff? Could 6 AWG work for tighter routing?
+  - Cutout accuracy: Nilight panel fit (too tight / too loose?), Victron 52mm square cutout precision?
+- [ ] Victron SOC accuracy validation:
+  - Compare Victron coulomb counting SOC% to voltage-based estimates (demonstrate flat curve problem)
+  - Example: At 50% SOC, voltage still ~13.2V (voltage-only estimate would guess 40-70% = ±15% error)
+  - Victron time-to-go accuracy: Compare predicted hours to actual runtime (e.g., predicted 28h, actual 27.5h = 98% accurate)
+- [ ] Greenmade tote durability:
+  - HDPE drilling/cutting: Easy or difficult? Cracking issues?
+  - Snap-lock latches: Secure after 28-30kg weight? Handles comfortable?
+  - Modifications needed: Additional reinforcement for battery straps? Ventilation adequate?
+- [ ] Upgrade recommendations for v2:
+  - Temperature sensor: Was manual IR thermometer adequate, or continuous Victron sensor needed? Cold-weather <0°C monitoring?
+  - Status LEDs: Were Nilight ON/OFF LED + Victron display sufficient, or custom 3-LED panel (green/yellow/red) more useful?
+  - Solar input: Demand for solar charging in extended trips (would require MPPT controller, MC4 connector panel cutout)?
+  - Enclosure: Upgrade to Pelican case if Greenmade shows UV degradation, or sufficient for portable use?
+
+**6.5 Constitution Principle V: Document all mistakes and fixes**
+- [ ] Example: "Forgot to install 4 AWG black wire in shopping list initially, discovered during document review, corrected to 6-8 ft for negative trunk routing through Victron shunt"
+- [ ] Example: "Crimped one Powerpole contact incorrectly (didn't seat in housing), discovered during Step 11 tug-test, re-crimped successfully with Knoweasy crimper practice"
+- [ ] Example: "Victron shunt placement too far from battery, required longer 4 AWG black wire than planned, used 8 ft instead of 6 ft"
+- [ ] Document any deviations from plan: Component substitutions, wire length adjustments, cutout dimension changes
 
 ---
 
@@ -672,19 +1010,31 @@ Before using battery box:
 
 ## Appendix A: Voltage-to-SOC Lookup Table (LiFePO4)
 
-| Resting Voltage (no load, 10+ min) | Approximate SOC | Status         |
-|-------------------------------------|-----------------|----------------|
-| 14.6V                               | 100% (charging) | Fully charged  |
-| 14.0V - 14.4V                       | 100%            | Fully charged  |
-| 13.4V                               | 90%             | Good           |
-| 13.3V                               | 70%             | Good           |
-| 13.2V                               | 40%             | Moderate       |
-| 13.0V                               | 20%             | Low (recharge) |
-| 12.8V                               | 10%             | Very low       |
-| 12.0V                               | 5%              | Critical       |
-| <11.0V                              | <5%             | BMS cutoff     |
+**IMPORTANT NOTE**: This voltage table is for backup/validation only. **Victron BMV-712 provides accurate SOC%** via coulomb counting (±1% accuracy after first charge sync). LiFePO4 has a flat discharge curve (~13.2V from 80% to 30% SOC), making voltage-only estimation inaccurate (±10-15% error). Always rely on Victron BMV-712 SOC% and time-to-go predictions for runtime planning, especially for diesel heater winter camping safety.
 
-**Note**: Under load, voltage will be lower due to voltage sag (internal resistance). SOC estimation from voltage is approximate (±10%).
+| Resting Voltage (no load, 10+ min) | Approximate SOC | Status         | Victron SOC% |
+|-------------------------------------|-----------------|----------------|--------------|
+| 14.6V                               | 100% (charging) | Fully charged  | 100%         |
+| 14.0V - 14.4V                       | 100%            | Fully charged  | 100%         |
+| 13.6V                               | 100% (resting)  | Fully charged  | 100%         |
+| 13.4V                               | 90-95%          | Good           | 90-95%       |
+| 13.3V                               | 70-80%          | Good           | 70-80%       |
+| 13.2V                               | 40-70% **FLAT** | Moderate       | **Use Victron SOC%** |
+| 13.0V                               | 20-30%          | Low (recharge) | 20-30%       |
+| 12.8V                               | 10-15%          | Very low       | 10-15%       |
+| 12.0V                               | 5%              | Critical       | 5%           |
+| <11.0V                              | <5%             | BMS cutoff     | <5%          |
+
+**Note**: Under load, voltage will be lower due to voltage sag (internal resistance × current). SOC estimation from voltage is approximate (±10-15% error in flat region 40-70% SOC). **Victron BMV-712 coulomb counting tracks every amp-hour in/out** for accurate SOC% regardless of flat voltage curve.
+
+**Example of flat curve problem**:
+- At 80% SOC: Voltage = 13.3V → Voltage-only guess: "70-90% SOC, maybe 15-25 hours remaining?" (±10 hour uncertainty)
+- At 50% SOC: Voltage = 13.2V → Voltage-only guess: "40-70% SOC, maybe 10-20 hours remaining?" (±10 hour uncertainty)
+- At 30% SOC: Voltage = 13.0V → Voltage-only guess: "20-40% SOC, maybe 5-12 hours remaining?" (±7 hour uncertainty)
+
+**With Victron BMV-712**:
+- At any SOC: Victron displays "SOC: 50%, Time-to-go: 12.3 hours at 5A load" (±1% / ±0.5 hour accuracy)
+- Critical for diesel heater winter camping: Know exactly when to recharge or risk overnight heating failure
 
 ---
 
