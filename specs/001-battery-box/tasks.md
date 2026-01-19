@@ -36,28 +36,31 @@
 
 **⚠️ CRITICAL**: No circuit wiring can begin until enclosure prepared and battery/fuse block/Victron shunt mounted
 
-- [ ] T010 Plan component layout on paper: battery bottom center (520×238×218mm with 7.5"/8.5"/4.5" clearances), Blue Sea 5026 side wall left, Victron shunt side wall near battery-, 2× KarlKers side panel left vertical (Charge top, Heater below), Nilight+Victron front panel
-- [ ] T011 Mark cutouts on Greenmade tote per quickstart.md Step 1.2: Nilight 4-6"×2-3" rectangular front center, Victron 52mm square front right, 2× KarlKers 1-1/8" (28.6mm) side left vertical 3-4" spacing, 4× ventilation 25-30mm top corners
-- [ ] T012 Drill Nilight rectangular cutout (pilot holes + jigsaw/rotary tool), verify exact dimensions when panel received
-- [ ] T013 [P] Drill Victron 52mm square cutout with 52mm hole saw (or pilot holes + jigsaw)
-- [ ] T014 [P] Drill 2× KarlKers 28.6mm holes side panel left with 1-1/8" hole saw or 28-30mm step bit (top for Charge, below for Heater)
-- [ ] T015 [P] Drill 4× ventilation 25-30mm holes top corners with step bit
-- [ ] T016 Deburr all holes with deburring tool or sandpaper (HDPE edges), test-fit components before proceeding
-- [ ] T017 Cut and install ventilation mesh over 4× vent holes (1/8" or 1/4" grid, 10mm overlap), secure with epoxy/hot glue, verify net free area ~2000-2800mm²
+- [ ] T010 Plan component layout on paper: battery bottom center (520×238×218mm with 7.5"/8.5"/4.5" clearances), measure tote internal dimensions for plywood panels (left side ~12"×13" for Blue Sea/shunt, front ~14"×10" for displays), plan component positions on panels
+- [ ] T011 Cut plywood panels from 3/4" stock: left side panel ~12"×13" (Blue Sea 5026 + Victron shunt mounting), front panel ~14"×10" (Nilight + Victron display cutouts), 2× KarlKers holes in left side of tote HDPE (not panel)
+- [ ] T012 Mark cutouts on panels: Nilight 4-6"×2-3" rectangular on front panel center-left, Victron 52mm square on front panel right, mark 2× KarlKers 28.6mm holes directly on tote left side vertical 3-4" spacing, 4× ventilation 25-30mm on tote top corners
+- [ ] T013 [P] Drill Nilight rectangular cutout in front plywood panel (pilot holes + jigsaw/Dremel), verify exact dimensions when panel received
+- [ ] T014 [P] Drill Victron 52mm square cutout in front plywood panel (4 pilot holes at corners + jigsaw straight cuts)
+- [ ] T015 [P] Drill 2× KarlKers 28.6mm holes directly in tote HDPE left side with step bit (top for Charge, below for Heater), deburr HDPE edges
+- [ ] T016 [P] Drill 4× ventilation 25-30mm holes in tote HDPE top corners with step bit, deburr edges
+- [ ] T017 Cut and install ventilation mesh over 4× vent holes in tote (1/8" or 1/4" grid, 10mm overlap), secure with epoxy/hot glue, verify net free area ~2000-2800mm²
 - [ ] T018 Prepare plywood battery base: cut 3/4" plywood to 14.5"×24.5" (fits 15"×25" tote internal dimensions with clearance), pre-drill pilot holes, screw 4 steel strap loops to plywood using included screws at corners or mid-points for cam buckle strap anchoring, place plywood in tote bottom
 - [ ] T019 Secure VEVOR battery: position battery in foam (520mm×238mm×218mm = 20.5"×9.4"×8.6") on plywood base lengthwise orientation, cut channels in top foam for M8 terminal access and wire routing clearance, secure with 2× cam buckle straps (6 ft recommended, route across 9.4" width) over battery attached to plywood strap loops (foam distributes pressure across battery top), verify battery cannot move when tote tilted/shaken
-- [ ] T020 Mount 100A ANL inline fuse holder within 18" of battery+ on tote side wall with zip ties, DO NOT install fuse yet
+- [ ] T020 Mount 100A ANL inline fuse holder to left side plywood panel near top (within 18" wire run from battery+) with screws or zip ties, DO NOT install fuse yet
 - [ ] T021 Cut 4 AWG red wire ~4 ft, crimp M8 ring terminal (battery+ end) and ANL lug (holder end), route Battery+ → ANL holder input, verify 105A capacity > 100A fuse
-- [ ] T022 Mount Blue Sea 5026 on side wall left near battery with self-tapping screws through mounting flanges, verify 100A busbar and negative bus posts accessible
-- [ ] T023 Cut 4 AWG red wire ~1-2 ft, crimp ring terminals, wire ANL holder output → Blue Sea positive busbar, secure with zip ties
-- [ ] T024 Mount Victron 500A shunt on side wall near battery-, shunt stationary for accurate measurement, two sides: "Battery" (battery-) and "System" (loads)
+- [ ] T022 Mount Blue Sea 5026 to left side plywood panel with screws through mounting flanges (pre-drill pilot holes), position for accessible busbar/negative bus posts, verify clearances
+- [ ] T023 Cut 4 AWG red wire ~1-2 ft, crimp ring terminals, wire ANL holder output → Blue Sea positive busbar on panel, secure with zip ties
+- [ ] T024 Mount Victron 500A shunt to left side plywood panel below Blue Sea with screws, shunt stationary for accurate measurement, two sides: "Battery" (battery-) and "System" (loads)
 - [ ] T025 Cut 4 AWG black wire segment 1 (~1-2 ft): crimp M8 ring terminal (battery- end) and shunt lug, wire Battery- → Victron shunt battery side
 - [ ] T026 Cut 4 AWG black wire segment 2 (~4-6 ft): crimp shunt lugs, wire Victron shunt system side → Blue Sea negative bus (total 4 AWG black 6-8 ft for star grounding)
-- [ ] T027 Insert Victron BMV-712 display into 52mm square cutout front panel right of Nilight, secure with bezel from front, display flush
-- [ ] T028 Route RJ12 cable (~3m) from Victron shunt to display, plug both ends, secure cable with zip ties along route
-- [ ] T029 Optional: Install Victron temperature sensor (adhesive to battery center, plug into shunt temp port) for continuous monitoring
+- [ ] T027 Install Victron BMV-712 display into 52mm square cutout in front plywood panel, secure with bezel from front, display flush mount
+- [ ] T027a Secure left side plywood panel to tote left wall: drill through tote HDPE + panel edges at 4-6 points, use screws/bolts with washers, verify panel rigid and components accessible
+- [ ] T027b Secure front plywood panel to tote front wall: drill through tote HDPE + panel edges at 4-6 points, use screws/bolts with washers, verify displays flush and readable
+- [ ] T028 Mount Nilight 4-in-1 panel into rectangular cutout in front plywood panel (verify fit when panel arrives), secure per manufacturer instructions, verify USB-C/USB-A/12V outlet/voltmeter/ON-OFF accessible
+- [ ] T029 Route RJ12 cable (~3m) from Victron shunt to display through panel opening, plug both ends, secure cable with zip ties along route
+- [ ] T029a Optional: Install Victron temperature sensor (adhesive to battery center, plug into shunt temp port) for continuous monitoring
 
-**Checkpoint**: Foundation complete - enclosure prepared, battery secured, main positive/negative trunks wired, monitoring infrastructure ready. User story circuits can now be wired.
+**Checkpoint**: Foundation complete - plywood panels installed, battery secured, Blue Sea/Victron mounted to panels, main positive/negative trunks wired, monitoring infrastructure ready. User story circuits can now be wired.
 
 ---
 
