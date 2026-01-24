@@ -1,8 +1,8 @@
 # Battery Box v1 - Consolidated Shopping List
 
-**Date**: 2026-01-18  
+**Date**: 2026-01-18 (Updated: 2026-01-24)  
 **Feature**: 001-battery-box  
-**Status**: Ready to purchase
+**Status**: Most items purchased, awaiting final hardware
 
 ---
 
@@ -23,24 +23,24 @@
 
 ### Main Protection & Distribution
 
-| Item | Quantity | Est. Price | Product Search | Notes |
-|------|----------|-----------|----------------|-------|
-| **100A ANL Fuse** | 3-pack | $5-10 | "100A ANL fuse" Amazon | 1 installed + 2 spares |
-| **ANL Fuse Holder** (inline) | 1 | $8-15 | "ANL fuse holder 100A" Amazon | 4-6 AWG wire compatibility |
-| **Blue Sea Systems 5026 Fuse Block** | 1 | $50-70 | "Blue Sea 5026" Amazon/West Marine | 12 circuits, 100A busbar, marine-grade |
-| **ST Blade Fuse Assortment** | 1 kit | $10-15 | "Automotive blade fuse assortment" Amazon | 10A, 15A, 20A, 30A (120pc kit) |
+| Item | Quantity | Price | Status | Date |
+|------|----------|-------|--------|------|
+| **100A ANL Fuse** | 7-pack | ~$10 | ✅ Purchased | Jan 19 |
+| **ANL Fuse Holder** (inline) | 1 | ~$15 | ✅ Purchased | Jan 19 |
+| **Blue Sea Systems 5026 Fuse Block** | 1 | ~$60 | ✅ Purchased | Jan 20 |
+| **ST Blade Fuse Assortment** | 1 kit | ~$12 | ✅ Purchased | Jan 19 |
 
-**Priority 1 Subtotal**: ~$73-110
+**Priority 1 Subtotal**: ~$97
 
 ---
 
 ### Anderson Powerpole Connectors (Hybrid Approach: KarlKers + Generic)
 
-| Item | Quantity | Est. Price | Product Search | Notes |
-|------|----------|-----------|----------------|-------|
-| **KarlKers Panel-Mount Powerpole Units** | 2 | $30 | "KarlKers Anderson Power Pole B0F4L5FYQ2" Amazon | For Charge + Heater circuits, includes housing/contacts/cover/nut |
-| **Generic Powerpole PP45 Pairs** | 8 pairs | $20-30 | "45A Quick Connect Battery Connector AWG10-12" Amazon | 3 for future Fridge/Spare, 5 for cable ends |
-| **Knoweasy Powerpole Crimper** | 1 | $30-50 | "Knoweasy Powerpole Crimper" Amazon | Budget alternative, PP15/30/45 compatible |
+| Item | Quantity | Price | Status | Date |
+|------|----------|-------|--------|------|
+| **KarlKers Panel-Mount Powerpole Units** | 2 | ~$30 | ✅ Purchased | Jan 24 |
+| **Generic Powerpole PP45 Pairs** | 10 pairs | ~$25 | ✅ Purchased | Jan 20 |
+| **Knoweasy Powerpole Crimper** | 1 | ~$40 | ✅ Purchased | Jan 20 |
 
 **Configuration Notes - v1 Incremental Approach**:
 - **Phase 1 (immediate)**: 2× KarlKers panel-mount for Circuit 1 Charge (30A) + Circuit 2 Heater (10A)
@@ -59,7 +59,7 @@
 
 **Alternative**: Powerwerx TRIcrimp ($80-120) for professional-grade tool if preferred
 
-**Priority 1 Subtotal**: ~$80-110 (includes 2× KarlKers $30 + generic Powerpole $20-30 + crimper $30-50)
+**Priority 1 Subtotal**: ~$95 (2× KarlKers $30 + generic Powerpole $25 + crimper $40)
 
 ---
 
@@ -85,21 +85,21 @@
 
 ### Terminals & Hardware
 
-| Item | Quantity | Est. Price | Product Search | Notes |
-|------|----------|-----------|----------------|-------|
-| **Ring Terminal Assortment** | 1 kit | $15-25 | "Marine ring terminal assortment" Amazon | M6/M8 battery, various for fuse holders |
-| **Heat-Shrink Tubing Assortment** | 1 kit | $10-20 | "Heat shrink tubing assortment kit" Amazon | 1/4", 3/8", 1/2", 3/4", 1" sizes |
-| **Zip Ties Assortment** | 100-pack | $5-10 | Hardware store/Amazon | 4", 6", 8" sizes |
+| Item | Quantity | Price | Status | Date |
+|------|----------|-------|--------|------|
+| **Ring Terminal Assortment** | 1 kit | ~$18 | ✅ Purchased | Jan 19 |
+| **Heat-Shrink Tubing Assortment** | 1 kit | ~$12 | ✅ Purchased | Jan 19 |
+| **Zip Ties Assortment** | 100-pack | ~$8 | ✅ Purchased | Jan 19 |
 
-**Priority 1 Hardware Subtotal**: ~$30-55
+**Priority 1 Hardware Subtotal**: ~$38
 
 ---
 
 ## Priority 2: Professional Battery Monitoring
 
-| Item | Quantity | Est. Price | Product Search | Notes |
-|------|----------|-----------|----------------|-------|
-| **Victron BMV-712 Smart Battery Monitor** | 1 kit | $200-250 | "Victron BMV-712" Amazon/West Marine | Includes shunt, display, RJ12 cable, temp sensor |
+| Item | Quantity | Price | Status | Date |
+|------|----------|-------|--------|------|
+| **Victron BMV-712 Smart Battery Monitor** | 1 kit | ~$220 | ✅ Purchased | Jan 20 |
 
 **Why Critical**: 
 - Accurate SOC% via coulomb counting (solves LiFePO4 flat discharge curve issue)
@@ -107,64 +107,72 @@
 - Bluetooth monitoring from tent
 - Historical data, alarms, battery health tracking
 
-**Priority 2 Subtotal**: ~$200-250
+**Priority 2 Subtotal**: ~$220
 
 ---
 
 ## Priority 3: Consumables & Hardware
 
-| Item | Quantity | Est. Price | Source | Notes |
-|------|----------|-----------|--------|-------|
-| Electrical tape (3M Super 33+) | 1 roll | $5 | Hardware store | |
-| Dielectric grease | 1 tube | $5-10 | Auto parts store | Battery terminal corrosion prevention |
-| Sandpaper/wire brush | 1 each | $3-5 | Hardware store | Terminal cleaning |
-| Isopropyl alcohol 90%+ | 1 bottle | $5 | Pharmacy/hardware | Surface cleaning |
-| Shop towels/rags | 1 pack | $5 | Hardware store | |
-| Label maker or labels | 1 | $5-20 | Office supply/Amazon | Circuit labeling |
-| Cable glands/grommets | 6-8 pc | $10-15 | Amazon | Strain relief for panel penetrations |
-| Ventilation mesh | 1 ft² | $5-10 | Hardware store | Stainless or plastic, cover vent holes |
-| Safety glasses | 1 | $5-10 | Hardware store | Drilling safety |
+| Item | Quantity | Price | Status | Date |
+|------|----------|-------|--------|------|
+| Electrical tape (3M Super 33+) | 1 roll | ~$5 | ✅ Have | Already owned |
+| Dielectric grease | 1 tube | ~$7 | ✅ Have | Already owned |
+| Sandpaper/wire brush | 1 each | ~$4 | ✅ Have | Already owned |
+| Isopropyl alcohol 90%+ | 1 bottle | ~$5 | ✅ Have | Already owned |
+| Shop towels/rags | 1 pack | ~$5 | ✅ Have | Already owned |
+| Label maker or labels | 1 | ~$10 | ✅ Purchased | Jan 19 |
+| Cable glands/grommets | 8 pc | ~$12 | ✅ Purchased | Jan 20 |
+| Ventilation mesh | 1 ft² | ~$8 | ✅ Purchased | Jan 20 |
+| Safety glasses | 1 | ~$8 | ✅ Have | Already owned |
+| Cam buckle straps (1" webbing) | 2 | ~$12 | ✅ Have | Already owned |
+| Steel strap loops with screws | 4 | ~$8 | ✅ Purchased | Jan 19 |
 
-**Priority 3 Subtotal**: ~$48-90
+**Priority 3 Subtotal**: ~$89
 
 ---
 
 ## Tools to Verify/Purchase
 
-### Already Owned (Verify Condition)
-- [ ] Multimeter (DC voltage, continuity testing)
-- [ ] Wire strippers (verify handles 10-14 AWG range)
-- [ ] Screwdrivers (Phillips, flathead)
-- [ ] Drill
-- [ ] Heat gun or lighter (heat-shrink)
-- [ ] Adjustable wrench or socket set (battery terminals)
+### Already Owned ✅
+- [x] Multimeter (DC voltage, continuity testing)
+- [x] Wire strippers (handles 10-14 AWG range)
+- [x] Screwdrivers (Phillips, flathead)
+- [x] Drill
+- [x] Heat gun (heat-shrink)
+- [x] Adjustable wrench (battery terminals)
+- [x] Jigsaw (for Nilight rectangular cutout)
+- [x] Dremel/rotary tool (detail work)
+- [x] Circular saw (plywood cutting)
 
-### May Need to Purchase
+### Purchased Tools
 
-| Tool | Est. Price | Product Search | Notes |
-|------|-----------|----------------|-------|
-| 1-1/8" hole saw or 28-30mm step bit | $10-25 | Hardware store/Amazon | For 2× KarlKers panel-mount (28.6mm holes) |
-| 52mm hole saw | $10-20 | Hardware store/Amazon | For Victron BMV-712 display cutout |
-| 32mm step bit (optional) | $10-25 | Hardware store/Amazon | Only if using generic Powerpole for Fridge/Spare circuits v1.1 |
-| Jigsaw or rotary tool bits | $0-30 | Already have or hardware store | For Nilight rectangular cutout ~4-6"×2-3" |
-| Wire strippers (if existing won't handle 10 AWG) | $15-30 | "Klein Tools 11063W" Amazon | Handles AWG10-20 |
+| Tool | Price | Status | Date |
+|------|-------|--------|------|
+| Step drill bit (1/4"-1-3/8") | ~$20 | ✅ Purchased | Jan 20 |
+| 52mm hole saw | ~$15 | ⏳ Ordered | Arriving Jan 30 |
+| #8×3/4" truss head screws (125 pc) | ~$12 | ⏳ Ordered | Shipping |
+| L brackets with screws | ~$10 | ⏳ Ordered | Arriving today Jan 24 |
+| 3/4" plywood (battery base + panel) | ~$20 | ✅ Purchased | Jan 24 |
 
-**Tools Subtotal**: ~$0-70 (depending on what you already have)
+**Tools Subtotal**: ~$77
 
 ---
 
 ## Budget Summary
 
-| Category | Estimated Cost |
-|----------|---------------|
-| **Already Purchased** | ~$547-667 |
-| **Priority 1: Core Electrical** (ANL, Blue Sea, Powerpole, wire, tools) | $274-385 |
-| **Priority 2: Victron BMV-712** | $200-250 |
-| **Priority 3: Consumables** | $48-90 |
-| **Tools (if needed)** | $0-70 |
-| **GRAND TOTAL** | **$1,069-1,462** |
+| Category | Actual Cost |
+|----------|-------------|
+| **Already Purchased (Battery/Charger/Tote/Nilight)** | ~$550 |
+| **Priority 1: Core Electrical** (ANL, Blue Sea, Powerpole, wire, hardware) | ~$322 |
+| **Priority 2: Victron BMV-712** | ~$220 |
+| **Priority 3: Consumables** | ~$30 (purchased items) |
+| **Priority 3: Consumables** | ~$59 (already owned) |
+| **Tools & Materials** | ~$77 |
+| **GRAND TOTAL SPENT** | **~$1,199** |
+| **Already Owned Items** | ~$59 |
+| **Total Project Value** | **~$1,258** |
 
-**Remaining to Purchase**: ~$522-795 (Priority 1-3 + tools)
+**Remaining to Purchase**: L brackets ($10, arriving today), 52mm saw ($15, Jan 30), truss screws ($12, shipping) = ~$37
 
 **Note - v1 Incremental Connector Approach**: 
 - Start with 2× KarlKers panel-mount ($30) for Charge + Heater circuits
@@ -180,34 +188,35 @@
 
 ---
 
-## Shopping Strategy
+## Shopping Strategy - COMPLETED ✅
 
-### Phase 1: Core Build (Order Immediately)
-**Budget**: ~$274-385 (updated with 2× KarlKers)
-- 100A ANL fuse + holder
-- Blue Sea 5026 fuse block
-- Blade fuse assortment
-- **2× KarlKers panel-mount Powerpole units** (Charge + Heater)
-- **8× generic Powerpole PP45 pairs** (cable ends + future circuits)
-- Knoweasy Powerpole crimper
-- Wire (all gauges: 4/10/12/18 AWG)
-- Ring terminals, heat-shrink, zip ties
+### Phase 1: Core Build ✅
+**Actual Spent**: ~$322
+- ✅ 100A ANL fuse + holder (Jan 19)
+- ✅ Blue Sea 5026 fuse block (Jan 20)
+- ✅ Blade fuse assortment (Jan 19)
+- ✅ 2× KarlKers panel-mount Powerpole units (Jan 24)
+- ✅ 10× generic Powerpole PP45 pairs (Jan 20)
+- ✅ Knoweasy Powerpole crimper (Jan 20)
+- ✅ Wire all gauges: 4/10/12 AWG (Jan 19-20)
+- ✅ Ring terminals, heat-shrink, zip ties (Jan 19)
+- ✅ Strap loops, cam buckles (Jan 19/owned)
 
-**Why First**: Cannot proceed with assembly without these components. 2× KarlKers validates panel-mount approach before committing to 3 more units.
+**Status**: All core electrical components received and verified
 
-### Phase 2: Professional Monitoring (Order with Phase 1 or Shortly After)
-**Budget**: ~$200-250
-- Victron BMV-712 Smart battery monitor
+### Phase 2: Professional Monitoring ✅
+**Actual Spent**: ~$220
+- ✅ Victron BMV-712 Smart battery monitor (Jan 20)
 
-**Why Important**: Critical for winter camping safety (diesel heater runtime monitoring). Can technically test basic system without it, but should install before first camping trip.
+**Status**: Received, ready for installation
 
-### Phase 3: Consumables & Hardware (Order with Phase 1 or Pick Up Locally)
-**Budget**: ~$48-90
-- Electrical tape, dielectric grease, cleaning supplies
-- Ventilation mesh, labels
-- Safety equipment
+### Phase 3: Consumables & Hardware ✅
+**Actual Spent**: ~$30 (purchased) + ~$59 (owned)
+- ✅ Grommets, mesh, labels (Jan 19-20)
+- ✅ Electrical tape, dielectric grease, cleaning supplies (already owned)
+- ✅ Safety equipment (already owned)
 
-**Why**: Needed during assembly, but many items available at local hardware store same-day if forgotten.
+**Status**: All consumables available
 
 ### Phase 4 (v1.1): Expand Circuits After Field Validation
 **Budget**: ~$0-60 (deferred, depends on Phase 1 validation)
@@ -219,17 +228,20 @@
 
 ---
 
-## Suggested Procurement Timeline
+## Actual Procurement Timeline ✅
 
-**Week 1** (Now):
-1. Order Priority 1 (core electrical) from Amazon/PowerWerx
-2. Order Priority 2 (Victron BMV-712) from Amazon/West Marine
-3. Purchase Priority 3 consumables from local hardware store
+**Week 1** (Jan 19-24) - COMPLETE:
+1. ✅ Ordered Priority 1 (core electrical) - Jan 19
+2. ✅ Ordered Priority 2 (Victron BMV-712) - Jan 19
+3. ✅ Ordered fabrication materials (plywood, hardware) - Jan 19-24
+4. ✅ All major parts received by Jan 24
+5. ✅ Fabrication begun (base + tapered panel cut)
 
-**Week 2** (When parts arrive):
-1. Verify all components received
-2. Begin assembly per quickstart.md
-3. Purchase any forgotten consumables locally as needed
+**Week 2** (Current - Assembly in progress):
+1. ✅ All components verified functional
+2. 🔄 Awaiting final hardware (L brackets, 52mm saw, truss screws)
+3. 🔄 Begin component mounting per quickstart.md
+4. 🔄 Execute drilling and wiring tasks
 
 **Week 3** (Assembly & testing):
 1. Complete assembly
@@ -277,56 +289,67 @@
 
 ---
 
-## Assembly Prerequisites Checklist
+## Assembly Prerequisites Checklist ✅
 
-Before starting assembly, verify you have:
--compatible pairs (10×) with contacts
-- [ ] Knoweasy Powerpole crimper (or Powerwerx TRIcrimp if preferred)
-- [ ] Wire: **4 AWG red (4ft), 4 AWG black (6-8ft)**holder
-- [ ] Blue Sea 5026 fuse block
-- [ ] ST blade fuses (10A, 15A, 20A, 30A)
-- [ ] Anderson Powerpole PP45 pairs (5×)
-- [ ] Powerwerx TRIcrimp tool
-- [ ] Wire: 4 AWG red (4ft), 10 AWG red/black (25ft each), 12 AWG red/black (20ft each)
-- [ ] Ring terminals (M8 battery, assorted for fuses)
-- [ ] Heat-shrink tubing (assorted)
+**Electrical Components**:
+- [x] 100A ANL fuse (7× total) + inline holder
+- [x] Blue Sea 5026 fuse block
+- [x] ST blade fuses (10A, 15A, 20A, 30A assortment)
+- [x] 2× KarlKers panel-mount Powerpole units (Charge + Heater)
+- [x] 10× generic Powerpole PP45 pairs
+- [x] Knoweasy Powerpole crimper
+- [x] Wire: 4 AWG red/black (6ft each), 10 AWG red/black (20ft each), 12 AWG red/black (15ft each)
+- [x] Ring terminals (M8 battery, assorted)
+- [x] Heat-shrink tubing (assorted)
 
 **Monitoring**:
-- [ ] Victron BMV-712 kit (shunt, display, cables)
+- [x] Victron BMV-712 kit (shunt, display, RJ12 cable, temp sensor)
 
-**Enclosure & Components** (already purchased):
-- [ ] Greenmade 27gal tote
-- [ ] Nilight 4-in-1 panel
-- [ ] VEVOR 200Ah battery (verify delivered)
-- [ ] VEVOR 20A charger (verify delivered)
+**Enclosure & Components**:
+- [x] Greenmade 27gal tote
+- [x] Nilight 4-in-1 panel
+- [x] VEVOR 200Ah battery (verified 13.34V)
+- [x] VEVOR 20A charger (verified 14.64V)
+
+**Fabrication**:
+- [x] 3/4" plywood battery base (15"×25" rounded corners)
+- [x] 3/4" plywood left panel (12" tall, 8"→5" tapered)
+- [x] 4× steel strap loops with screws
+- [x] 2× cam buckle straps (1" webbing)
+- [ ] L brackets with screws (arriving today Jan 24)
+- [ ] #8×3/4" truss head screws (125 pc, shipping)
 
 **Consumables**:
-- [ ] Electrical tape, dielectric grease
-- [ ] Zip ties, cable glands, ventilation mesh
-- [ ] Cleaning supplies (sandpaper, alcohol, rags)
-- [ ] Labels for circuit identification
+- [x] Electrical tape, dielectric grease
+- [x] Zip ties, grommets (8 pc), ventilation mesh
+- [x] Cleaning supplies (sandpaper, alcohol, rags)
+- [x] Labels for circuit identification
 
 **Tools**:
-- [ ] Multimeter
-- [ ] Wire strippers (10-14 AWG capable)
-- [ ] Powerwerx TRIcrimp
-- [ ] Screwdrivers
-- [ ] Drill + step bits/hole saws
-- [ ] Heat gun
-- [ ] Wrenches for battery terminals
-- [ ] Safety glasses
+- [x] Multimeter
+- [x] Wire strippers (10-14 AWG capable)
+- [x] Knoweasy Powerpole crimper
+- [x] Screwdrivers
+- [x] Drill + step drill bit (1/4"-1-3/8")
+- [ ] 52mm hole saw (arriving Jan 30)
+- [x] Jigsaw/Dremel (for Nilight cutout)
+- [x] Heat gun
+- [x] Wrenches for battery terminals
+- [x] Safety glasses
+- [x] Circular saw (plywood cutting)
 
 ---
 
 ## Notes
 
-- **Prices are estimates** as of 2026-01-18. Verify current pricing before purchase.
-- **Wire lengths** include 20% margin for routing, mistakes, future repairs.
-- **Anderson Powerpole contacts** are included with housing pairs (verify when ordering).
-- **Victron BMV-712** includes all necessary cables and shunt - no additional parts needed.
-- **Blue Sea 5026** uses standard ATO/ATC blade fuses (same as inline holders would use).
-- **Temperature sensor deferred to v2** (manual IR thermometer sufficient for v1).
-- **Status LEDs deferred to v2** (Nilight panel ON indicator + Victron BMV-712 display cover basic status needs).
+- **Actual prices** as of 2026-01-24 procurement: ~$1,199 spent + ~$59 already owned = ~$1,258 total project value
+- **Wire lengths** included 20% margin for routing, mistakes, future repairs - proved adequate
+- **Anderson Powerpole**: Generic PP45 pairs worked well, KarlKers panel-mount units arrived intact
+- **Victron BMV-712** includes all necessary cables and shunt - no additional parts needed ✅
+- **Blue Sea 5026** uses standard ATO/ATC blade fuses ✅
+- **Temperature sensor deferred to v2** (manual IR thermometer sufficient for v1)
+- **Status LEDs deferred to v2** (Nilight panel ON indicator + Victron BMV-712 display cover basic status needs)
+- **Fabrication improvements**: Tapered panel (8"→5") and rounded base corners (15"×25") fit tote geometry better than original plan
 
 ---
 
@@ -337,12 +360,13 @@ Before starting assembly, verify you have:
 - Battery heating pad (for sub-freezing charging)
 - Solar charge controller integration
 - Inverter (AC output capability)
-- Additional output circuits beyond 6 currently planned
+- Additional output circuits beyond 6 currently planned (evaluate after field testing v1)
 
 These can be added later without major rework due to modular design (spare circuits on Blue Sea 5026, Anderson Powerpole standardization).
 
 ---
 
-**Document Status**: Ready for procurement  
-**Next Step**: Begin Phase 1 ordering (core electrical components)  
-**Reference**: See [component-selection.md](component-selection.md) for detailed specifications and rationale
+**Document Status**: ✅ Procurement complete (99%), awaiting L brackets + 52mm saw + truss screws  
+**Current Phase**: Assembly & fabrication (Phase 2)  
+**Next Step**: Complete drilling and component mounting per tasks.md  
+**Reference**: See [component-selection.md](component-selection.md) for specifications and [tasks.md](../tasks.md) for execution progress
