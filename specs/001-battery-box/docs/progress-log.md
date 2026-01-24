@@ -92,21 +92,22 @@
 - [x] Greenmade 27gal tote (30.4"×20.4"×14.7", excellent condition)
 - [ ] Nilight 4-in-1 panel (arriving Jan 20)
 
-### Ordered - Arriving Jan 20 ✅
+### Ordered - Arriving Jan 20 ✅ **RECEIVED**
 **Priority 1 Core Electrical (~$274-385):**
-- [x] Blue Sea 5026 fuse block
-- [x] 10× generic Powerpole PP45 pairs (45A Quick Connect)
-- [x] Knoweasy Powerpole crimper
-- [x] Wire 4 AWG: 6ft red + 6ft black marine grade tinned copper
-- [x] Wire 10 AWG: 20ft red + 20ft black marine grade
-- [x] Rubber grommets (210pc kit, 7 sizes)
-- [x] Step drill bit (1/4" to 1-3/8", covers 28.6mm KarlKers holes)
+- [x] Blue Sea 5026 fuse block - **RECEIVED Jan 20** ✅
+- [x] 10× generic Powerpole PP45 pairs (45A Quick Connect) - **RECEIVED Jan 20** ✅
+- [x] Knoweasy Powerpole crimper - **RECEIVED Jan 20** ✅
+- [x] Wire 4 AWG: 6ft red + 6ft black marine grade tinned copper - **RECEIVED Jan 20** ✅
+- [x] Wire 10 AWG: 20ft red + 20ft black marine grade - **RECEIVED Jan 20** ✅
+- [x] Rubber grommets (210pc kit, 7 sizes) - **RECEIVED Jan 20** ✅
+- [x] Step drill bit (1/4" to 1-3/8", covers 28.6mm KarlKers holes) - **RECEIVED Jan 20** ✅
 
 **Priority 2 Monitoring (~$200-250):**
-- [x] Victron BMV-712 Smart battery monitor kit
+- [x] Victron BMV-712 Smart battery monitor kit - **RECEIVED Jan 20** ✅
+- [x] Nilight 4-in-1 panel - **RECEIVED Jan 20** ✅
 
-### Ordered - Arriving Jan 24 ✅
-- [x] 2× KarlKers panel-mount Powerpole units (Anderson with Weather Tight Cover, $329.59 order includes qty 2)
+### Ordered - Arriving Jan 24 ✅ **RECEIVED**
+- [x] 2× KarlKers panel-mount Powerpole units (Anderson with Weather Tight Cover, $329.59 order includes qty 2) - **RECEIVED Jan 24** ✅
 
 ### Delivered Jan 19 ✅
 - [x] TICONN heat-shrink terminals kit (120pc, ring/fork/spade/butt)
@@ -117,12 +118,13 @@
 - [x] Blade fuse assortment (JOREST 300pc kit - covers all circuit ratings)
 
 ### Tools Acquired ✅
-- [x] Step drill bit (1/4" to 1-3/8") - arriving Jan 20
-- [x] 60mm hole saw - arriving Jan 20 (⚠️ NOTE: Need 52mm for Victron, 60mm close but may need filing)
-- [x] Multimeter (already have, used for T001-T002)
-- [x] 52mm hole saw (LAIWEI Bi-Metal) - ordered Jan 23, arriving Jan 30
-- [x] L brackets (40pcs stainless steel 0.79"×0.79" with 80 screws) - ordered Jan 23, arriving Jan 24
-- [x] #8 × 3/4" truss head wood screws (125pcs FIXLINK zinc plated) - ordered Jan 24 for mounting Blue Sea/shunt/ANL to panel
+- [x] Step drill bit (1/4" to 1-3/8") - **RECEIVED Jan 20** ✅
+- [x] 60mm hole saw - **RECEIVED Jan 20** (⚠️ NOTE: Need 52mm for Victron, 60mm close but may need filing)
+- [x] Multimeter (already have, used for T001-T002) ✅
+- [x] Knoweasy Powerpole crimper - **RECEIVED Jan 20** ✅
+- [ ] 52mm hole saw (LAIWEI Bi-Metal) - ordered Jan 23, **arriving Jan 30**
+- [ ] L brackets (40pcs stainless steel 0.79"×0.79" with 80 screws) - ordered Jan 23, **arriving today Jan 24**
+- [ ] #8 × 3/4" truss head wood screws (125pcs FIXLINK zinc plated) - ordered Jan 24, **shipping**
 
 ### Still Need
 **Priority 3 Consumables:**
@@ -219,9 +221,10 @@
 **Overall Progress**: Phase 1 → Phase 2 transition, procurement complete, fabrication begun
 
 **Next Actions:**
-- **Today (Jan 24)**: Receive L brackets + screws, 2× KarlKers should have arrived
-- **Complete T004**: Verify Nilight panel (if arrived Jan 20)
-- **Verify all Jan 20 arrivals**: Blue Sea 5026, Victron BMV-712, wire (4/10/12 AWG), crimper, step drill, grommets
-- **Verify Jan 24 arrival**: 2× KarlKers panel-mount Powerpole units
-- **Continue Phase 2**: Install strap loops on base (complete T018), drill cutouts (T012-T016), mount components to panel (T020-T026)
-- **Waiting on**: 52mm hole saw (Jan 30) for precise Victron cutout, truss head screws (shipping) for component mounting
+- **Today (Jan 24)**: L brackets arriving (with 80 screws that may work for component mounting)
+- **Ready to proceed**: All major electrical components received (Blue Sea, Victron, KarlKers, wire, crimper, step drill)
+- **Complete T004**: Verify Nilight panel (measure dimensions, test ports/voltmeter/ON-OFF, check spade terminals)
+- **Complete T018**: Install strap loops on base with included screws
+- **Start drilling Phase (T012-T016)**: Can use step drill for KarlKers + ventilation, jigsaw/Dremel for Nilight rectangular cutout
+- **Mount components to panel (T020-T026)**: When L bracket screws arrive today OR when truss head screws ship
+- **Waiting on**: 52mm hole saw (Jan 30) for precise Victron cutout - can use jigsaw as alternative, truss head screws (shipping) preferred for component mounting
