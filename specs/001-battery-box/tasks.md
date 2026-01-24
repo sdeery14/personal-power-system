@@ -11,14 +11,14 @@
 
 ## Progress Summary
 
-**Overall**: 6/140 tasks (4.3%)  
-**Phase 1**: 4/9 tasks (44%) - Procurement complete  
+**Overall**: 7/140 tasks (5.0%)  
+**Phase 1**: 5/9 tasks (56%) - Procurement + verification complete  
 **Phase 2**: 2/22 tasks (9%) - Fabrication begun  
 **Current Phase**: Phase 2 Foundational
 
 **Next Actions**:
-- Complete T004 (verify Nilight), T018 (install strap loops)
-- Start drilling T012-T016 (all tools available)
+- Complete T018 (install strap loops on base)
+- Ready to drill T012-T016 (step drill handles all holes: 4× Nilight, 2× KarlKers, 4× vent, 1× Victron)
 - Mount components T020-T026 when L bracket screws arrive
 
 ---
@@ -37,6 +37,7 @@
 **2026-01-24** - Fabrication begins
 - T011 ✅: Panel cut 12" tall, **tapered 8"→5" width** (fits tote wall angle)
 - T018 ✅: Battery base cut 15"×25" with rounded corners (snug tote fit)
+- T004 ✅: Nilight verified - uses 4× 1-1/4" holes (step drill compatible!)
 - Received: 2× KarlKers panel-mount units
 - Ordered: 52mm hole saw (Jan 30), L brackets (today), truss screws (shipping)
 
@@ -48,9 +49,13 @@
 
 **Rounded Base Corners**: 15"×25" plywood with rounded corners fits 15"×25" tote snugly, prevents binding.
 
+**Nilight 4-Hole Pattern**: Nilight panel uses 4× 1-1/4" holes in rectangular pattern (not single rectangular cutout). Step drill handles all holes cleanly. KarlKers Anderson connectors also use 1-1/4" holes. Single tool simplifies drilling phase - no jigsaw needed.
+
 **Foam Reuse**: VEVOR shipping foam (1" fitted top/bottom) repurposed for battery cushioning - saves $10-15, provides vibration damping. Cardboard box discarded (moisture trap).
 
 **Component Mounting Strategy**: Heavy components (Blue Sea 2-3 lb, Victron shunt 1 lb) on plywood panel for rigidity. Lightweight displays (<1 lb) direct to HDPE where grooves provide support.
+
+**Nilight 4-Hole Pattern**: Nilight panel uses 4× 1-1/4" holes in rectangular pattern (not single rectangular cutout). Step drill handles all holes - no jigsaw needed. KarlKers Anderson connectors also use 1-1/4" holes. Single tool for all panel penetrations.
 
 ---
 
@@ -84,7 +89,7 @@
 - [x] T002 Verify VEVOR 20A charger received (model 010889683485), inspect condition, test output voltage 14.4-14.6V unloaded with multimeter
 - [x] T003 Verify Greenmade 27gal tote received, check dimensions 30.4"×20.4"×14.7" external, verify latches and handles functional
 - [x] T003 Verify Greenmade 27gal tote received, check dimensions 30.4"×20.4"×14.7" external, verify latches and handles functional
-- [ ] T004 Verify Nilight 4-in-1 panel received, check USB-C PD, USB-A, 12V outlet, integrated voltmeter all present
+- [x] T004 Verify Nilight 4-in-1 panel received, check USB-C PD, USB-A, 12V outlet, integrated voltmeter all present
 - [x] T005 [P] Order Priority 1 core electrical components per shopping-list.md: 100A ANL fuse+holder, Blue Sea 5026, blade fuses, 2× KarlKers panel-mount units (B0F4L5FYQ2), 8× generic Powerpole PP45 pairs, Knoweasy crimper, wire (4/10/12/18 AWG), terminals, heat-shrink, zip ties (~$274-385)
 - [x] T006 [P] Order Priority 2 Victron BMV-712 Smart battery monitor kit per shopping-list.md (~$200-250)
 - [x] T007 [P] Order Priority 3 consumables per shopping-list.md: electrical tape, dielectric grease, ventilation mesh, labels, safety glasses (~$48-90)
@@ -101,10 +106,10 @@
 
 - [ ] T010 Plan component layout on paper: battery bottom center (520×238×218mm = 20.5"×9.4"×8.6" lengthwise), left long side plywood panel 8"×12" (Blue Sea + Victron shunt + ANL holder vertical stack), right long side HDPE direct mount (Nilight + Victron display), front/back short side HDPE (2× KarlKers vertical), top corners (4× ventilation)
 - [x] T011 Cut left side plywood panel from 3/4" stock: 8" wide × 12" tall (measure tote internal dimensions to verify fit), this panel mounts Blue Sea 5026, Victron shunt, and ANL holder in vertical stack
-- [ ] T012 Mark all cutouts: Nilight 4-6"×2-3" rectangular on tote right side HDPE, Victron 52mm square on tote right side HDPE below Nilight, 2× KarlKers 28.6mm holes on tote front or back short side HDPE vertical 3-4" spacing, 4× ventilation 25-30mm on tote top corners
-- [ ] T013 [P] Drill Nilight rectangular cutout directly in tote right side HDPE (pilot holes + jigsaw/Dremel), verify exact dimensions when Nilight received, deburr edges
+- [ ] T012 Mark all cutouts: Nilight 4× 1-1/4" holes on tote right side HDPE (rectangular pattern), Victron 52mm square on tote right side HDPE below Nilight, 2× KarlKers 1-1/4" holes on tote front or back short side HDPE vertical 3-4" spacing, 4× ventilation 25-30mm on tote top corners
+- [ ] T013 [P] Drill Nilight 4× 1-1/4" holes in tote right side HDPE with step drill (rectangular pattern), deburr edges
 - [ ] T014 [P] Drill Victron 52mm square cutout directly in tote right side HDPE (4 pilot holes at corners + jigsaw straight cuts), deburr edges
-- [ ] T015 [P] Drill 2× KarlKers 28.6mm holes directly in tote short side HDPE with step bit (top for Charge, below for Heater), deburr HDPE edges
+- [ ] T015 [P] Drill 2× KarlKers 1-1/4" holes directly in tote short side HDPE with step drill (top for Charge, below for Heater), deburr HDPE edges
 - [ ] T016 [P] Drill 4× ventilation 25-30mm holes in tote HDPE top corners with step bit, deburr edges
 - [ ] T017 Cut and install ventilation mesh over 4× vent holes in tote (1/8" or 1/4" grid, 10mm overlap), secure with epoxy/hot glue, verify net free area ~2000-2800mm²
 - [x] T018 Prepare plywood battery base: cut 3/4" plywood to 15"×25" with rounded corners (fits 15"×25" tote internal dimensions snugly), pre-drill pilot holes, screw 4 steel strap loops to plywood using included screws at corners or mid-points for cam buckle strap anchoring, place plywood in tote bottom
