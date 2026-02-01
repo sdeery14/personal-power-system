@@ -11,15 +11,15 @@
 
 ## Progress Summary
 
-**Overall**: 7/140 tasks (5.0%)  
-**Phase 1**: 5/9 tasks (56%) - Procurement + verification complete  
-**Phase 2**: 2/22 tasks (9%) - Fabrication begun  
+**Overall**: 12/140 tasks (8.6%)  
+**Phase 1**: 5/9 tasks (56%) - Complete  
+**Phase 2**: 7/22 tasks (32%) - Component mounting in progress  
 **Current Phase**: Phase 2 Foundational
 
 **Next Actions**:
-- Complete T018 (install strap loops on base)
-- Ready to drill T012-T016 (step drill handles all holes: 4× Nilight, 2× KarlKers, 4× vent, 1× Victron)
-- Mount components T020-T026 when L bracket screws arrive
+- Resolve 4 AWG ring terminal issue (need M8 terminals for battery posts)
+- Complete main trunk wiring T023-T024
+- Ready to drill T012-T016 when continuing assembly
 
 ---
 
@@ -40,6 +40,14 @@
 - T004 ✅: Nilight verified - uses 4× 1-1/4" holes (step drill compatible!)
 - Received: 2× KarlKers panel-mount units
 - Ordered: 52mm hole saw (Jan 30), L brackets (today), truss screws (shipping)
+
+**2026-01-25** - Component mounting phase
+- T018 ✅: Strap loops installed on base plywood
+- T019 ✅: Battery secured to base with cam buckles and foam
+- T020 ✅: ANL fuse holder mounted to left panel
+- T021 ✅: Blue Sea 5026 fuse block mounted to left panel
+- T022 ✅: Victron shunt mounted to left panel
+- **Issue discovered**: Ring terminal assortment only goes to 10 AWG, need 4 AWG terminals for main battery connections
 
 ---
 
@@ -112,8 +120,8 @@
 - [ ] T015 [P] Drill 2× KarlKers 1-1/4" holes directly in tote short side HDPE with step drill (top for Charge, below for Heater), deburr HDPE edges
 - [ ] T016 [P] Drill 4× ventilation 25-30mm holes in tote HDPE top corners with step bit, deburr edges
 - [ ] T017 Cut and install ventilation mesh over 4× vent holes in tote (1/8" or 1/4" grid, 10mm overlap), secure with epoxy/hot glue, verify net free area ~2000-2800mm²
-- [x] T018 Prepare plywood battery base: cut 3/4" plywood to 15"×25" with rounded corners (fits 15"×25" tote internal dimensions snugly), pre-drill pilot holes, screw 4 steel strap loops to plywood using included screws at corners or mid-points for cam buckle strap anchoring, place plywood in tote bottom
-- [ ] T019 Secure VEVOR battery: position battery in foam (520mm×238mm×218mm = 20.5"×9.4"×8.6") on plywood base lengthwise orientation, cut channels in top foam for M8 terminal access and wire routing clearance, secure with 2× cam buckle straps (6 ft recommended, route across 9.4" width) over battery attached to plywood strap loops (foam distributes pressure across battery top), verify battery cannot move when tote tilted/shaken
+- [x] T018 Prepare plywood battery base: cut 3/4" plywood to 15"×25" with rounded corners (fits 15"×25" tote internal dimensions snugly), pre-drill pilot holes, screw 4 steel strap loops to plywood using included screws at corners or mid-points for cam buckle strap anchoring, place plywood in tote bottom - COMPLETE with strap loops installed
+- [x] T019 Secure VEVOR battery: position battery in foam (520mm×238mm×218mm = 20.5"×9.4"×8.6") on plywood base lengthwise orientation, cut channels in top foam for M8 terminal access and wire routing clearance, secure with 2× cam buckle straps (6 ft recommended, route across 9.4" width) over battery attached to plywood strap loops (foam distributes pressure across battery top), verify battery cannot move when tote tilted/shaken
 - [ ] T020 Mount 100A ANL inline fuse holder to left side plywood panel near top (within 18" wire run from battery+) with screws or zip ties, DO NOT install fuse yet
 - [ ] T021 Cut 4 AWG red wire ~4 ft, crimp M8 ring terminal (battery+ end) and ANL lug (holder end), route Battery+ → ANL holder input, verify 105A capacity > 100A fuse
 - [ ] T022 Mount Blue Sea 5026 to left side plywood panel with screws through mounting flanges (pre-drill pilot holes), position for accessible busbar/negative bus posts, verify clearances
