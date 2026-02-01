@@ -12,8 +12,8 @@
 1. [Safety Precautions](#1-safety-precautions)
 2. [Tools and Materials](#2-tools-and-materials)
 3. [Component Checklist](#3-component-checklist)
-4. [Assembly Steps](#4-assembly-steps)
-5. [Wiring Diagram](#5-wiring-diagram)
+4. [Wiring Diagrams](#4-wiring-diagrams)
+5. [Assembly Steps](#5-assembly-steps)
 6. [Testing and Validation](#6-testing-and-validation)
 7. [Operating Instructions](#7-operating-instructions)
 8. [Troubleshooting](#8-troubleshooting)
@@ -131,11 +131,13 @@ Verify all components before starting assembly:
 
 ---
 
-## 4. Main Trunk Wiring Diagram
+## 4. Wiring Diagrams
 
-**Purpose**: Detailed reference for 4 AWG main power distribution wiring
+**Purpose**: Complete electrical wiring reference for battery box v1
 
-### 4.1 Wiring Overview
+This section covers all wiring: main power distribution (battery to fuse block) and individual circuits (fuse block to loads). Use these diagrams during assembly and for future troubleshooting.
+
+### 4.1 Main Trunk Wiring Overview
 
 The main trunk wiring connects the battery to the Blue Sea 5026 fuse block through protective fusing (ANL) and monitoring (Victron shunt). All current flows through these components for safety and accurate state-of-charge tracking.
 
@@ -300,8 +302,8 @@ BLUE SEA 5026 FUSE BLOCK
     ├─────────────────(12 AWG black)────────────────► FRIDGE (deferred v1.1)
     │                                                   (Powerpole contact)
     │
-    ├─────────────────(10 AWG black ~2-3 ft)────────► Nilight Panel -
-    │                                                   (spade terminal)
+    ├─────────────────(12 AWG black ~2-3 ft)────────► Powerpole PP45 ──► Nilight Panel -
+    │                                                   (12 AWG bare wire)
     │
     ├─────────────────(10 AWG black)────────────────► SPARE (deferred v1.1)
     │                                                   (Powerpole contact)
@@ -314,48 +316,55 @@ BLUE SEA 5026 FUSE BLOCK
 
 ### 4.9 Circuit Wire Specifications
 
-| Circuit # | Load | Fuse Size | Wire Gauge | Positive From | Negative From | Connector Type |
-|-----------|------|-----------|------------|---------------|---------------|----------------|
-| **1** | Charge Input | 30A | 10 AWG | Circuit 1 terminal | Negative bus | KarlKers Powerpole (PP45) |
-| **2** | Heater Output | 10A | 12 AWG | Circuit 2 terminal | Negative bus | KarlKers Powerpole (PP45) |
-| **3** | Fridge (future) | 15A | 12 AWG | Circuit 3 terminal | Negative bus | Powerpole (deferred v1.1) |
-| **4** | USB Panel | 20A | 10 AWG | Circuit 4 terminal | Negative bus | Spade terminals to Nilight |
-| **5** | Spare (future) | 20A | 10 AWG | Circuit 5 terminal | Negative bus | Powerpole (deferred v1.1) |
-| **6** | Spare (future) | 15A | 12 AWG | Circuit 6 terminal | Negative bus | Powerpole (deferred v1.1) |
+| Circuit # | Load            | Fuse Size | Wire Gauge | Positive From      | Negative From | Connector Type                      |
+| --------- | --------------- | --------- | ---------- | ------------------ | ------------- | ----------------------------------- |
+| **1**     | Charge Input    | 30A       | 10 AWG     | Circuit 1 terminal | Negative bus  | KarlKers Powerpole (PP45)           |
+| **2**     | Heater Output   | 10A       | 12 AWG     | Circuit 2 terminal | Negative bus  | KarlKers Powerpole (PP45)           |
+| **3**     | Fridge (future) | 15A       | 12 AWG     | Circuit 3 terminal | Negative bus  | Powerpole (deferred v1.1)           |
+| **4**     | USB Panel       | 20A       | 12 AWG     | Circuit 4 terminal | Negative bus  | Powerpole PP45 (Nilight has 12 AWG) |
+| **5**     | Spare (future)  | 20A       | 10 AWG     | Circuit 5 terminal | Negative bus  | Powerpole (deferred v1.1)           |
+| **6**     | Spare (future)  | 15A       | 12 AWG     | Circuit 6 terminal | Negative bus  | Powerpole (deferred v1.1)           |
 
 ### 4.10 Terminal Types for Circuit Wiring
 
 **At Blue Sea 5026 End (#10-32 studs):**
+
 - Use TICONN heat-shrink ring terminals with #10 holes
 - Red terminals: 10 AWG wire
 - Blue or yellow terminals: 12 AWG wire
 - Crimp with ratchet crimper, heat-shrink seal
 
-**At Powerpole End (Circuits 1, 2, 3, 5, 6):**
+**At Powerpole End (Circuits 1, 2, 4, and future circuits 3, 5, 6):**
+
 - Use PP45 contacts from KarlKers (30A rated) or generic Powerpole kit
 - Crimp with Knoweasy Powerpole crimper
 - Insert into bonded red+black housing (keyed, prevents reverse polarity)
+- Circuit 4 note: Nilight wire side uses same PP45 contacts crimped to its bare wires
 
 **At Nilight Panel End (Circuit 4):**
-- Female spade terminals: 0.25" (6.3mm) typical
-- Verify Nilight panel spade size when received
-- Crimp with TICONN kit crimper or standard spade crimper
+
+- Nilight comes with 12 AWG wire and bare wire ends (red positive, black negative)
+- Crimp PP45 contacts directly onto Nilight's bare wires using Knoweasy crimper
+- Insert crimped contacts into PP45 housings (red housing for +, black for -)
+- This creates serviceable Powerpole junction between Nilight and fuse box wiring
+- Run 12 AWG from Blue Sea to Powerpole junction (Nilight's 12 AWG is limiting factor for circuit)
 
 ### 4.11 Circuit Wiring Checklist (Fill in during assembly)
 
 **Phase 1 Circuits (v1 initial build):**
 
-- [ ] Circuit 1 (Charge): Measured length _____ + slack = _____ cut
-- [ ] Circuit 2 (Heater): Measured length _____ + slack = _____ cut
-- [ ] Circuit 4 (USB Panel): Measured length _____ + slack = _____ cut
+- [ ] Circuit 1 (Charge): Measured length **\_** + slack = **\_** cut
+- [ ] Circuit 2 (Heater): Measured length **\_** + slack = **\_** cut
+- [ ] Circuit 4 (USB Panel): Measured length **\_** + slack = **\_** cut
 
 **Phase 2 Circuits (v1.1 after field validation):**
 
-- [ ] Circuit 3 (Fridge): Measured length _____ + slack = _____ cut
-- [ ] Circuit 5 (Spare 20A): Measured length _____ + slack = _____ cut
-- [ ] Circuit 6 (Spare 15A): Measured length _____ + slack = _____ cut
+- [ ] Circuit 3 (Fridge): Measured length **\_** + slack = **\_** cut
+- [ ] Circuit 5 (Spare 20A): Measured length **\_** + slack = **\_** cut
+- [ ] Circuit 6 (Spare 15A): Measured length **\_** + slack = **\_** cut
 
 **Wire Routing Notes:**
+
 - Bundle positive and negative wires together with zip ties every 6-12"
 - Avoid sharp bends (minimum 1" radius for 10/12 AWG)
 - Keep wires away from sharp edges, moving parts
@@ -770,96 +779,6 @@ BLUE SEA 5026 FUSE BLOCK
 - [ ] All fuse holders closed and secured (Blue Sea cover snaps down, accessible from top)
 - [ ] No exposed fuse terminals (should be covered by Blue Sea holder body and ANL holder cover)
 - [ ] All wire routing clear of fuse access (can remove/replace fuses without disturbing wiring)
-
----
-
-## 5. Wiring Diagram
-
-### Simplified Schematic
-
-```
-                 ┌──────────────────────────────────────────────────┐
-                 │  12V LiFePO4 Battery (with integrated BMS)       │
-                 │  Nominal: 12.8V | Range: 10.0V - 14.6V           │
-                 └────────┬─────────────────────┬───────────────────┘
-                          │ (+)                 │ (-)
-                          │                     │
-                    ┌─────▼─────┐               │
-                    │ Main Fuse │               │
-                    │  (ANL 50A)│               │
-                    └─────┬─────┘               │
-                          │                     │
-            ┌─────────────┴──────────────┐      │
-            │    Positive Busbar         │      │
-            │  (Distribution Point)      │      │
-            └─┬────────┬─────────┬───────┘      │
-              │        │         │              │
-       ───────┼────────┼─────────┼──────────────┼─────── Negative Busbar (Battery -)
-              │        │         │              │
-         ┌────▼───┐ ┌──▼────┐ ┌─▼──────┐       │
-         │Fuse 30A│ │Fuse   │ │ Charge │       │
-         │        │ │20A    │ │ Fuse   │       │
-         └────┬───┘ └──┬────┘ │ 20A    │       │
-              │        │      └─┬──────┘       │
-              │        │        │              │
-         ┌────▼─────┐  │        │              │
-         │  OUT1    │  │   ┌────▼────────┐     │
-         │Anderson  │  │   │  CHG INPUT  │     │
-         │PP45      │  │   │Anderson PP30│     │
-         │12V 30A   ├──┼───┤12V 20A      ├─────┘
-         └──────────┘  │   └─────────────┘
-                       │
-                  ┌────▼─────┐
-                  │  OUT2    │
-                  │XT60      │
-                  │12V 20A   ├────┘
-                  └──────────┘
-
-         ┌─────────────────────────────────┐
-         │   Voltmeter (Panel Mount)        │
-         │   Sense: Bat+ and Bat-           │
-         │   Display: 12.8V                 │
-         └─────────────────────────────────┘
-
-         ┌───────┬───────┬────────┐
-         │ LED   │ LED   │  LED   │
-         │Green  │Yellow │ Red    │
-         │Power  │LowBatt│Charging│
-         └───────┴───────┴────────┘
-         (Trigger circuits powered from Bat+/-)
-```
-
-### Physical Layout (Top View of Enclosure)
-
-```
-┌───────────────────────────────────────────────────────────┐
-│                    FRONT PANEL                             │
-│                                                            │
-│  [ Voltmeter ]   [LED] [LED] [LED]                        │
-│    Display       Power LowBt Chrg                         │
-│                                                            │
-│  [OUT1]  [OUT2]  [CHG_IN]                                 │
-│  PP45    XT60    PP30                                     │
-│  Label   Label   Label                                    │
-└───────────────────────────────────────────────────────────┘
-
-┌───────────────────────────────────────────────────────────┐
-│                    INTERIOR (Top View)                     │
-│                                                            │
-│  [Main Fuse] ─┬─ [Busbar] ─┬─ [Fuse Block]               │
-│               │             │   OUT1 OUT2 CHG             │
-│               │             │                             │
-│  ┌────────────┴─────────────┴───────────────┐            │
-│  │                                            │            │
-│  │        Battery (12V LiFePO4 100Ah)        │            │
-│  │                                            │            │
-│  │         (Secured with strap)               │            │
-│  └────────────────────────────────────────────┘            │
-│                                                            │
-│  [Vent Hole]                       [Vent Hole]            │
-│  (Bottom)                          (Top)                  │
-└───────────────────────────────────────────────────────────┘
-```
 
 ---
 
