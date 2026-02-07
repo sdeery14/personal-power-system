@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-battery-box`  
 **Generated**: 2026-01-19  
-**Last Updated**: 2026-01-24  
+**Last Updated**: 2026-02-07
 **Input**: Design documents from spec.md, plan.md, quickstart.md, data-model.md, contracts/
 
 **Organization**: Tasks grouped by user story to enable independent implementation and testing.
@@ -11,15 +11,17 @@
 
 ## Progress Summary
 
-**Overall**: 12/140 tasks (8.6%)  
-**Phase 1**: 5/9 tasks (56%) - Complete  
-**Phase 2**: 7/22 tasks (32%) - Component mounting in progress  
-**Current Phase**: Phase 2 Foundational
+**Overall**: 15/140 tasks (10.7%)
+**Phase 1**: 9/9 tasks (100%) - Complete
+**Phase 2**: 6/22 tasks (27%) - Panel wiring next
+**Current Phase**: Phase 2 Foundational — Sub-phase 2A
 
 **Next Actions**:
-- Resolve 4 AWG ring terminal issue (need M8 terminals for battery posts)
-- Complete main trunk wiring T023-T024
-- Ready to drill T012-T016 when continuing assembly
+- Sub-phase 2A: Wire panel on bench (T023 ANL→Blue Sea busbar, T026 shunt→Blue Sea neg bus)
+- Sub-phase 2B: Mount panel in tote, wire 4 AWG battery trunks (T027, T021, T025)
+- Sub-phase 2C: Plan and mark interface holes with battery+panel installed (T010, T012)
+- Sub-phase 2D: Remove battery+panel, drill all holes, clean debris, reinstall (T013-T017)
+- Sub-phase 2E: Mount and wire interfaces (T028-T031)
 
 ---
 
@@ -45,8 +47,8 @@
 - T018 ✅: Strap loops installed on base plywood
 - T019 ✅: Battery secured to base with cam buckles and foam
 - T020 ✅: ANL fuse holder mounted to left panel
-- T021 ✅: Blue Sea 5026 fuse block mounted to left panel
-- T022 ✅: Victron shunt mounted to left panel
+- T022 ✅: Blue Sea 5026 fuse block mounted to left panel
+- T024 ✅: Victron shunt mounted to left panel
 - **Issue discovered**: Ring terminal assortment only goes to 10 AWG, need 4 AWG terminals for main battery connections
 
 ---
@@ -112,24 +114,53 @@
 
 **⚠️ CRITICAL**: No circuit wiring can begin until enclosure prepared and battery/fuse block/Victron shunt mounted
 
-- [ ] T010 Plan component layout on paper: battery bottom center (520×238×218mm = 20.5"×9.4"×8.6" lengthwise), left long side plywood panel 8"×12" (Blue Sea + Victron shunt + ANL holder vertical stack), right long side HDPE direct mount (Nilight + Victron display), front/back short side HDPE (2× KarlKers vertical), top corners (4× ventilation)
+### Completed
+
 - [x] T011 Cut left side plywood panel from 3/4" stock: 8" wide × 12" tall (measure tote internal dimensions to verify fit), this panel mounts Blue Sea 5026, Victron shunt, and ANL holder in vertical stack
+- [x] T018 Prepare plywood battery base: cut 3/4" plywood to 15"×25" with rounded corners (fits 15"×25" tote internal dimensions snugly), pre-drill pilot holes, screw 4 steel strap loops to plywood using included screws at corners or mid-points for cam buckle strap anchoring, place plywood in tote bottom - COMPLETE with strap loops installed
+- [x] T019 Secure VEVOR battery: position battery in foam (520mm×238mm×218mm = 20.5"×9.4"×8.6") on plywood base lengthwise orientation, cut channels in top foam for M8 terminal access and wire routing clearance, secure with 2× cam buckle straps (6 ft recommended, route across 9.4" width) over battery attached to plywood strap loops (foam distributes pressure across battery top), verify battery cannot move when tote tilted/shaken
+- [x] T020 Mount 100A ANL inline fuse holder to left side plywood panel near top (within 18" wire run from battery+) with screws or zip ties, DO NOT install fuse yet
+- [x] T022 Mount Blue Sea 5026 to left side plywood panel with screws through mounting flanges (pre-drill pilot holes), position for accessible busbar/negative bus posts, verify clearances
+- [x] T024 Mount Victron 500A shunt to left side plywood panel below Blue Sea with screws, shunt stationary for accurate measurement, two sides: "Battery" (battery-) and "System" (loads)
+
+### Sub-phase 2A: Panel Wiring (Bench)
+
+**Purpose**: Wire inter-component connections on the panel while accessible on a workbench — much easier than working inside the tote
+
+- [ ] T023 Cut 4 AWG red wire ~1-2 ft, crimp ring terminals, wire ANL holder output → Blue Sea positive busbar on panel, secure with zip ties
+- [ ] T026 Cut 4 AWG black wire segment 2 (~4-6 ft): crimp shunt lugs, wire Victron shunt system side → Blue Sea negative bus (total 4 AWG black 6-8 ft for star grounding)
+
+### Sub-phase 2B: Panel Installation & Battery Trunk Wiring
+
+**Purpose**: Mount the wired panel in the tote and connect 4 AWG trunks to battery
+
+- [ ] T027 Secure left side plywood panel to tote left wall: drill through tote HDPE + panel edges at 4-6 points, use screws/bolts with washers, verify panel rigid and components accessible
+- [ ] T021 Cut 4 AWG red wire ~4 ft, crimp M8 ring terminal (battery+ end) and ANL lug (holder end), route Battery+ → ANL holder input, verify 105A capacity > 100A fuse
+- [ ] T025 Cut 4 AWG black wire segment 1 (~1-2 ft): crimp M8 ring terminal (battery- end) and shunt lug, wire Battery- → Victron shunt battery side
+
+### Sub-phase 2C: Plan & Mark Interface Holes
+
+**Purpose**: With battery and panel installed, verify clearances and measure wire run lengths before committing to cuts
+
+- [ ] T010 Plan component layout with battery and panel installed: verify clearances for Nilight (right long side HDPE), Victron display (right long side below Nilight), KarlKers connectors (front/back short side HDPE), ventilation holes (top corners), measure wire run lengths from Blue Sea to each interface position
 - [ ] T012 Mark all cutouts: Nilight 4× 1-1/4" holes on tote right side HDPE (rectangular pattern), Victron 52mm square on tote right side HDPE below Nilight, 2× KarlKers 1-1/4" holes on tote front or back short side HDPE vertical 3-4" spacing, 4× ventilation 25-30mm on tote top corners
+
+### Sub-phase 2D: Drill Interface Holes
+
+**Purpose**: Remove battery and panel from tote for clean drilling, cut all holes, clean debris, then reinstall
+
+- [ ] PREP Remove battery (undo cam buckle straps, lift out) and panel (unscrew from tote wall) to prevent HDPE shavings on components
 - [ ] T013 [P] Drill Nilight 4× 1-1/4" holes in tote right side HDPE with step drill (rectangular pattern), deburr edges
 - [ ] T014 [P] Drill Victron 52mm square cutout directly in tote right side HDPE (4 pilot holes at corners + jigsaw straight cuts), deburr edges
 - [ ] T015 [P] Drill 2× KarlKers 1-1/4" holes directly in tote short side HDPE with step drill (top for Charge, below for Heater), deburr HDPE edges
 - [ ] T016 [P] Drill 4× ventilation 25-30mm holes in tote HDPE top corners with step bit, deburr edges
 - [ ] T017 Cut and install ventilation mesh over 4× vent holes in tote (1/8" or 1/4" grid, 10mm overlap), secure with epoxy/hot glue, verify net free area ~2000-2800mm²
-- [x] T018 Prepare plywood battery base: cut 3/4" plywood to 15"×25" with rounded corners (fits 15"×25" tote internal dimensions snugly), pre-drill pilot holes, screw 4 steel strap loops to plywood using included screws at corners or mid-points for cam buckle strap anchoring, place plywood in tote bottom - COMPLETE with strap loops installed
-- [x] T019 Secure VEVOR battery: position battery in foam (520mm×238mm×218mm = 20.5"×9.4"×8.6") on plywood base lengthwise orientation, cut channels in top foam for M8 terminal access and wire routing clearance, secure with 2× cam buckle straps (6 ft recommended, route across 9.4" width) over battery attached to plywood strap loops (foam distributes pressure across battery top), verify battery cannot move when tote tilted/shaken
-- [ ] T020 Mount 100A ANL inline fuse holder to left side plywood panel near top (within 18" wire run from battery+) with screws or zip ties, DO NOT install fuse yet
-- [ ] T021 Cut 4 AWG red wire ~4 ft, crimp M8 ring terminal (battery+ end) and ANL lug (holder end), route Battery+ → ANL holder input, verify 105A capacity > 100A fuse
-- [ ] T022 Mount Blue Sea 5026 to left side plywood panel with screws through mounting flanges (pre-drill pilot holes), position for accessible busbar/negative bus posts, verify clearances
-- [ ] T023 Cut 4 AWG red wire ~1-2 ft, crimp ring terminals, wire ANL holder output → Blue Sea positive busbar on panel, secure with zip ties
-- [ ] T024 Mount Victron 500A shunt to left side plywood panel below Blue Sea with screws, shunt stationary for accurate measurement, two sides: "Battery" (battery-) and "System" (loads)
-- [ ] T025 Cut 4 AWG black wire segment 1 (~1-2 ft): crimp M8 ring terminal (battery- end) and shunt lug, wire Battery- → Victron shunt battery side
-- [ ] T026 Cut 4 AWG black wire segment 2 (~4-6 ft): crimp shunt lugs, wire Victron shunt system side → Blue Sea negative bus (total 4 AWG black 6-8 ft for star grounding)
-- [ ] T027 Secure left side plywood panel to tote left wall: drill through tote HDPE + panel edges at 4-6 points, use screws/bolts with washers, verify panel rigid and components accessible
+- [ ] POST Clean all HDPE shavings/debris from tote interior, reinstall battery on base with cam buckle straps, reinstall panel to tote wall
+
+### Sub-phase 2E: Mount & Wire Interfaces
+
+**Purpose**: Install display and connector interfaces into drilled holes, connect to panel components
+
 - [ ] T028 Install Victron BMV-712 display into 52mm square cutout in tote right side HDPE, secure with bezel from front, display flush mount
 - [ ] T029 Mount Nilight 4-in-1 panel into rectangular cutout in tote right side HDPE (verify fit when arrives), secure per manufacturer instructions (likely snap-in or screws from rear), verify USB-C/USB-A/12V outlet/voltmeter/ON-OFF accessible
 - [ ] T030 Route RJ12 cable (~3m) from Victron shunt (left panel) to display (right side) across battery top or around side, plug both ends, secure cable with zip ties along route
