@@ -1,8 +1,8 @@
 # Battery Box v1 - Consolidated Shopping List
 
-**Date**: 2026-01-18 (Updated: 2026-01-24)  
-**Feature**: 001-battery-box  
-**Status**: Most items purchased, awaiting final hardware
+**Date**: 2026-01-18 (Updated: 2026-02-07)
+**Feature**: 001-battery-box
+**Status**: Most items purchased, replacing incompatible 4 AWG crimping tools/terminals
 
 ---
 
@@ -87,11 +87,27 @@
 
 | Item | Quantity | Price | Status | Date |
 |------|----------|-------|--------|------|
-| **Ring Terminal Assortment** | 1 kit | ~$18 | ✅ Purchased | Jan 19 |
+| **Ring Terminal Assortment** (10 AWG and below) | 1 kit | ~$18 | ✅ Purchased | Jan 19 |
 | **Heat-Shrink Tubing Assortment** | 1 kit | ~$12 | ✅ Purchased | Jan 19 |
 | **Zip Ties Assortment** | 100-pack | ~$8 | ✅ Purchased | Jan 19 |
+| ~~**SC25-8 Ring Terminals** (25mm², M8 stud)~~ | ~~1 pack~~ | ~~$8-12~~ | ❌ Returning | Feb 7 |
+| ~~**Sanuke Hydraulic Crimper** (metric dies)~~ | ~~1~~ | ~~$30-40~~ | ❌ Returning | Feb 7 |
+| **TKDMR 4 AWG Ring Terminals, 3/8" stud (M10)** | 10-pack | ~$12 | ✅ Purchased (keeping for Victron shunt) | Feb 7 |
+| **TKDMR 4 AWG Ring Terminals, 5/16" stud (M8)** | 10-pack | ~$12 | ✅ Ordered | Feb 7 |
+| **XHF 4 AWG Ring Terminals, 1/4" stud** | 10-pack | ~$10 | ✅ Ordered | Feb 7 |
+| **iCrimp Battery Cable Lug Crimper** (8-1/0 AWG) | 1 | ~$30 | ✅ Ordered | Feb 7 |
+| **Female Spade Terminals** (0.25"/6.3mm, for 10 AWG) | 4-6 | ~$5-8 | 🔲 Need to buy | — |
+| **Butt Connectors** (10-12 AWG step-down) | 4-6 | ~$5-8 | 🔲 Verify if in kit | — |
 
-**Priority 1 Hardware Subtotal**: ~$38
+**⚠️ Crimper Mismatch**: Sanuke metric crimper dies do not properly compress AWG-sized wire in AWG or metric terminals. Root cause of failed crimps. Returning and replacing with AWG ratcheting crimper. See lessons learned in tasks.md.
+
+**4 AWG Terminal Stud Sizes** (measured Feb 7):
+- Battery posts: 8mm (M8) → **5/16" stud** ring terminals (4 needed)
+- ANL fuse holder studs: 8mm (M8) → **5/16" stud** ring terminals (same pack)
+- Blue Sea 5026 busbar posts: ~4mm → **1/4" stud** ring terminals (washer bridges gap, 2 needed)
+- Victron shunt studs: ~10mm (M10) → **3/8" stud** ring terminals (TKDMR, already have)
+
+**Priority 1 Hardware Subtotal**: ~$38 (purchased) + ~$12 (TKDMR) + ~$51-75 (remaining) - ~$38-52 (returns)
 
 ---
 
@@ -172,7 +188,7 @@
 | **Already Owned Items** | ~$59 |
 | **Total Project Value** | **~$1,258** |
 
-**Remaining to Purchase**: L brackets ($10, arriving today), 52mm saw ($15, Jan 30), truss screws ($12, shipping) = ~$37
+**Remaining to Purchase**: 4 AWG ring terminals (~$10-15), AWG ratcheting crimper (~$25-40), female spade terminals (~$5-8), butt connectors (~$5-8) = ~$45-71 new — offset by ~$38-52 in returns (Sanuke crimper + SC25-8 terminals)
 
 **Note - v1 Incremental Connector Approach**: 
 - Start with 2× KarlKers panel-mount ($30) for Charge + Heater circuits
@@ -299,7 +315,8 @@
 - [x] 10× generic Powerpole PP45 pairs
 - [x] Knoweasy Powerpole crimper
 - [x] Wire: 4 AWG red/black (6ft each), 10 AWG red/black (20ft each), 12 AWG red/black (15ft each)
-- [x] Ring terminals (M8 battery, assorted)
+- [ ] Ring terminals — 4 AWG, AWG-sized, 5/16" stud (replacing metric SC25-8)
+- [x] Ring terminals — 10 AWG and below (assorted kit)
 - [x] Heat-shrink tubing (assorted)
 
 **Monitoring**:
@@ -350,6 +367,7 @@
 - **Temperature sensor deferred to v2** (manual IR thermometer sufficient for v1)
 - **Status LEDs deferred to v2** (Nilight panel ON indicator + Victron BMV-712 display cover basic status needs)
 - **Fabrication improvements**: Tapered panel (8"→5") and rounded base corners (15"×25") fit tote geometry better than original plan
+- **AWG vs Metric terminal mismatch** (Feb 7): SC25-8 terminals (25mm² barrel) cannot crimp onto 4 AWG wire (21.15mm²). The metric 25mm² is the "standard equivalent" for 4 AWG but the barrel is 16% oversized — crimps fail pull test immediately. Sanuke hydraulic crimper with metric dies compounds the problem. **Lesson: when using AWG wire, buy AWG-specific terminals and an AWG crimper. Do not mix metric terminals with AWG wire.** Both items being returned and replaced with AWG-specific equivalents.
 
 ---
 

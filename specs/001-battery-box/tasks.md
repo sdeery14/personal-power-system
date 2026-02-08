@@ -67,6 +67,8 @@
 
 **Nilight 4-Hole Pattern**: Nilight panel uses 4× 1-1/4" holes in rectangular pattern (not single rectangular cutout). Step drill handles all holes - no jigsaw needed. KarlKers Anderson connectors also use 1-1/4" holes. Single tool for all panel penetrations.
 
+**AWG vs Metric Crimper Mismatch** (Feb 7): Crimps on 4 AWG wire fail pull test — wire pulls right out of terminal. Root cause: **Sanuke hydraulic crimper with metric dies** does not properly compress AWG-sized wire. Metric dies are sized for metric terminal barrels, which don't match AWG conductor geometry. SC25-8 terminals (25mm²) may have been a viable match for the wire (labeled 25mm/4AWG), but the crimper couldn't make a proper connection regardless. TKDMR "4 AWG" 3/8" terminals also appeared oversized vs SC25-8 barrel — likely mislabeled or sized for a wire range. **Lessons learned**: (1) AWG wire requires an AWG crimper — metric dies don't compress correctly even if terminal sizes seem close. (2) Verify wire gauge, terminal barrel, and crimper die are all from the same measurement system (all AWG or all metric). (3) "25mm² = 4 AWG" is a loose industry convention, not an exact equivalence — products using both labels interchangeably cause purchasing confusion. Returning Sanuke crimper and SC25-8 terminals; keeping TKDMR 3/8" for Victron shunt; buying AWG ratcheting crimper + 4 AWG terminals in 5/16" and 1/4" stud sizes. Measured stud sizes: battery M8, ANL M8, Blue Sea ~4mm, Victron shunt M10. Constitution Principle V: mistake documented, root cause understood, corrective action taken.
+
 ---
 
 ## Parts Status
