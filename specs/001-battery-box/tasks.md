@@ -11,18 +11,45 @@
 
 ## Progress Summary
 
-**Overall**: 44/140 tasks (31.4%)
-**Phase 1**: 9/9 tasks (100%) - Complete
-**Phase 2**: 22/23 tasks (96%) - Only T031 temp sensor optional
-**Phase 3**: 5/17 tasks (29%) - Core Heater wiring done
-**Phase 4**: 6/20 tasks (30%) - Core Nilight wiring + Victron app done
-**Phase 6**: 3/10 tasks (30%) - **SYSTEM FUNCTIONAL** ✅
-**Current Status**: **BATTERY BOX WORKING** → Finishing touches optional
+**Overall**: 48/144 tasks (33%) — **SYSTEM FUNCTIONAL** ✅
+**Phase 1**: 9/9 (100%) — Complete
+**Phase 2**: 22/24 (92%) — T017 vent mesh, T031 temp sensor remaining
+**Phase 3**: 6/15 (40%) — Core heater wiring done, mounting/labels/testing remain
+**Phase 4**: 7/21 (33%) — Core Nilight wiring + Victron app done, validation remain
+**Phase 5**: 0/25 (0%) — Charge circuit not started
+**Phase 6**: 4/10 (40%) — Power-up successful, wiring checks remain
+**Phase 7**: 0/17 (0%) — Progressive load testing not started
+**Phase 8**: 0/16 (0%) — Field runtime validation not started
+**Phase 9**: 0/7 (0%) — Polish & future planning not started
 
-**Next Actions**:
-- System is functional - remaining tasks are optional finishing touches
-- Full charge + Victron SOC sync for accurate monitoring
-- Weatherproof covers, labeling, documentation
+**Current Status**: **BATTERY BOX WORKING** (Mar 7) — remaining work is finishing touches, validation, and documentation
+
+### What's Next
+
+**Priority A — Functional (do soon)**:
+- T053: Full charge + Victron SOC sync — critical for accurate SOC%
+- T017: Install vent mesh over drilled holes
+- T052: Enable Victron alarms (low voltage, low SOC, high temp)
+- Phase 5 Charge circuit (T066-T078): Wire KarlKers Charge connector + build charger adapter cable
+
+**Priority B — Finishing touches**:
+- T035-T036: Mount KarlKers Heater unit + weatherproof cover
+- T037, T043-T044: Labels (heater connector, terminal validation)
+- T136: Label all fuses on Blue Sea 5026
+- T031: Optional Victron temp sensor
+
+**Priority C — Validation**:
+- T091-T096: Integration wiring checks + continuity testing
+- T054-T057: Voltage accuracy validation (Victron vs multimeter)
+- T060-T065: SOC estimation + visual status indicator checks
+- T040-T042: Fuse protection test (overcurrent interruption)
+- Phase 7: Progressive load testing (5A → 23A combined)
+
+**Priority D — Documentation & future**:
+- T134-T135: Operating instructions + quick reference card
+- T124-T129: Test results documentation
+- Phase 8: Field runtime validation
+- T137-T140: v1.1/v2 planning, constitution update
 
 ---
 
@@ -104,23 +131,13 @@
 
 **Component Mounting Strategy**: Heavy components (Blue Sea 2-3 lb, Victron shunt 1 lb) on plywood panel for rigidity. Lightweight displays (<1 lb) direct to HDPE where grooves provide support.
 
-**Nilight 4-Hole Pattern**: Nilight panel uses 4× 1-1/4" holes in rectangular pattern (not single rectangular cutout). Step drill handles all holes - no jigsaw needed. KarlKers Anderson connectors also use 1-1/4" holes. Single tool for all panel penetrations.
-
 **AWG vs Metric Crimper Mismatch** (Feb 7): Crimps on 4 AWG wire fail pull test — wire pulls right out of terminal. Root cause: **Sanuke hydraulic crimper with metric dies** does not properly compress AWG-sized wire. Metric dies are sized for metric terminal barrels, which don't match AWG conductor geometry. SC25-8 terminals (25mm²) may have been a viable match for the wire (labeled 25mm/4AWG), but the crimper couldn't make a proper connection regardless. TKDMR "4 AWG" 3/8" terminals also appeared oversized vs SC25-8 barrel — likely mislabeled or sized for a wire range. **Lessons learned**: (1) AWG wire requires an AWG crimper — metric dies don't compress correctly even if terminal sizes seem close. (2) Verify wire gauge, terminal barrel, and crimper die are all from the same measurement system (all AWG or all metric). (3) "25mm² = 4 AWG" is a loose industry convention, not an exact equivalence — products using both labels interchangeably cause purchasing confusion. Returning Sanuke crimper and SC25-8 terminals; keeping TKDMR 3/8" for Victron shunt; buying AWG ratcheting crimper + 4 AWG terminals in 5/16" and 1/4" stud sizes. Measured stud sizes: battery M8, ANL M8, Blue Sea ~4mm, Victron shunt M10. Constitution Principle V: mistake documented, root cause understood, corrective action taken.
 
 ---
 
 ## Parts Status
 
-**Received Jan 20** ✅: Blue Sea 5026, Victron BMV-712, Nilight 4-in-1, 10× Powerpole PP45, Knoweasy crimper, wire 4/10 AWG, step drill, grommets
-
-**Received Jan 24** ✅: 2× KarlKers panel-mount units
-
-**Delivered Jan 19** ✅: ANL fuses/holders, terminals, zip ties, blade fuses, wire 12 AWG
-
-**Waiting**: L brackets + screws (today), 52mm hole saw (Jan 30), #8×3/4" truss screws (shipping)
-
-**Already Have**: Battery, charger, tote, multimeter, jigsaw, Dremel, wire strippers, heat gun, electrical tape, dielectric grease, cam buckles, strap loops
+**All parts received** ✅ — procurement complete (Jan 19–Feb 7). See `docs/shopping-list.md` for full inventory.
 
 ---
 
@@ -138,7 +155,6 @@
 
 - [x] T001 Verify VEVOR 200Ah battery received (model 010230251465), inspect for shipping damage, measure voltage 13.2-13.4V, document serial number and date code
 - [x] T002 Verify VEVOR 20A charger received (model 010889683485), inspect condition, test output voltage 14.4-14.6V unloaded with multimeter
-- [x] T003 Verify Greenmade 27gal tote received, check dimensions 30.4"×20.4"×14.7" external, verify latches and handles functional
 - [x] T003 Verify Greenmade 27gal tote received, check dimensions 30.4"×20.4"×14.7" external, verify latches and handles functional
 - [x] T004 Verify Nilight 4-in-1 panel received, check USB-C PD, USB-A, 12V outlet, integrated voltmeter all present
 - [x] T005 [P] Order Priority 1 core electrical components per shopping-list.md: 100A ANL fuse+holder, Blue Sea 5026, blade fuses, 2× KarlKers panel-mount units (B0F4L5FYQ2), 8× generic Powerpole PP45 pairs, Knoweasy crimper, wire (4/10/12/18 AWG), terminals, heat-shrink, zip ties (~$274-385)
@@ -219,7 +235,7 @@
 - [ ] T036 [US1] Install KarlKers weatherproof rubber flip-up cover, test flip mechanism, verify seal when closed
 - [ ] T037 [US1] Label external panel near connector: "HEATER 10A - 12V OUTPUT" with permanent marker or label maker
 - [ ] T038 [US1] Crimp external mating cable: diesel heater wire → 12 AWG → generic Powerpole PP45 red+black bonded pair (mates with KarlKers), label cable "HEATER LOAD"
-- [ ] T039 [US1] Prepare 10A ST blade fuse for Blue Sea circuit 2, DO NOT install yet (wait for Step 12 final fuse installation)
+- [x] T039 [US1] Prepare 10A ST blade fuse for Blue Sea circuit 2 — installed per T098
 
 **FR-005 Fuse Protection Test** (SC-003):
 
@@ -248,7 +264,7 @@
 - [x] T046 [P] [US2] Cut 10 AWG red wire ~2-3 ft: Blue Sea circuit 4 terminal → Nilight positive spade terminal, screw connection at Blue Sea end
 - [x] T047 [P] [US2] Crimp female spade terminal on Nilight end (verify spade size 0.25" or 6.3mm per panel specs), verify polarity red=positive
 - [x] T048 [P] [US2] Cut 10 AWG black wire ~2-3 ft: Blue Sea negative bus → Nilight negative spade terminal, crimp ring terminal at bus, spade at panel
-- [ ] T049 [US2] Prepare 20A ST blade fuse for Blue Sea circuit 4, DO NOT install yet
+- [x] T049 [US2] Prepare 20A ST blade fuse for Blue Sea circuit 4 — installed per T098
 - [x] T050 [US2] Download VictronConnect app on smartphone (iOS/Android), verify Bluetooth pairing with BMV-712 display
 - [x] T051 [US2] Configure Victron via app per quickstart.md Step 9: Battery capacity 200Ah, Charged voltage 14.4V, Tail current 4A, Peukert exponent 1.05, Charge efficiency 95%
 - [ ] T052 [US2] Enable Victron alarms: Low voltage 12.4V, Low SOC 30% (diesel heater warning), Critical SOC 20%, High temperature 45°C (if sensor installed)
@@ -449,14 +465,9 @@
 - **Drilling**: T013 (Victron), T014 (KarlKers), T015 (ventilation) can drill simultaneously if multiple people or careful fixture planning
 - **User Story Implementations**: After Foundation (T029), US1/US2/US3 tasks can proceed in parallel on different circuits
 
-### Suggested Execution Plan
+### Execution History
 
-1. **Week 1**: Procurement (T001-T009) - order all parts, receive existing components, prepare workspace
-2. **Week 2**: Foundation (T010-T029) - enclosure prep, battery mounting, main trunks wiring, monitoring infrastructure (MUST complete before user stories)
-3. **Week 3**: User Stories in parallel - one person per story OR sequence P1 → P2 → P3 (US1 Heater circuit, US2 Monitoring config, US3 Charging circuit)
-4. **Week 4**: Integration (T091-T100) - final wiring checks, fuse installation, initial power-up, progressive load testing (T101-T117)
-5. **Week 5**: Field validation (T118-T133) - deploy to winter camping, 28-hour runtime test, documentation creation
-6. **Week 6**: Polish (T134-T140) - operating instructions, labels, v1.1 planning, git commit all docs
+Phases 1-2 and core wiring from Phases 3-4-6 completed Jan 19 – Mar 7. System reached functional milestone on Mar 7. Remaining work follows the priority order in "What's Next" above.
 
 ### MVP Scope (Minimum Viable Product)
 
@@ -467,7 +478,7 @@
 
 ## Summary
 
-**Total Tasks**: 140 tasks organized into 9 phases
+**Total Tasks**: 144 items organized into 9 phases (48 complete)
 **User Stories**: 3 stories (P1 Heater power delivery, P2 Monitoring, P3 AC charging)
 **Estimated Effort**: 40-60 hours over 4-6 weeks (includes procurement delays, assembly time, testing duration, documentation)
 **Parallel Opportunities**: 15 tasks marked [P] can execute simultaneously
@@ -486,4 +497,4 @@
 - SC-009 Durability: T133 (100 cycles)
 - SC-010 Safety: T132 (zero incidents)
 
-**Next Action**: Begin T001 - verify VEVOR battery received and inspect for shipping damage
+**Next Action**: See Priority A items in "What's Next" section above

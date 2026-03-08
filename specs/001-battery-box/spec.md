@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-battery-box`  
 **Created**: 2026-01-18  
-**Status**: Draft  
+**Status**: Active  
 **Input**: User description: "Battery Box v1 — the core portable DC power module — fully compliant with the project constitution"
 
 ## User Scenarios & Testing *(mandatory)*
