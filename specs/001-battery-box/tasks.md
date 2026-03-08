@@ -1,8 +1,8 @@
 # Tasks: Battery Box v1
 
-**Feature Branch**: `001-battery-box`  
-**Generated**: 2026-01-19  
-**Last Updated**: 2026-02-07
+**Feature Branch**: `001-battery-box`
+**Generated**: 2026-01-19
+**Last Updated**: 2026-03-07
 **Input**: Design documents from spec.md, plan.md, quickstart.md, data-model.md, contracts/
 
 **Organization**: Tasks grouped by user story to enable independent implementation and testing.
@@ -11,32 +11,36 @@
 
 ## Progress Summary
 
-**Overall**: 15/140 tasks (10.7%)
+**Overall**: 44/140 tasks (31.4%)
 **Phase 1**: 9/9 tasks (100%) - Complete
-**Phase 2**: 6/22 tasks (27%) - Panel wiring next
-**Current Phase**: Phase 2 Foundational — Sub-phase 2A
+**Phase 2**: 22/23 tasks (96%) - Only T031 temp sensor optional
+**Phase 3**: 5/17 tasks (29%) - Core Heater wiring done
+**Phase 4**: 6/20 tasks (30%) - Core Nilight wiring + Victron app done
+**Phase 6**: 3/10 tasks (30%) - **SYSTEM FUNCTIONAL** ✅
+**Current Status**: **BATTERY BOX WORKING** → Finishing touches optional
 
 **Next Actions**:
-- Sub-phase 2A: Wire panel on bench (T023 ANL→Blue Sea busbar, T026 shunt→Blue Sea neg bus)
-- Sub-phase 2B: Mount panel in tote, wire 4 AWG battery trunks (T027, T021, T025)
-- Sub-phase 2C: Plan and mark interface holes with battery+panel installed (T010, T012)
-- Sub-phase 2D: Remove battery+panel, drill all holes, clean debris, reinstall (T013-T017)
-- Sub-phase 2E: Mount and wire interfaces (T028-T031)
+- System is functional - remaining tasks are optional finishing touches
+- Full charge + Victron SOC sync for accurate monitoring
+- Weatherproof covers, labeling, documentation
 
 ---
 
 ## Build Log
 
 **2026-01-19** - Project started, procurement phase
+
 - T001 ✅: Battery verified 13.34V, foam packaging kept for reuse
 - T002 ✅: Charger verified 14.64V output
 - T003 ✅: Tote verified 30.4"×20.4"×14.7", excellent condition
 - T009 ✅: Workspace prepared
 
 **2026-01-20** - Major parts arrival
+
 - Received: Blue Sea 5026, Victron BMV-712, Nilight, wire (4/10 AWG), crimper, step drill, grommets
 
 **2026-01-24** - Fabrication begins
+
 - T011 ✅: Panel cut 12" tall, **tapered 8"→5" width** (fits tote wall angle)
 - T018 ✅: Battery base cut 15"×25" with rounded corners (snug tote fit)
 - T004 ✅: Nilight verified - uses 4× 1-1/4" holes (step drill compatible!)
@@ -44,12 +48,47 @@
 - Ordered: 52mm hole saw (Jan 30), L brackets (today), truss screws (shipping)
 
 **2026-01-25** - Component mounting phase
+
 - T018 ✅: Strap loops installed on base plywood
 - T019 ✅: Battery secured to base with cam buckles and foam
 - T020 ✅: ANL fuse holder mounted to left panel
 - T022 ✅: Blue Sea 5026 fuse block mounted to left panel
 - T024 ✅: Victron shunt mounted to left panel
 - **Issue discovered**: Ring terminal assortment only goes to 10 AWG, need 4 AWG terminals for main battery connections
+
+**2026-02-07** - AWG crimper/terminal mismatch diagnosis
+
+- SC25-8 terminals + Sanuke metric crimper fail pull test on 4 AWG wire
+- Root cause: metric crimper dies don't compress AWG wire geometry
+- Ordered: TKDMR 5/16" terminals, XHF 1/4" terminals, iCrimp AWG crimper
+- Returning: Sanuke crimper + SC25-8 terminals
+- See Lessons Learned for full writeup
+
+**2026-03-07** - Assembly work session (Sub-phases 2A through 2D)
+
+- T023 ✅: Wired ANL fuse output → Blue Sea positive busbar (4 AWG red, bench)
+- T026 ✅: Wired Victron shunt system side → Blue Sea negative bus (4 AWG black, bench)
+- T027 ✅: Mounted panel to tote left wall with screws
+- T021 ✅: Wired battery+ → ANL fuse input (4 AWG red trunk)
+- T025 ✅: Wired battery- → Victron shunt battery side (4 AWG black trunk)
+- T010 ✅: Planned component layout with battery+panel installed, measured wire runs
+- T012 ✅: Marked all cutouts (Nilight, Victron, KarlKers, ventilation)
+- PREP ✅: Removed battery and panel for drilling
+- T013-T016 ✅: Drilled all holes (Nilight 4×1-1/4", Victron 52mm square, KarlKers 2×1-1/4", ventilation 4×25-30mm)
+- **Crimper validation**: iCrimp AWG crimper with TKDMR/XHF terminals passed pull tests on 4 AWG wire
+
+**2026-03-07** - Interface wiring completion (continued work session)
+- T028-T029, POST ✅: Reinstalled panel+battery, mounted Victron display + Nilight panel
+- T030 ✅: Routed RJ12 cable from Victron shunt to display, secured with zip ties
+- T032-T034 ✅: Wired KarlKers Heater connector (Circuit 2, 10 AWG, Powerpole contacts)
+- T046-T048 ✅: Wired Nilight panel (Circuit 4, 10 AWG to spade terminals)
+- T098 ✅: Installed blade fuses (Circuit 1: 30A, Circuit 2: 10A, Circuit 4: 20A)
+- T050-T051 ✅: Downloaded VictronConnect app, configured BMV-712 (200Ah capacity, 14.4V charge, 4A tail)
+- T097-T098 ✅: Installed main 100A ANL fuse and all blade fuses
+- T099-T100 ✅: **SUCCESSFUL POWER-UP** - battery reconnected, Victron displaying correctly, Nilight functional, no issues detected
+- **MILESTONE**: Battery box is functional and operational
+- **Interface wiring phase complete**: All mounted displays functional, core circuits wired, fuses installed
+- **Video documentation**: Recorded assembly process for future reference
 
 ---
 
@@ -124,48 +163,39 @@
 - [x] T020 Mount 100A ANL inline fuse holder to left side plywood panel near top (within 18" wire run from battery+) with screws or zip ties, DO NOT install fuse yet
 - [x] T022 Mount Blue Sea 5026 to left side plywood panel with screws through mounting flanges (pre-drill pilot holes), position for accessible busbar/negative bus posts, verify clearances
 - [x] T024 Mount Victron 500A shunt to left side plywood panel below Blue Sea with screws, shunt stationary for accurate measurement, two sides: "Battery" (battery-) and "System" (loads)
+- [x] T023 Cut 4 AWG red wire ~1-2 ft, crimp ring terminals, wire ANL holder output → Blue Sea positive busbar on panel, secure with zip ties
+- [x] T026 Cut 4 AWG black wire segment 2 (~4-6 ft): crimp shunt lugs, wire Victron shunt system side → Blue Sea negative bus (total 4 AWG black 6-8 ft for star grounding)
+- [x] T027 Secure left side plywood panel to tote left wall: drill through tote HDPE + panel edges at 4-6 points, use screws/bolts with washers, verify panel rigid and components accessible
+- [x] T021 Cut 4 AWG red wire ~4 ft, crimp M8 ring terminal (battery+ end) and ANL lug (holder end), route Battery+ → ANL holder input, verify 105A capacity > 100A fuse
+- [x] T025 Cut 4 AWG black wire segment 1 (~1-2 ft): crimp M8 ring terminal (battery- end) and shunt lug, wire Battery- → Victron shunt battery side
+- [x] T010 Plan component layout with battery and panel installed: verify clearances for Nilight (right long side HDPE), Victron display (right long side below Nilight), KarlKers connectors (front/back short side HDPE), ventilation holes (top corners), measure wire run lengths from Blue Sea to each interface position
+- [x] T012 Mark all cutouts: Nilight 4× 1-1/4" holes on tote right side HDPE (rectangular pattern), Victron 52mm square on tote right side HDPE below Nilight, 2× KarlKers 1-1/4" holes on tote front or back short side HDPE vertical 3-4" spacing, 4× ventilation 25-30mm on tote top corners
+- [x] PREP Remove battery (undo cam buckle straps, lift out) and panel (unscrew from tote wall) to prevent HDPE shavings on components
+- [x] T013 [P] Drill Nilight 4× 1-1/4" holes in tote right side HDPE with step drill (rectangular pattern), deburr edges
+- [x] T014 [P] Drill Victron 52mm square cutout directly in tote right side HDPE (4 pilot holes at corners + jigsaw straight cuts), deburr edges
+- [x] T015 [P] Drill 2× KarlKers 1-1/4" holes directly in tote short side HDPE with step drill (top for Charge, below for Heater), deburr HDPE edges
+- [x] T016 [P] Drill 4× ventilation 25-30mm holes in tote HDPE top corners with step bit, deburr edges
 
-### Sub-phase 2A: Panel Wiring (Bench)
+### Sub-phase 2A: Panel Wiring (Bench) ✅
 
-**Purpose**: Wire inter-component connections on the panel while accessible on a workbench — much easier than working inside the tote
+### Sub-phase 2B: Panel Installation & Battery Trunk Wiring ✅
 
-- [ ] T023 Cut 4 AWG red wire ~1-2 ft, crimp ring terminals, wire ANL holder output → Blue Sea positive busbar on panel, secure with zip ties
-- [ ] T026 Cut 4 AWG black wire segment 2 (~4-6 ft): crimp shunt lugs, wire Victron shunt system side → Blue Sea negative bus (total 4 AWG black 6-8 ft for star grounding)
+### Sub-phase 2C: Plan & Mark Interface Holes ✅
 
-### Sub-phase 2B: Panel Installation & Battery Trunk Wiring
+### Sub-phase 2D: Drill Interface Holes ✅
 
-**Purpose**: Mount the wired panel in the tote and connect 4 AWG trunks to battery
+**Remaining**:
 
-- [ ] T027 Secure left side plywood panel to tote left wall: drill through tote HDPE + panel edges at 4-6 points, use screws/bolts with washers, verify panel rigid and components accessible
-- [ ] T021 Cut 4 AWG red wire ~4 ft, crimp M8 ring terminal (battery+ end) and ANL lug (holder end), route Battery+ → ANL holder input, verify 105A capacity > 100A fuse
-- [ ] T025 Cut 4 AWG black wire segment 1 (~1-2 ft): crimp M8 ring terminal (battery- end) and shunt lug, wire Battery- → Victron shunt battery side
-
-### Sub-phase 2C: Plan & Mark Interface Holes
-
-**Purpose**: With battery and panel installed, verify clearances and measure wire run lengths before committing to cuts
-
-- [ ] T010 Plan component layout with battery and panel installed: verify clearances for Nilight (right long side HDPE), Victron display (right long side below Nilight), KarlKers connectors (front/back short side HDPE), ventilation holes (top corners), measure wire run lengths from Blue Sea to each interface position
-- [ ] T012 Mark all cutouts: Nilight 4× 1-1/4" holes on tote right side HDPE (rectangular pattern), Victron 52mm square on tote right side HDPE below Nilight, 2× KarlKers 1-1/4" holes on tote front or back short side HDPE vertical 3-4" spacing, 4× ventilation 25-30mm on tote top corners
-
-### Sub-phase 2D: Drill Interface Holes
-
-**Purpose**: Remove battery and panel from tote for clean drilling, cut all holes, clean debris, then reinstall
-
-- [ ] PREP Remove battery (undo cam buckle straps, lift out) and panel (unscrew from tote wall) to prevent HDPE shavings on components
-- [ ] T013 [P] Drill Nilight 4× 1-1/4" holes in tote right side HDPE with step drill (rectangular pattern), deburr edges
-- [ ] T014 [P] Drill Victron 52mm square cutout directly in tote right side HDPE (4 pilot holes at corners + jigsaw straight cuts), deburr edges
-- [ ] T015 [P] Drill 2× KarlKers 1-1/4" holes directly in tote short side HDPE with step drill (top for Charge, below for Heater), deburr HDPE edges
-- [ ] T016 [P] Drill 4× ventilation 25-30mm holes in tote HDPE top corners with step bit, deburr edges
 - [ ] T017 Cut and install ventilation mesh over 4× vent holes in tote (1/8" or 1/4" grid, 10mm overlap), secure with epoxy/hot glue, verify net free area ~2000-2800mm²
-- [ ] POST Clean all HDPE shavings/debris from tote interior, reinstall battery on base with cam buckle straps, reinstall panel to tote wall
 
-### Sub-phase 2E: Mount & Wire Interfaces
+### Sub-phase 2E: Mount & Wire Interfaces (remaining)
 
 **Purpose**: Install display and connector interfaces into drilled holes, connect to panel components
 
-- [ ] T028 Install Victron BMV-712 display into 52mm square cutout in tote right side HDPE, secure with bezel from front, display flush mount
-- [ ] T029 Mount Nilight 4-in-1 panel into rectangular cutout in tote right side HDPE (verify fit when arrives), secure per manufacturer instructions (likely snap-in or screws from rear), verify USB-C/USB-A/12V outlet/voltmeter/ON-OFF accessible
-- [ ] T030 Route RJ12 cable (~3m) from Victron shunt (left panel) to display (right side) across battery top or around side, plug both ends, secure cable with zip ties along route
+- [x] POST Clean all HDPE shavings/debris from tote interior, reinstall battery on base with cam buckle straps, reinstall panel to tote wall
+- [x] T028 Install Victron BMV-712 display into 52mm square cutout in tote right side HDPE, secure with bezel from front, display flush mount
+- [x] T029 Mount Nilight 4-in-1 panel into rectangular cutout in tote right side HDPE (verify fit when arrives), secure per manufacturer instructions (likely snap-in or screws from rear), verify USB-C/USB-A/12V outlet/voltmeter/ON-OFF accessible
+- [x] T030 Route RJ12 cable (~3m) from Victron shunt (left panel) to display (right side) across battery top or around side, plug both ends, secure cable with zip ties along route
 - [ ] T031 Optional: Install Victron temperature sensor (adhesive to battery center, plug into shunt temp port) for continuous monitoring
 
 **Checkpoint**: Foundation complete - left plywood panel installed with Blue Sea/Victron shunt, battery secured, displays mounted to right side HDPE, main positive/negative trunks wired, monitoring infrastructure ready. User story circuits can now be wired.
@@ -180,11 +210,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T032 [P] [US1] Cut 10 AWG red wire ~3-4 ft: Blue Sea circuit 2 terminal → KarlKers Heater panel connector short side, screw connection at Blue Sea end
-- [ ] T033 [P] [US1] Crimp 12 AWG red pigtail 6-12" from 10 AWG to KarlKers included 30A Powerpole red contact using Knoweasy crimper (practice on scrap wire, tug-test)
-- [ ] T032 [P] [US1] Cut 10 AWG black wire ~3-4 ft: Blue Sea negative bus → KarlKers Heater panel connector, crimp ring terminal at bus end
-- [ ] T033 [P] [US1] Crimp 12 AWG black pigtail 6-12" from 10 AWG to KarlKers included 30A Powerpole black contact
-- [ ] T034 [US1] Insert crimped red+black contacts into KarlKers bonded housing (polarity keying prevents reversal), verify contacts seated
+- [x] T032 [P] [US1] Cut 10 AWG red wire ~3-4 ft: Blue Sea circuit 2 terminal → KarlKers Heater panel connector short side, screw connection at Blue Sea end
+- [x] T033 [P] [US1] Crimp 12 AWG red pigtail 6-12" from 10 AWG to KarlKers included 30A Powerpole red contact using Knoweasy crimper (practice on scrap wire, tug-test)
+- [x] T032b [P] [US1] Cut 10 AWG black wire ~3-4 ft: Blue Sea negative bus → KarlKers Heater panel connector, crimp ring terminal at bus end
+- [x] T033b [P] [US1] Crimp 12 AWG black pigtail 6-12" from 10 AWG to KarlKers included 30A Powerpole black contact
+- [x] T034 [US1] Insert crimped red+black contacts into KarlKers bonded housing (polarity keying prevents reversal), verify contacts seated
 - [ ] T035 [US1] Mount KarlKers Heater unit in 28.6mm panel hole (below Charge position), secure with threaded nut from rear (hand-tight + 1/4 turn)
 - [ ] T036 [US1] Install KarlKers weatherproof rubber flip-up cover, test flip mechanism, verify seal when closed
 - [ ] T037 [US1] Label external panel near connector: "HEATER 10A - 12V OUTPUT" with permanent marker or label maker
@@ -192,11 +222,13 @@
 - [ ] T039 [US1] Prepare 10A ST blade fuse for Blue Sea circuit 2, DO NOT install yet (wait for Step 12 final fuse installation)
 
 **FR-005 Fuse Protection Test** (SC-003):
+
 - [ ] T040 [US1] Wire 10A fuse test circuit: Blue Sea circuit 2 → 10A fuse → variable resistive load (or adjustable power supply in current-limiting mode)
 - [ ] T041 [US1] Gradually increase load from 5A → 10A → 12A → 15A (150% rating), observe fuse opens within manufacturer's time-current curve (<10 seconds at 150%)
 - [ ] T042 [US1] Verify after fuse opens: no damage to Blue Sea holder, no overheating of 10 AWG wire, no arcing marks, replace fuse and reset
 
 **FR-009 Terminal Labeling Validation**:
+
 - [ ] T043 [US1] Verify all labels clearly state: voltage (12V), polarity (red+ black-), current rating (10A), purpose (HEATER OUTPUT)
 - [ ] T044 [US1] Test label visibility from 2 meters distance in normal lighting per SC-005
 
@@ -212,32 +244,36 @@
 
 ### Implementation for User Story 2
 
-- [ ] T045 [P] [US2] Mount Nilight 4-in-1 panel in front panel 4-6"×2-3" rectangular cutout, secure with included mounting hardware (screws or snap-fit)
-- [ ] T046 [P] [US2] Cut 10 AWG red wire ~2-3 ft: Blue Sea circuit 4 terminal → Nilight positive spade terminal, screw connection at Blue Sea end
-- [ ] T047 [P] [US2] Crimp female spade terminal on Nilight end (verify spade size 0.25" or 6.3mm per panel specs), verify polarity red=positive
-- [ ] T048 [P] [US2] Cut 10 AWG black wire ~2-3 ft: Blue Sea negative bus → Nilight negative spade terminal, crimp ring terminal at bus, spade at panel
+- [x] T045 [P] [US2] Mount Nilight 4-in-1 panel in front panel 4-6"×2-3" rectangular cutout, secure with included mounting hardware (screws or snap-fit)
+- [x] T046 [P] [US2] Cut 10 AWG red wire ~2-3 ft: Blue Sea circuit 4 terminal → Nilight positive spade terminal, screw connection at Blue Sea end
+- [x] T047 [P] [US2] Crimp female spade terminal on Nilight end (verify spade size 0.25" or 6.3mm per panel specs), verify polarity red=positive
+- [x] T048 [P] [US2] Cut 10 AWG black wire ~2-3 ft: Blue Sea negative bus → Nilight negative spade terminal, crimp ring terminal at bus, spade at panel
 - [ ] T049 [US2] Prepare 20A ST blade fuse for Blue Sea circuit 4, DO NOT install yet
-- [ ] T050 [US2] Download VictronConnect app on smartphone (iOS/Android), verify Bluetooth pairing with BMV-712 display
-- [ ] T051 [US2] Configure Victron via app per quickstart.md Step 9: Battery capacity 200Ah, Charged voltage 14.4V, Tail current 4A, Peukert exponent 1.05, Charge efficiency 95%
+- [x] T050 [US2] Download VictronConnect app on smartphone (iOS/Android), verify Bluetooth pairing with BMV-712 display
+- [x] T051 [US2] Configure Victron via app per quickstart.md Step 9: Battery capacity 200Ah, Charged voltage 14.4V, Tail current 4A, Peukert exponent 1.05, Charge efficiency 95%
 - [ ] T052 [US2] Enable Victron alarms: Low voltage 12.4V, Low SOC 30% (diesel heater warning), Critical SOC 20%, High temperature 45°C (if sensor installed)
 - [ ] T053 [US2] Perform first Victron SOC sync: Fully charge battery with VEVOR 20A charger to 14.4V, wait for current <4A tail, press "Synchronize to 100%" in app or auto-sync
 
 **FR-014 Voltage Accuracy Validation** (SC-002):
+
 - [ ] T054 [US2] With battery disconnected: measure voltage at battery terminals with calibrated multimeter, record value
 - [ ] T055 [US2] Reconnect battery, measure Victron BMV-712 display voltage and Nilight voltmeter voltage
 - [ ] T056 [US2] Verify Victron within ±0.1V of multimeter (e.g., multimeter 13.25V → Victron 13.20-13.30V acceptable)
 - [ ] T057 [US2] Verify Nilight voltmeter within ±0.2V of multimeter (backup/quick check, less accurate than Victron)
 
 **FR-015 Temperature Measurement**:
+
 - [ ] T058 [US2] If Victron temp sensor installed: verify app displays ambient temperature (e.g., 20-25°C indoor)
 - [ ] T059 [US2] If using manual IR thermometer: document procedure in operating instructions - point at battery center, read surface temp, record in log
 
 **FR-016 SOC Estimation Validation**:
+
 - [ ] T060 [US2] Verify Victron app displays SOC% (e.g., 100% after full charge, 98% after 4Ah consumed = 10A for 24 minutes)
 - [ ] T061 [US2] Verify Victron time-to-go prediction appears when load connected (e.g., "20.0 hours remaining" at 10A load with 200Ah capacity)
 - [ ] T062 [US2] Document in operating instructions: Victron SOC% is accurate (±1% after sync), voltage-only SOC estimates inaccurate (±10-15% due to LiFePO4 flat curve 13.2V from 80%-30%)
 
 **FR-017 Visual Status Indicators** (SC-005):
+
 - [ ] T063 [US2] Verify Nilight ON/OFF LED illuminates when switch pressed (blue LED visible at 2 meters)
 - [ ] T064 [US2] Verify Victron display readable from 2 meters: voltage large font, SOC% visible, alarms indicated by blinking or color change
 - [ ] T065 [US2] Test low battery warning: Discharge battery to 30% SOC (or adjust alarm threshold in app for testing), verify Victron alarm triggers (audible beep or visual indicator)
@@ -269,6 +305,7 @@
 - [ ] T078 [US3] Prepare 30A ST blade fuse for Blue Sea circuit 1, DO NOT install yet
 
 **FR-018 to FR-022 AC Charging Validation** (SC-004):
+
 - [ ] T079 [US3] Discharge battery to ~50% SOC (13.2V, 100Ah consumed) using heater load or test resistor at 10A for 10 hours
 - [ ] T080 [US3] Document starting conditions: Victron SOC%, voltage, time, ambient temperature
 - [ ] T081 [US3] Execute 6-step safe charging procedure per quickstart.md Step 8.5: (1) Plug VEVOR charger into 120V AC outlet, (2) Verify charger output voltage 14.4-14.6V with multimeter before connection, (3) Connect alligator clips to adapter cable (charger side), (4) Connect Powerpole to KarlKers Charge panel connector (battery side), (5) Monitor Victron: expect 18-20A bulk current, voltage rising 13.2V → 14.2V → 14.4-14.6V absorption, (6) When current drops <4A tail current, Victron auto-syncs to 100% SOC
@@ -280,6 +317,7 @@
 - [ ] T087 [US3] Verify Victron displays 100% SOC, voltage 13.4-13.6V (resting voltage after charge), time-to-go shows "∞" at idle
 
 **FR-013 Reverse Polarity Protection Test**:
+
 - [ ] T088 [US3] With battery DISCONNECTED (for safety): attempt to connect adapter cable with reversed polarity (red to black, black to red)
 - [ ] T089 [US3] Verify Powerpole mechanical keying prevents insertion (contacts physically blocked by housing geometry)
 - [ ] T090 [US3] Document in operating instructions: "Powerpole connectors are polarized - reversed connection not possible due to contact keying"
@@ -298,10 +336,10 @@
 - [ ] T094 CRITICAL CHECK: Verify NO direct connection battery- to loads, all negatives route through Victron shunt system side for star grounding (measure resistance battery- to Blue Sea- bus should show through shunt path only)
 - [ ] T095 Short circuit check with multimeter: verify no shorts positive to negative (infinite resistance) at battery terminals, Blue Sea busbar, all Powerpole panel connectors
 - [ ] T096 Polarity verification at Powerpole panel connectors: touch multimeter red probe to Powerpole red pin, black to black pin, measure ~13V when battery connected (confirms polarity)
-- [ ] T097 Install 100A ANL fuse in inline holder (Battery+ trunk), verify fuse seated and holder closed/latched
-- [ ] T098 Install Blue Sea blade fuses in circuit positions: Circuit 1 Charge 30A, Circuit 2 Heater 10A, Circuit 4 USB panel 20A, all fuse holders closed/latched
-- [ ] T099 Reconnect battery: positive first (M8 ring terminal to battery+ post, torque 8-10 Nm), negative last (to Victron shunt battery side, torque 8-10 Nm)
-- [ ] T100 Initial power-up verification per quickstart.md Phase 2: Victron displays ~13.2V, Nilight ON/OFF test (voltmeter powers on), measure voltages at Powerpole panel connectors (~13.2V at Charge and Heater), check for smoke/heat/alarms (none expected)
+- [x] T097 Install 100A ANL fuse in inline holder (Battery+ trunk), verify fuse seated and holder closed/latched
+- [x] T098 Install Blue Sea blade fuses in circuit positions: Circuit 1 Charge 30A, Circuit 2 Heater 10A, Circuit 4 USB panel 20A, all fuse holders closed/latched
+- [x] T099 Reconnect battery: positive first (M8 ring terminal to battery+ post, torque 8-10 Nm), negative last (to Victron shunt battery side, torque 8-10 Nm)
+- [x] T100 Initial power-up verification per quickstart.md Phase 2: Victron displays ~13.2V, Nilight ON/OFF test (voltmeter powers on), measure voltages at Powerpole panel connectors (~13.2V at Charge and Heater), check for smoke/heat/alarms (none expected)
 
 **Checkpoint**: Integration complete - all circuits wired, fuses installed, battery connected, initial power-up successful, ready for progressive load testing
 
@@ -312,6 +350,7 @@
 **Purpose**: Validate system performance under real loads per success criteria SC-001, SC-003, SC-006
 
 **Test 1 - Diesel Heater 5A Simulation** (SC-001 Runtime):
+
 - [ ] T101 Connect diesel heater (or 5A test load) to Circuit 2 Heater Powerpole panel connector via mating cable
 - [ ] T102 Record starting conditions: Victron SOC% (e.g., 100%), voltage (e.g., 13.2V), time (e.g., 10:00 AM)
 - [ ] T103 Run heater continuously for 1 hour, monitor Victron: current steady ~5A, voltage stable >12.8V, temperature <40°C (battery/Blue Sea/wires with IR thermometer)
@@ -319,17 +358,20 @@
 - [ ] T105 Extrapolate runtime: 5A continuous → 200Ah capacity / 5A = 40 hours to 0% SOC, practical runtime to 30% SOC alarm = 140Ah / 5A = 28 hours (validates SC-001 runtime goal 40+ hours)
 
 **Test 2 - Fridge 10A Simulation** (if Circuit 3 wired in v1.1, otherwise defer):
+
 - [ ] T106 Connect 10A test load (fridge or resistive load) to Circuit 3 (or use Circuit 2 Heater for testing if Fridge not wired yet)
 - [ ] T107 Run load for 30 minutes, monitor: voltage drop <0.3V (acceptable under 10A), 10 AWG wire temp <40°C, 15A fuse does NOT blow (10A = 67% rating, safe continuous)
 - [ ] T108 Verify Blue Sea terminal connections remain tight, no heat buildup at connections
 
 **Test 3 - Multi-Device 23A Combined Load** (SC-006 Thermal):
+
 - [ ] T109 Connect multiple loads simultaneously to test peak capacity: Heater 8A + Fridge 10A + USB-C 5A = 23A combined (if circuits available, otherwise use test resistors to simulate)
 - [ ] T110 Run combined load for 15 minutes steady-state, monitor Victron: current ~23A, voltage >12.8V
 - [ ] T111 Thermal check with IR thermometer every 5 minutes: Battery surface <40°C, Blue Sea terminals <40°C, 10 AWG wiring <40°C, 4 AWG main trunks <40°C (validates SC-006 thermal management)
 - [ ] T112 Calculate voltage drop: Measure at battery terminals vs. Powerpole panel connectors under 23A load, acceptable <0.5V drop (e.g., 13.0V battery → 12.5V panel acceptable for 10 AWG wire lengths)
 
 **Test 4 - Fuse Interruption Validation** (SC-003):
+
 - [ ] T113 Setup fuse test: Use Circuit 2 Heater (10A fuse) with variable load (adjustable resistor or power supply in current-limiting mode)
 - [ ] T114 Gradually increase load: 5A (safe) → 10A (rated) → 12A (120%) → 15A (150% overload)
 - [ ] T115 Observe and record: Fuse opens at 150% rating (~15A) within time-current curve (expected <10 seconds for ST blade fuse per manufacturer specs)
@@ -345,6 +387,7 @@
 **Purpose**: Real-world deployment with diesel heater, validate success criteria SC-001, SC-005, SC-007, SC-009, SC-010
 
 **Phase 5 Runtime Test** (SC-001 Full Validation):
+
 - [ ] T118 Deploy battery box to winter camping scenario (or simulate with actual diesel heater in garage for extended test)
 - [ ] T119 Connect diesel heater to Circuit 2 Heater output, record starting conditions: Victron 100% SOC, 13.2V, time, ambient temperature
 - [ ] T120 Run diesel heater continuously at 5A average (with 8-10A peak cycles during ignition), monitor Victron app: time-to-go prediction, SOC% decay (~1% per 2Ah consumed), current real-time, voltage curve (expect flat ~13.2V from 80% to 30% SOC per LiFePO4 characteristics)
@@ -353,6 +396,7 @@
 - [ ] T123 Validate SC-001: Runtime ≥40 hours at 5A to 0% SOC theoretical (practical 28 hours to 30% alarm = pass, provides safety margin for diesel heater overnight operation)
 
 **Documentation Creation** (SC-007):
+
 - [ ] T124 Create docs/test-results.md per quickstart.md Phase 6: date of tests, ambient temperature, test loads used (heater 5A, combined 23A), measurements (voltage/current/SOC/runtime from Victron), pass/fail status for SC-001 through SC-010
 - [ ] T125 Capture photos: internal assembly layout (battery/Blue Sea/Victron/wiring), Victron display at 100% SOC, Victron display during 23A load test, Victron display at 30% SOC alarm, KarlKers panel connectors with labels
 - [ ] T126 Capture Victron app screenshots: configuration settings (200Ah/14.4V/4A/alarms), SOC% graph over discharge cycle, voltage graph (showing flat LiFePO4 curve), current graph (showing heater 5A steady with peaks), time-to-go prediction example
@@ -361,6 +405,7 @@
 - [ ] T129 Document Constitution Principle V mistakes and fixes: "Forgot to order Knoweasy crimper initially, delayed assembly 3 days", "Crimped Powerpole contact incorrectly (wire not fully inserted), re-crimped after tug-test failure", "Victron shunt mounted 5 ft from battery, needed extra 4 AWG black wire", "Drilled 32mm holes before confirming KarlKers 28.6mm size, had to enlarge holes"
 
 **Portability & Safety Validation** (SC-008, SC-010):
+
 - [ ] T130 Test portability: One person lifts and carries battery box by tote handles for 50 feet, verify weight manageable (~28-30kg total), no tools/disassembly required (SC-008 pass)
 - [ ] T131 Test transport durability: Secure battery box in vehicle, drive over rough road for 10 miles, inspect: battery straps still tight, Blue Sea 5026 mounting screws secure, KarlKers threaded nuts tight, Victron shunt stationary, no loose wiring
 - [ ] T132 Review safety log: Document any incidents during assembly/testing (smoke/sparks/thermal damage/injury), expected SC-010 = zero incidents
@@ -389,19 +434,23 @@
 ## Dependencies & Execution Strategy
 
 ### Critical Path (Sequential - Cannot Parallelize)
+
 1. **T001-T009** (Procurement) → **T010-T029** (Foundation) → **All User Story Tasks** → **T091-T100** (Integration) → **T101-T140** (Testing & Docs)
 
 ### User Story Independence
+
 - **User Story 1 (Heater Circuit)**: T030-T044 can execute independently after Foundation complete
 - **User Story 2 (Monitoring)**: T045-T065 can execute in parallel with US1 (different components: Nilight panel vs Heater circuit)
 - **User Story 3 (Charging)**: T066-T090 can execute in parallel with US1/US2 (different component: Charge circuit independent of Heater/Monitoring)
 
 ### Parallel Opportunities (Tasks marked [P])
+
 - **Procurement**: T005 (core electrical), T006 (Victron), T007 (consumables) can all order simultaneously
 - **Drilling**: T013 (Victron), T014 (KarlKers), T015 (ventilation) can drill simultaneously if multiple people or careful fixture planning
 - **User Story Implementations**: After Foundation (T029), US1/US2/US3 tasks can proceed in parallel on different circuits
 
 ### Suggested Execution Plan
+
 1. **Week 1**: Procurement (T001-T009) - order all parts, receive existing components, prepare workspace
 2. **Week 2**: Foundation (T010-T029) - enclosure prep, battery mounting, main trunks wiring, monitoring infrastructure (MUST complete before user stories)
 3. **Week 3**: User Stories in parallel - one person per story OR sequence P1 → P2 → P3 (US1 Heater circuit, US2 Monitoring config, US3 Charging circuit)
@@ -410,6 +459,7 @@
 6. **Week 6**: Polish (T134-T140) - operating instructions, labels, v1.1 planning, git commit all docs
 
 ### MVP Scope (Minimum Viable Product)
+
 - **Phase 1 + 2 + User Story 1 only** = functional battery box with heater circuit, fuse protection, manual monitoring (Nilight voltmeter), no Victron/no charging circuit
 - **Recommendation**: Include User Story 2 (Victron BMV-712) in MVP - critical for diesel heater winter camping safety (SOC% accuracy prevents overnight shutdown)
 
@@ -417,13 +467,14 @@
 
 ## Summary
 
-**Total Tasks**: 140 tasks organized into 9 phases  
-**User Stories**: 3 stories (P1 Heater power delivery, P2 Monitoring, P3 AC charging)  
-**Estimated Effort**: 40-60 hours over 4-6 weeks (includes procurement delays, assembly time, testing duration, documentation)  
-**Parallel Opportunities**: 15 tasks marked [P] can execute simultaneously  
+**Total Tasks**: 140 tasks organized into 9 phases
+**User Stories**: 3 stories (P1 Heater power delivery, P2 Monitoring, P3 AC charging)
+**Estimated Effort**: 40-60 hours over 4-6 weeks (includes procurement delays, assembly time, testing duration, documentation)
+**Parallel Opportunities**: 15 tasks marked [P] can execute simultaneously
 **MVP Path**: Phases 1-2-3-4-6 (Foundation + US1 Heater + US2 Monitoring + Integration) delivers functional winter camping power box
 
 **Success Criteria Validation Mapped**:
+
 - SC-001 Runtime: T105, T118-T123 (40+ hours diesel heater)
 - SC-002 Voltage Accuracy: T054-T057 (±0.1V)
 - SC-003 Fuse Protection: T040-T042, T113-T117
