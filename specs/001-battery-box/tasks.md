@@ -13,9 +13,9 @@
 
 **Overall**: 48/144 tasks (33%) — **SYSTEM FUNCTIONAL** ✅
 **Phase 1**: 9/9 (100%) — Complete
-**Phase 2**: 22/24 (92%) — T017 vent mesh, T031 temp sensor remaining
+**Phase 2**: 21/24 (88%) — T016 vent drilling, T017 vent mesh, T031 temp sensor remaining
 **Phase 3**: 6/15 (40%) — Core heater wiring done, mounting/labels/testing remain
-**Phase 4**: 7/21 (33%) — Core Nilight wiring + Victron app done, validation remain
+**Phase 4**: 8/21 (38%) — Core Nilight wiring + Victron app done, validation remain
 **Phase 5**: 0/25 (0%) — Charge circuit not started
 **Phase 6**: 4/10 (40%) — Power-up successful, wiring checks remain
 **Phase 7**: 0/17 (0%) — Progressive load testing not started
@@ -101,7 +101,7 @@
 - T010 ✅: Planned component layout with battery+panel installed, measured wire runs
 - T012 ✅: Marked all cutouts (Nilight, Victron, KarlKers, ventilation)
 - PREP ✅: Removed battery and panel for drilling
-- T013-T016 ✅: Drilled all holes (Nilight 4×1-1/4", Victron 52mm square, KarlKers 2×1-1/4", ventilation 4×25-30mm)
+- T013-T015 ✅: Drilled interface holes (Nilight 4×1-1/4", Victron 52mm square, KarlKers 2×1-1/4")
 - **Crimper validation**: iCrimp AWG crimper with TKDMR/XHF terminals passed pull tests on 4 AWG wire
 
 **2026-03-07** - Interface wiring completion (continued work session)
@@ -190,7 +190,7 @@
 - [x] T013 [P] Drill Nilight 4× 1-1/4" holes in tote right side HDPE with step drill (rectangular pattern), deburr edges
 - [x] T014 [P] Drill Victron 52mm square cutout directly in tote right side HDPE (4 pilot holes at corners + jigsaw straight cuts), deburr edges
 - [x] T015 [P] Drill 2× KarlKers 1-1/4" holes directly in tote short side HDPE with step drill (top for Charge, below for Heater), deburr HDPE edges
-- [x] T016 [P] Drill 4× ventilation 25-30mm holes in tote HDPE top corners with step bit, deburr edges
+- [ ] T016 [P] Drill 4× ventilation 25-30mm holes in tote HDPE top corners with step bit, deburr edges
 
 ### Sub-phase 2A: Panel Wiring (Bench) ✅
 
@@ -267,7 +267,7 @@
 - [x] T049 [US2] Prepare 20A ST blade fuse for Blue Sea circuit 4 — installed per T098
 - [x] T050 [US2] Download VictronConnect app on smartphone (iOS/Android), verify Bluetooth pairing with BMV-712 display
 - [x] T051 [US2] Configure Victron via app per quickstart.md Step 9: Battery capacity 200Ah, Charged voltage 14.4V, Tail current 4A, Peukert exponent 1.05, Charge efficiency 95%
-- [ ] T052 [US2] Enable Victron alarms: Low voltage 12.4V, Low SOC 30% (diesel heater warning), Critical SOC 20%, High temperature 45°C (if sensor installed)
+- [x] T052 [US2] Enable Victron alarms: Low voltage 12.4V, Low SOC 30% (diesel heater warning), Critical SOC 20%, High temperature 45°C (if sensor installed)
 - [ ] T053 [US2] Perform first Victron SOC sync: Fully charge battery with VEVOR 20A charger to 14.4V, wait for current <4A tail, press "Synchronize to 100%" in app or auto-sync
 
 **FR-014 Voltage Accuracy Validation** (SC-002):
