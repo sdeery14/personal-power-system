@@ -4,6 +4,8 @@
 **Feature**: 001-battery-box
 **Status**: Most items purchased, replacing incompatible 4 AWG crimping tools/terminals
 
+> **⚠️ HISTORICAL DESIGN DOCUMENT — superseded 2026-10-25.** This file records the Battery Box V1 design as planned in January–March 2026. It does not describe the hardware as built. For the current configuration see [as-built.md](../as-built.md); for verification status, open safety concerns, and the list of withdrawn procedures see [verification-and-safety.md](../verification-and-safety.md). Where this file conflicts with those documents, those documents govern. Historical text is preserved unchanged apart from the notices added on 2026-10-25. The purchase records, dates, prices, and the crimper-mismatch lesson are preserved as the procurement history. The later purchase of two SB50-compatible panel-mount socket kits is not recorded here (User-reported; see as-built.md §5).
+
 ---
 
 ## Already Purchased ✅

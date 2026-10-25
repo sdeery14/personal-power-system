@@ -5,6 +5,8 @@
 **Status**: Active  
 **Input**: User description: "Battery Box v1 — the core portable DC power module — fully compliant with the project constitution"
 
+> **⚠️ HISTORICAL DESIGN DOCUMENT — superseded 2026-10-25.** This file records the Battery Box V1 design as planned in January–March 2026. It does not describe the hardware as built. For the current configuration see [as-built.md](as-built.md); for verification status, open safety concerns, and the list of withdrawn procedures see [verification-and-safety.md](verification-and-safety.md). Where this file conflicts with those documents, those documents govern. Historical text is preserved unchanged apart from the notices added on 2026-10-25. The requirements and success criteria remain the stated goals for V1. None has been verified against the built hardware; FR-006, FR-008 and FR-009 are known to be unmet by the prototype as of the snapshot date, and FR-012 and FR-018 cannot be assessed because the charge path is undefined. The destructive fuse test implied by SC-003 and User Story 1 scenario 2 is withdrawn as a validation method.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Safe Manual Power Delivery (Priority: P1)

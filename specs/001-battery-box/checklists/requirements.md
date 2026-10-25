@@ -4,6 +4,8 @@
 **Created**: 2026-01-18  
 **Feature**: [spec.md](../spec.md)
 
+> **⚠️ HISTORICAL DESIGN DOCUMENT — superseded 2026-10-25.** This file records the Battery Box V1 design as planned in January–March 2026. It does not describe the hardware as built. For the current configuration see [as-built.md](../as-built.md); for verification status, open safety concerns, and the list of withdrawn procedures see [verification-and-safety.md](../verification-and-safety.md). Where this file conflicts with those documents, those documents govern. Historical text is preserved unchanged apart from the notices added on 2026-10-25. This checklist validated the specification document's quality, not the hardware.
+
 ## Content Quality
 
 - [x] No implementation details (languages, frameworks, APIs)
