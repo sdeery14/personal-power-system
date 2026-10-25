@@ -81,5 +81,6 @@ specs/001-battery-box/
 
 ## Git conventions
 
-- Feature branches are named `<NNN>-<topic>` (e.g. `001-battery-box`, `001-v1-as-built`). `main` is the integration branch.
-- Battery Box V1 work is integrated through `001-battery-box`; pull requests for V1 documentation target that branch until it is merged into `main`.
+- `main` is the baseline. New work branches from the current `origin/main`, and pull requests target `main`.
+- Work branches are named `<NNN>-<topic>` (e.g. `001-post-integration-cleanup`). `001` is Battery Box V1; the next numbered system or major piece of work takes the next number.
+- `001-battery-box` and `001-v1-as-built` are retained historical branches (Battery Box V1 design, build, and reconciliation through 2026-10-25). Do not delete them, branch from them, or target them with pull requests.

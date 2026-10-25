@@ -15,7 +15,7 @@ The full list of open safety concerns and the verification backlog is in [verifi
 
 ## Authoritative documentation
 
-For any question about the hardware as it exists today, use these two files and nothing else:
+For any question about the hardware as it exists today, use these three files and nothing else. The first two describe the hardware and its verification state; the third records where the evidence came from.
 
 | Document | Purpose |
 |---|---|
@@ -55,4 +55,11 @@ specs/001-battery-box/            Battery Box V1: as-built, verification, and de
 
 ## Branches
 
-`main` holds the project framework. Battery Box V1 documentation lives on `001-battery-box` and is being reconciled on `001-v1-as-built`; integration into `main` follows review.
+`main` is the baseline and contains the reconciled Battery Box V1 documentation (integrated 2026-10-25 through [PR #1](https://github.com/sdeery14/personal-power-system/pull/1) and [PR #2](https://github.com/sdeery14/personal-power-system/pull/2)). New work branches from and targets `main`.
+
+Two branches are retained as history and are not to be deleted or built on:
+
+| Branch | Role |
+|---|---|
+| `001-battery-box` | Battery Box V1 design and build history, January–March 2026, plus the reconciliation merged in PR #1 |
+| `001-v1-as-built` | The reconciliation work itself, as reviewed in PR #1 |
