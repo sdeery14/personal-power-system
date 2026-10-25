@@ -764,7 +764,7 @@ This document establishes the "contracts" between battery box components - the e
 
 ## Contract Validation Checklist
 
-> **🛑 WITHDRAWN 2026-10-25 — do not follow.** Every box below was ticked on 2026-01-19 without a verification record. Boxes were cleared on 2026-10-25. Several ticked items describe hardware that never existed: mesh-covered ventilation holes (never drilled), ratchet straps bolted to the tote (cam buckles on a plywood base were used, and the tote has since been abandoned), rubber grommets at Powerpole holes, labelled connectors, and documented time-current datasheets. Per-item status is tracked in verification-and-safety.md §3. See [verification-and-safety.md §5](../verification-and-safety.md#5-withdrawn-procedures).
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** Every box below was ticked on 2026-01-19 without a verification record. Boxes were cleared on 2026-10-25. Several ticked items describe hardware for which no build record exists: mesh-covered ventilation holes (T016/T017 open), ratchet straps bolted to the tote (the build log records cam-buckle straps and a plywood base, and the owner reports the tote has since been abandoned), rubber grommets at Powerpole holes, labelled connectors, and documented time-current datasheets. Per-item status is tracked in verification-and-safety.md §3. See [verification-and-safety.md §5](../verification-and-safety.md#5-withdrawn-procedures).
 
 Before declaring a component "contract-compliant," verify the following:
 

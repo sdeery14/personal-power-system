@@ -14,6 +14,7 @@ This is a **hardware documentation project**, not a software codebase. It record
 ## Document authority
 
 - **`specs/001-battery-box/as-built.md`** is the only authoritative description of the hardware as it exists. **`specs/001-battery-box/verification-and-safety.md`** is the only authoritative record of what has been verified and what safety concerns are open.
+- **`specs/001-battery-box/reconciliation-2026-10-25.md`** (R-2026-10-25) records where the snapshot's User-reported and Visually observed claims came from and what no reviewer inspected. Cite it, rather than the photographs, for provenance.
 - Every other file under `specs/001-battery-box/` is a **historical design document**. It describes the design as planned in Jan–Mar 2026, carries a status notice, and must not be read as a description of the current hardware or as an operating manual. Where it conflicts with the as-built documents, the as-built documents govern.
 - `tasks.md` contains the dated build log and lessons learned. That log is the primary historical record and must be preserved as written.
 
@@ -50,6 +51,7 @@ Every hardware claim carries one of these tags:
 - Never record a test as passed, a component as compliant, or a value as measured without a dated record stating who, how, and what. A ticked checkbox is not evidence. An owner's recollection of a check is User-reported, not Verified.
 - Never infer the current hardware from design documents. Where design and build diverge, record the deviation in `as-built.md §7`.
 - Do not present inferred circuit mappings or connector assignments as verified.
+- Do not write that an undocumented activity never happened. Say what the record shows: *documented absence* (no record), *owner-confirmed absence* (the owner stated it, with the date), or *unknown status*.
 - Do not write energized test procedures or prescribe electrical modifications without engineering review and owner approval.
 
 ## Safety constraints on documentation
@@ -65,6 +67,7 @@ Every hardware claim carries one of these tags:
 specs/001-battery-box/
   as-built.md                    Authoritative hardware description
   verification-and-safety.md     Authoritative verification and safety status
+  reconciliation-2026-10-25.md   Provenance record for the 2026-10-25 snapshot (R-2026-10-25)
   spec.md, plan.md, research.md, data-model.md, quickstart.md,
   contracts/, checklists/, docs/ Historical design documents (Jan–Mar 2026)
   tasks.md                       Historical task list; build log and lessons learned

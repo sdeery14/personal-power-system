@@ -5,7 +5,7 @@
 **Safety**: Read entire guide before starting; follow all electrical safety practices
 **Created**: 2026-01-18
 
-> **🛑 SUPERSEDED — NOT AN OPERATING MANUAL.** This guide describes a tote-based build with six circuits on Blue Sea positions 1–6, 12 AWG pigtails, and status LEDs. None of that matches the prototype as built (five circuits on positions 8–12, no pigtails, no enclosure, no LEDs). Use [as-built.md](as-built.md) for the current hardware and [verification-and-safety.md](verification-and-safety.md) for safety status. The following sections are **withdrawn** and carry a notice at their location: §4.5 (Sanuke crimping), §4.6 energization sequence, the orphaned charging block 6.1–6.5 between Steps 7 and 8, §3.4 Test 4 (destructive fuse test), §7 Operating Instructions, and the LED items in §8 Troubleshooting. Historical text is preserved unchanged apart from the notices added on 2026-10-25.
+> **🛑 SUPERSEDED — NOT AN OPERATING MANUAL.** This guide describes a tote-based build with six circuits on Blue Sea positions 1–6, 12 AWG pigtails, and status LEDs. None of that matches the prototype as built (five circuits on positions 8–12, no pigtails per the owner, no enclosure, no status-LED circuits on record). Use [as-built.md](as-built.md) for the current hardware and [verification-and-safety.md](verification-and-safety.md) for safety status. The following sections are **withdrawn** and carry a notice at their location: §4.5 (Sanuke crimping), §4.6 energization sequence, the orphaned charging block 6.1–6.5 between Steps 7 and 8, §3.4 Test 4 (destructive fuse test), §7 Operating Instructions, and the LED items in §8 Troubleshooting. Historical text is preserved unchanged apart from the notices added on 2026-10-25.
 
 ---
 
@@ -581,7 +581,7 @@ BLUE SEA 5026 FUSE BLOCK
 - [ ] Voltmeter provides backup to Victron BMV-712 (blue illumination, visible at 2 meters)
 - [ ] ON/OFF switch on Nilight panel prevents 50-100mA parasitic drain when system not in use
 
-> **🛑 WITHDRAWN 2026-10-25 — do not follow.** Sub-steps 6.1–6.5 below are an orphaned fragment from an earlier draft (a separate inline charge fuse, a Schottky diode, "crimp/solder", and a charge negative wired directly to battery negative, which bypasses the shunt). They contradict Step 8 and the star-grounding rule stated throughout this guide. No charge input exists on the prototype; the charge path is unknown. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** Sub-steps 6.1–6.5 below are an orphaned fragment from an earlier draft (a separate inline charge fuse, a Schottky diode, "crimp/solder", and a charge negative wired directly to battery negative, which bypasses the shunt). They contradict Step 8 and the star-grounding rule stated throughout this guide. No dedicated charge input has been identified or verified; the charge path is unknown. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
 
 **6.1 Charging fuse holder**
 
@@ -1131,7 +1131,7 @@ BLUE SEA 5026 FUSE BLOCK
 
 ## 7. Operating Instructions
 
-> **🛑 WITHDRAWN 2026-10-25 — do not follow.** These are not operating instructions for the current prototype. They refer to green, yellow, and red status LEDs that were deferred and never built, and to a charge input that does not exist. No operating instructions for the prototype have been written; the prototype is not ready for use beyond the bench. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** These are not operating instructions for the current prototype. They refer to green, yellow, and red status LEDs that were deferred and are not recorded as built, and to a charge input that has not been identified or verified. No operating instructions for the prototype have been written; the prototype is not ready for use beyond the bench. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
 
 ### Daily/Pre-Use Checks
 
@@ -1187,7 +1187,7 @@ Before using battery box:
 
 ## 8. Troubleshooting
 
-> **⚠️ Note (2026-10-25):** The entries about Low Battery and Charging LEDs and LED trigger circuits refer to hardware that does not exist. The remaining entries are generic design-phase guidance, not procedures reviewed for the current prototype.
+> **⚠️ Note (2026-10-25):** The entries about Low Battery and Charging LEDs and LED trigger circuits refer to circuits that are not recorded as built. The remaining entries are generic design-phase guidance, not procedures reviewed for the current prototype.
 
 ### Issue: Voltmeter Not Displaying
 
@@ -1355,7 +1355,7 @@ If a component fails or needs upgrading, refer to [component-interfaces.md](cont
 
 ## Completion Checklist
 
-> **⚠️ Note (2026-10-25):** None of the items below were completed. The closing statement that follows the checklist was written at design time and is not a status report.
+> **⚠️ Note (2026-10-25):** No record shows that any item below was completed. The closing statement that follows the checklist was written at design time and is not a status report.
 
 - [ ] All assembly steps completed
 - [ ] All testing phases completed and passed

@@ -6,10 +6,10 @@ A long-term, modular project to build, understand, and evolve a self-managed 12 
 
 **Battery Box V1 is a working bench prototype. It is not ready for transport or deployment.**
 
-- The system powered on for the first time on 2026-03-07. The Victron monitor and Nilight accessory panel have been observed operating.
+- The system powered on for the first time on 2026-03-07. The Victron monitor and Nilight accessory panel have been observed or reported operating. That history demonstrates function, not safety, and does not authorize continued operation.
 - Electrical connections are exposed, there is no enclosure, no master disconnect, and the assembly is held together only by two cam-buckle straps.
-- No polarity, continuity, voltage-drop, load, thermal, or charging validation records exist. Undocumented checks are not counted as passed.
-- The charging path is undefined. Connector-to-fuse mapping has not been traced.
+- No polarity, continuity, voltage-drop, load, thermal, or charging validation records exist in the repository. Undocumented checks are not counted as passed.
+- No dedicated charge input has been identified or verified. Connector-to-fuse mapping has not been traced.
 
 The full list of open safety concerns and the verification backlog is in [verification-and-safety.md](specs/001-battery-box/verification-and-safety.md).
 
@@ -21,6 +21,7 @@ For any question about the hardware as it exists today, use these two files and 
 |---|---|
 | [specs/001-battery-box/as-built.md](specs/001-battery-box/as-built.md) | Canonical description of the V1 hardware: power path, fuse positions, branches, component inventory, mechanical configuration, and deviations from the design. Every claim carries an evidence tag. |
 | [specs/001-battery-box/verification-and-safety.md](specs/001-battery-box/verification-and-safety.md) | Open safety concerns, verification backlog, the historical measurements on record, and the list of withdrawn procedures. |
+| [specs/001-battery-box/reconciliation-2026-10-25.md](specs/001-battery-box/reconciliation-2026-10-25.md) | Provenance of the 2026-10-25 snapshot: what the owner stated, what was attributed to photographs, and what no reviewer inspected. The photographs are held by the owner outside the repository. |
 
 ## Historical design documents
 
