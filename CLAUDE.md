@@ -20,12 +20,14 @@ This is a **hardware documentation project**, not a software codebase. It record
 ## Working method: AI Development Playbook v1.1 (summary)
 
 Roles:
+
 - **ChatGPT** — planning coordinator, requirements analysis, implementation review.
 - **Claude Code** — repository implementation: branches, commits, pull request preparation.
 - **Codex** — independent, read-only review of consequential changes.
 - **Project owner** — physical verification and final approval. Only the owner can confirm anything about the physical system.
 
 Rules:
+
 - Start each piece of work with a read-only assessment and a proposed plan. Do not create branches, edit files, commit, push, or open pull requests until the plan is approved. Do not merge pull requests without explicit approval.
 - Keep scope to what was approved. Documentation changes are documentation-only: no hardware design decisions, fuse or wire sizing, component selection, or charging recommendations unless explicitly authorized.
 - Prefer small, focused commits with the existing prefix style (`docs(001):`, `feat(001):`, `progress(001):`).
@@ -59,7 +61,7 @@ Every hardware claim carries one of these tags:
 
 ## Repository structure
 
-```
+```text
 specs/001-battery-box/
   as-built.md                    Authoritative hardware description
   verification-and-safety.md     Authoritative verification and safety status

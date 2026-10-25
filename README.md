@@ -43,7 +43,7 @@ Hardware claims use six evidence categories: Historical/documented, User-reporte
 
 ## Repository layout
 
-```
+```text
 README.md                         This file
 vision.md                         Project purpose and philosophy
 CLAUDE.md                         Guidance for AI agents working in this repository
