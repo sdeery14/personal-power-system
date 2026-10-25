@@ -7,6 +7,8 @@
 
 **Organization**: Tasks grouped by user story to enable independent implementation and testing.
 
+> **⚠️ HISTORICAL DESIGN DOCUMENT — superseded 2026-10-25.** This file records the Battery Box V1 design as planned in January–March 2026. It does not describe the hardware as built. For the current configuration see [as-built.md](as-built.md); for verification status, open safety concerns, and the list of withdrawn procedures see [verification-and-safety.md](verification-and-safety.md). Where this file conflicts with those documents, those documents govern. Historical text is preserved unchanged apart from the notices added on 2026-10-25. The **Build Log** and **Field Improvements & Lessons Learned** sections are the primary historical record of the build and are preserved as written. The progress summary, task list, and "What's Next" reflect the plan as of 2026-03-07; circuit allocations, fuse positions, and connectors in the task text no longer match the prototype. Tasks T040–T042 and T113–T117 (destructive fuse tests) are withdrawn. T134's draft idea of pulling the ANL fuse as an emergency shutdown is not endorsed.
+
 ---
 
 ## Progress Summary
@@ -239,6 +241,8 @@
 
 **FR-005 Fuse Protection Test** (SC-003):
 
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** T040–T042 overload an assembled circuit until the fuse blows. Destructive testing of the prototype is withdrawn; SC-003 validation is an open design question. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
+
 - [ ] T040 [US1] Wire 10A fuse test circuit: Blue Sea circuit 2 → 10A fuse → variable resistive load (or adjustable power supply in current-limiting mode)
 - [ ] T041 [US1] Gradually increase load from 5A → 10A → 12A → 15A (150% rating), observe fuse opens within manufacturer's time-current curve (<10 seconds at 150%)
 - [ ] T042 [US1] Verify after fuse opens: no damage to Blue Sea holder, no overheating of 10 AWG wire, no arcing marks, replace fuse and reset
@@ -388,6 +392,8 @@
 
 **Test 4 - Fuse Interruption Validation** (SC-003):
 
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** T113–T117 overload an assembled circuit until the fuse blows. Destructive testing of the prototype is withdrawn; SC-003 validation is an open design question. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
+
 - [ ] T113 Setup fuse test: Use Circuit 2 Heater (10A fuse) with variable load (adjustable resistor or power supply in current-limiting mode)
 - [ ] T114 Gradually increase load: 5A (safe) → 10A (rated) → 12A (120%) → 15A (150% overload)
 - [ ] T115 Observe and record: Fuse opens at 150% rating (~15A) within time-current curve (expected <10 seconds for ST blade fuse per manufacturer specs)
@@ -434,6 +440,8 @@
 ## Phase 9: Polish & Future Planning
 
 **Purpose**: Final refinements and v1.1 expansion planning
+
+> **⚠️ Note (2026-10-25):** T134 below suggests "pull 100A ANL fuse to isolate battery" as an emergency shutdown. Removing the main fuse is not an endorsed switching or shutdown method; a master disconnect is an open item (verification-and-safety.md S2).
 
 - [ ] T134 Create operating instructions document: safe connection of loads (match load current to circuit fuse rating, verify polarity), charging procedure (6-step safe sequence from quickstart.md), storage guidelines (store at 50-80% SOC, recharge every 3 months if unused, disconnect loads during storage), emergency shutdown (pull 100A ANL fuse to isolate battery)
 - [ ] T135 Create quick reference card laminated and stored in tote: Circuit labels (Charge 30A input only, Heater 10A output), Victron SOC interpretation (30% alarm = recharge soon, 20% critical = stop loads immediately, voltage unreliable for SOC), emergency contacts (battery manufacturer VEVOR support, local electrician if troubleshooting needed)

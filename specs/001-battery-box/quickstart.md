@@ -5,6 +5,8 @@
 **Safety**: Read entire guide before starting; follow all electrical safety practices
 **Created**: 2026-01-18
 
+> **🛑 SUPERSEDED — NOT AN OPERATING MANUAL.** This guide describes a tote-based build with six circuits on Blue Sea positions 1–6, 12 AWG pigtails, and status LEDs. None of that matches the prototype as built (five circuits on positions 8–12, no pigtails per the owner, no enclosure, no status-LED circuits on record). Use [as-built.md](as-built.md) for the current hardware and [verification-and-safety.md](verification-and-safety.md) for safety status. The following sections are **withdrawn** and carry a notice at their location: §4.5 (Sanuke crimping), §4.6 energization sequence, the orphaned charging block 6.1–6.5 between Steps 7 and 8, §3.4 Test 4 (destructive fuse test), §7 Operating Instructions, and the LED items in §8 Troubleshooting. Historical text is preserved unchanged apart from the notices added on 2026-10-25.
+
 ---
 
 ## Table of Contents
@@ -202,6 +204,8 @@ Common terminal sizes (verify with calipers or component documentation):
 
 ### 4.5 Crimping with Sanuke/Solsop Hydraulic Tool
 
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** This method failed manual pull tests on 2026-02-07 (metric dies do not compress AWG wire; wire pulled out of the terminal). The tool and SC25-8 terminals were returned. The 4 AWG terminations in the prototype were made with an iCrimp AWG crimper and AWG terminals on 2026-03-07 (see tasks.md Lessons Learned). Following this section produces unsafe terminations. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
+
 **Die Selection**: Use **25mm² die** for 4 AWG wire (equivalent gauge)
 
 **Steps**:
@@ -226,6 +230,8 @@ Common terminal sizes (verify with calipers or component documentation):
 - [ ] Verify all crimps pass tug test
 - [ ] Apply heat-shrink if desired
 
+> **⚠️ Note (2026-10-25):** This sequence (negative first) contradicts testing Phase 2.1 below (positive first). Neither has been reviewed as the procedure for the current prototype.
+
 **Phase 2: Connect negative first** (establishes ground reference, safer)
 
 - [ ] Battery- → Shunt "BATTERY -" side (M8 ring terminal, torque 8-10 Nm or hand-tight + 1/4 turn)
@@ -244,6 +250,8 @@ Common terminal sizes (verify with calipers or component documentation):
 - [ ] No bare wire exposed (heat-shrink or electrical tape covers crimps)
 - [ ] Positive and negative wires do NOT touch anywhere
 - [ ] Panel secure, components not loose
+
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** This step uses insertion of the 100 A ANL main fuse as the act that energizes the system and describes sparking as normal. The main fuse is not a switch; this contradicts Step 12 and testing Phase 2 (fuses installed first, battery connected last). Do not use the ANL fuse as an on/off or emergency switch. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
 
 **Phase 5: First power-up** (after all circuit wiring complete - see Step 12)
 
@@ -573,6 +581,8 @@ BLUE SEA 5026 FUSE BLOCK
 - [ ] Voltmeter provides backup to Victron BMV-712 (blue illumination, visible at 2 meters)
 - [ ] ON/OFF switch on Nilight panel prevents 50-100mA parasitic drain when system not in use
 
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** Sub-steps 6.1–6.5 below are an orphaned fragment from an earlier draft (a separate inline charge fuse, a Schottky diode, "crimp/solder", and a charge negative wired directly to battery negative, which bypasses the shunt). They contradict Step 8 and the star-grounding rule stated throughout this guide. No dedicated charge input has been identified or verified; the charge path is unknown. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
+
 **6.1 Charging fuse holder**
 
 - [ ] Install inline blade fuse holder near battery (separate from output circuits)
@@ -849,6 +859,8 @@ BLUE SEA 5026 FUSE BLOCK
 
 ### Phase 2: Initial Power-Up (Low-Risk, No External Loads)
 
+> **⚠️ Note (2026-10-25):** Positive-first here contradicts §4.6 Phase 2 (negative first). See the note there.
+
 **2.1 Connect battery (fuses installed, positive first safety procedure)**
 
 - [ ] Connect battery positive first: M8 ring terminal to battery+ post, torque 8-10 Nm
@@ -932,6 +944,8 @@ BLUE SEA 5026 FUSE BLOCK
   - Victron shunt: May be slightly warm <50°C (carries all 23A return current)
 - [ ] Duration: Run for 15 minutes (allow wiring to reach steady-state heat)
 - [ ] **Success criteria (SC-006)**: All connections <40°C rise, voltage >12.8V at 23A, no fuses blow
+
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** Deliberately overloading an assembled circuit until the fuse blows is withdrawn as a validation method. No non-destructive alternative has been approved; SC-003 validation is an open design question. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
 
 **3.4 Test 4: Fuse interruption validation (10A circuit)**
 
@@ -1063,6 +1077,8 @@ BLUE SEA 5026 FUSE BLOCK
   - Runtime: Total hours from 100% SOC to 30% SOC alarm (target: 28+ hours at 5A = 140Ah consumed)
   - SOC tracking: Victron coulomb counting accuracy (±1% after first sync calibration)
 
+> **⚠️ Note (2026-10-25):** The SC numbers in this list do not match spec.md (here SC-004 is portability and SC-009 is budget; in spec.md SC-004 is charge time and SC-009 is 100 cycles). Do not record results against this list.
+
 **6.2 Pass/Fail status for Success Criteria**
 
 - [ ] **SC-001** (Runtime): Pass / Fail - 40+ hours at 5A diesel heater load (200Ah ÷ 5A = 40 hours theoretical, tested: \_\_\_ hours)
@@ -1114,6 +1130,8 @@ BLUE SEA 5026 FUSE BLOCK
 ---
 
 ## 7. Operating Instructions
+
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** These are not operating instructions for the current prototype. They refer to green, yellow, and red status LEDs that were deferred and are not recorded as built, and to a charge input that has not been identified or verified. No operating instructions for the prototype have been written; the prototype is not ready for use beyond the bench. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
 
 ### Daily/Pre-Use Checks
 
@@ -1168,6 +1186,8 @@ Before using battery box:
 ---
 
 ## 8. Troubleshooting
+
+> **⚠️ Note (2026-10-25):** The entries about Low Battery and Charging LEDs and LED trigger circuits refer to circuits that are not recorded as built. The remaining entries are generic design-phase guidance, not procedures reviewed for the current prototype.
 
 ### Issue: Voltmeter Not Displaying
 
@@ -1334,6 +1354,8 @@ If a component fails or needs upgrading, refer to [component-interfaces.md](cont
 ---
 
 ## Completion Checklist
+
+> **⚠️ Note (2026-10-25):** No record shows that any item below was completed. The closing statement that follows the checklist was written at design time and is not a status report.
 
 - [ ] All assembly steps completed
 - [ ] All testing phases completed and passed

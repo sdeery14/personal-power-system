@@ -4,6 +4,8 @@
 **Created**: 2026-01-18  
 **Feature**: [spec.md](spec.md) | [plan.md](plan.md)
 
+> **⚠️ HISTORICAL DESIGN DOCUMENT — superseded 2026-10-25.** This file records the Battery Box V1 design as planned in January–March 2026. It does not describe the hardware as built. For the current configuration see [as-built.md](as-built.md); for verification status, open safety concerns, and the list of withdrawn procedures see [verification-and-safety.md](verification-and-safety.md). Where this file conflicts with those documents, those documents govern. Historical text is preserved unchanged apart from the notices added on 2026-10-25. The design rationale here remains valid history. The circuit allocation in §3 and §4, the enclosure in §9, and the test plan in §10 do not describe the prototype as built.
+
 ## Research Questions Addressed
 
 This document resolves all technical uncertainties identified during planning to enable Phase 1 design with confidence.
@@ -438,6 +440,8 @@ This document resolves all technical uncertainties identified during planning to
   * Monitor: Victron current reading (~23A), voltage (expect 13.0-13.2V), all connections for hotspots
   * Duration: 15 minutes (sufficient to heat wiring to steady-state)
   * Success criteria: SC-006 validated (all components <40°C rise), voltage >12.8V at 23A load
+
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** Overloading an assembled circuit until the fuse blows is withdrawn as a validation method. See [verification-and-safety.md §5](verification-and-safety.md#5-withdrawn-procedures).
 
 - **Test 4: Fuse interruption (protection validation)**:
   * Install 10A blade fuse in spare circuit, load with 15A (150% rating)

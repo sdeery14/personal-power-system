@@ -4,6 +4,8 @@
 **Created**: 2026-01-18  
 **Feature**: [spec.md](../spec.md) | [data-model.md](../data-model.md)
 
+> **⚠️ HISTORICAL DESIGN DOCUMENT — superseded 2026-10-25.** This file records the Battery Box V1 design as planned in January–March 2026. It does not describe the hardware as built. For the current configuration see [as-built.md](../as-built.md); for verification status, open safety concerns, and the list of withdrawn procedures see [verification-and-safety.md](../verification-and-safety.md). Where this file conflicts with those documents, those documents govern. Historical text is preserved unchanged apart from the notices added on 2026-10-25. The contract definitions remain useful design intent. Every "v1 Implementation: Satisfies Contract" list and the Contract Validation Checklist were written at design time without verification records and must not be read as compliance evidence.
+
 ## Overview
 
 This document establishes the "contracts" between battery box components - the electrical, mechanical, and behavioral specifications that enable modular design per Constitution Principle II. Any component replacement must satisfy these contracts to ensure compatibility and safety.
@@ -762,45 +764,47 @@ This document establishes the "contracts" between battery box components - the e
 
 ## Contract Validation Checklist
 
+> **🛑 WITHDRAWN 2026-10-25 — do not follow.** Every box below was ticked on 2026-01-19 without a verification record. Boxes were cleared on 2026-10-25. Several ticked items describe hardware for which no build record exists: mesh-covered ventilation holes (T016/T017 open), ratchet straps bolted to the tote (the build log records cam-buckle straps and a plywood base, and the owner reports the tote has since been abandoned), rubber grommets at Powerpole holes, labelled connectors, and documented time-current datasheets. Per-item status is tracked in verification-and-safety.md §3. See [verification-and-safety.md §5](../verification-and-safety.md#5-withdrawn-procedures).
+
 Before declaring a component "contract-compliant," verify the following:
 
 ### Battery Module (VEVOR 200Ah)
-- [x] Voltage range: 10.0V - 14.6V ✓ (VEVOR BMS cutoffs)
-- [x] Continuous current rating: ≥30A ✓ (100A continuous, exceeds requirement)
-- [x] BMS protections present: OVP, UVP, OCP, SCP ✓ (integrated 100A BMS)
-- [x] Chemistry: LiFePO4 ✓ (4S, 3.2V/cell)
-- [x] Mounting secure, no movement during transport ✓ (2× ratchet straps, bolted to tote)
+- [ ] Voltage range: 10.0V - 14.6V ✓ (VEVOR BMS cutoffs)
+- [ ] Continuous current rating: ≥30A ✓ (100A continuous, exceeds requirement)
+- [ ] BMS protections present: OVP, UVP, OCP, SCP ✓ (integrated 100A BMS)
+- [ ] Chemistry: LiFePO4 ✓ (4S, 3.2V/cell)
+- [ ] Mounting secure, no movement during transport ✓ (2× ratchet straps, bolted to tote)
 
 ### Fuses (100A ANL + Blue Sea 5026)
-- [x] DC voltage rating: ≥32V ✓ (ANL 32V rated, blade fuses 32V)
-- [x] Current rating: 125% of expected load ✓ (100A ANL matches BMS, circuits 10-30A with margin)
-- [x] Time-current characteristics documented ✓ (ANL fuse datasheet, blade fuse I²t curves)
-- [x] Accessible for user replacement ✓ (ANL inline holder removable cover, Blue Sea top-access)
+- [ ] DC voltage rating: ≥32V ✓ (ANL 32V rated, blade fuses 32V)
+- [ ] Current rating: 125% of expected load ✓ (100A ANL matches BMS, circuits 10-30A with margin)
+- [ ] Time-current characteristics documented ✓ (ANL fuse datasheet, blade fuse I²t curves)
+- [ ] Accessible for user replacement ✓ (ANL inline holder removable cover, Blue Sea top-access)
 
 ### Connectors (Anderson Powerpole PP45)
-- [x] Current rating matches or exceeds circuit fuse ✓ (45A > all circuits 10-30A)
-- [x] Polarity protection (mechanical keying or diode) ✓ (Powerpole dovetail keying)
-- [x] Labeled with voltage, current, polarity ✓ (side panel labels: "HEATER 10A", etc.)
-- [x] Mounted externally with strain relief ✓ (32mm holes with rubber grommets)
+- [ ] Current rating matches or exceeds circuit fuse ✓ (45A > all circuits 10-30A)
+- [ ] Polarity protection (mechanical keying or diode) ✓ (Powerpole dovetail keying)
+- [ ] Labeled with voltage, current, polarity ✓ (side panel labels: "HEATER 10A", etc.)
+- [ ] Mounted externally with strain relief ✓ (32mm holes with rubber grommets)
 
 ### Monitoring System (Victron BMV-712 + Nilight Panel)
-- [x] Voltmeter accuracy: ±0.1V ✓ (Victron ±0.1V, Nilight ±0.1-0.2V)
-- [x] Voltmeter visible from 2 meters ✓ (front panel mounted, LED displays)
-- [x] Temperature measurement method documented ✓ (manual IR thermometer, optional Victron sensor)
-- [x] Status indicators functional ✓ (Nilight ON/OFF LED, Victron display with alarms)
+- [ ] Voltmeter accuracy: ±0.1V ✓ (Victron ±0.1V, Nilight ±0.1-0.2V)
+- [ ] Voltmeter visible from 2 meters ✓ (front panel mounted, LED displays)
+- [ ] Temperature measurement method documented ✓ (manual IR thermometer, optional Victron sensor)
+- [ ] Status indicators functional ✓ (Nilight ON/OFF LED, Victron display with alarms)
 
 ### Enclosure (Greenmade 27gal Tote)
-- [x] Ventilation holes with mesh: ≥2× 25mm ✓ (4× 25-30mm with mesh, ~2000-2800mm²)
-- [x] Battery secured against movement ✓ (2× ratchet straps, bolted anchor points)
-- [x] All components accessible for maintenance ✓ (Blue Sea top-access, battery straps removable)
-- [x] Total weight allows one-person portability ✓ (28-30kg, within one-person limit)
+- [ ] Ventilation holes with mesh: ≥2× 25mm ✓ (4× 25-30mm with mesh, ~2000-2800mm²)
+- [ ] Battery secured against movement ✓ (2× ratchet straps, bolted anchor points)
+- [ ] All components accessible for maintenance ✓ (Blue Sea top-access, battery straps removable)
+- [ ] Total weight allows one-person portability ✓ (28-30kg, within one-person limit)
 
 ### Wiring (4/10/12 AWG TXL/GXL)
-- [x] Wire gauge meets current rating ✓ (4 AWG 105A for 100A trunk, 10 AWG 35-40A for circuits)
-- [x] Insulation rating: ≥105°C ✓ (TXL/GXL automotive wire)
-- [x] Color coding: Red (+), Black (-) ✓ (all positive red, all negative black)
-- [x] Terminations: Crimped ring terminals or soldered connectors ✓ (ratcheting crimper, M8 rings, Powerpole contacts)
-- [x] Strain relief on all panel-mount connections ✓ (rubber grommets at all Powerpole holes)
+- [ ] Wire gauge meets current rating ✓ (4 AWG 105A for 100A trunk, 10 AWG 35-40A for circuits)
+- [ ] Insulation rating: ≥105°C ✓ (TXL/GXL automotive wire)
+- [ ] Color coding: Red (+), Black (-) ✓ (all positive red, all negative black)
+- [ ] Terminations: Crimped ring terminals or soldered connectors ✓ (ratcheting crimper, M8 rings, Powerpole contacts)
+- [ ] Strain relief on all panel-mount connections ✓ (rubber grommets at all Powerpole holes)
 
 ---
 
@@ -812,6 +816,8 @@ These interface contracts define the "API" between battery box components, enabl
 2. **Interoperability**: Standard connectors, voltage/current compatibility
 3. **Observability**: Measurement interfaces, status indication
 4. **Maintainability**: User-replaceable components, documented specifications
+
+> **⚠️ Note (2026-10-25):** The statement below is a design-time claim. No contract has been verified against the built hardware, and the enclosure and connectors named no longer match the prototype.
 
 **v1 Implementation Status**: All contracts satisfied by VEVOR 200Ah battery, Blue Sea 5026 fuse block, Victron BMV-712 battery monitor, Anderson Powerpole PP45 connectors, Nilight 4-in-1 panel, Greenmade 27gal tote enclosure.
 

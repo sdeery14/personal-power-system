@@ -1,71 +1,85 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code and other AI agents working in this repository.
 
-## Project Overview
+## Project overview
 
-This is a **hardware documentation project** — not a software codebase. It designs, specifies, and tracks the build of a modular 12V DC portable power system (LiFePO4 battery box) for camping, vehicle use, and backup power. There is no application code, no build system, and no tests to run.
+This is a **hardware documentation project**, not a software codebase. It records the design, build, and evolution of a modular 12 V DC portable power system (currently Battery Box V1, a LiFePO4 battery box). There is no application code, build system, or test suite. All work product is markdown.
 
-All work product is structured markdown: specifications, plans, research, data models, task lists, and assembly documentation.
+## Governing documents (read first)
 
-## Governing Documents (Read These First)
+1. **`.specify/memory/constitution.md`** — Seven principles that all work must satisfy. Safety First (Principle I) always wins.
+2. **`vision.md`** — Purpose, use cases, non-goals, and philosophy: "Simple before smart; Measured before automated; Documented before expanded."
 
-1. **`.specify/memory/constitution.md`** — The supreme authority. Seven enforceable principles that ALL work must comply with. Safety First (Principle I) always wins conflicts between principles.
-2. **`vision.md`** — Project purpose, use cases, non-goals, and design philosophy: "Simple before smart; Measured before automated; Documented before expanded."
+## Document authority
 
-## Speckit Framework
+- **`specs/001-battery-box/as-built.md`** is the only authoritative description of the hardware as it exists. **`specs/001-battery-box/verification-and-safety.md`** is the only authoritative record of what has been verified and what safety concerns are open.
+- **`specs/001-battery-box/reconciliation-2026-10-25.md`** (R-2026-10-25) records where the snapshot's User-reported and Visually observed claims came from and what no reviewer inspected. Cite it, rather than the photographs, for provenance.
+- Every other file under `specs/001-battery-box/` is a **historical design document**. It describes the design as planned in Jan–Mar 2026, carries a status notice, and must not be read as a description of the current hardware or as an operating manual. Where it conflicts with the as-built documents, the as-built documents govern.
+- `tasks.md` contains the dated build log and lessons learned. That log is the primary historical record and must be preserved as written.
 
-The project uses a structured specification workflow managed by agent templates in `.github/agents/` with corresponding prompts in `.github/prompts/`. The workflow is:
+## Working method: AI Development Playbook v1.1 (summary)
 
-1. **Specify** (`speckit.specify`) — Write user stories + functional requirements → `spec.md`
-2. **Plan** (`speckit.plan`) — Technical approach with constitution compliance check → `plan.md` + `research.md`
-3. **Analyze** (`speckit.analyze`) — Deep technical research → additions to `research.md`
-4. **Tasks** (`speckit.tasks`) — Phase-based task breakdown → `tasks.md`
-5. **Checklist** (`speckit.checklist`) — Validate specification quality → `checklists/requirements.md`
-6. **Implement** (`speckit.implement`) — Guide physical assembly steps
+Roles:
 
-PowerShell automation scripts live in `.specify/scripts/powershell/`:
-- `create-new-feature.ps1` — Scaffold a new feature branch with spec templates
-- `update-agent-context.ps1` — Regenerate `.github/agents/copilot-instructions.md` from feature plans
-- `check-prerequisites.ps1` — Validate environment setup
-- `setup-plan.ps1` — Initialize project structure
+- **ChatGPT** — planning coordinator, requirements analysis, implementation review.
+- **Claude Code** — repository implementation: branches, commits, pull request preparation.
+- **Codex** — independent, read-only review of consequential changes.
+- **Project owner** — physical verification and final approval. Only the owner can confirm anything about the physical system.
 
-## Repository Structure
+Rules:
 
+- Start each piece of work with a read-only assessment and a proposed plan. Do not create branches, edit files, commit, push, or open pull requests until the plan is approved. Do not merge pull requests without explicit approval.
+- Keep scope to what was approved. Documentation changes are documentation-only: no hardware design decisions, fuse or wire sizing, component selection, or charging recommendations unless explicitly authorized.
+- Prefer small, focused commits with the existing prefix style (`docs(001):`, `feat(001):`, `progress(001):`).
+- Preserve history. Mark obsolete or unsafe material as withdrawn or historical with a notice at the location; do not delete it.
+- Request independent review for changes that affect safety statements, the as-built record, or agent guidance.
+
+## Evidence requirements
+
+Every hardware claim carries one of these tags:
+
+| Tag | Meaning |
+|---|---|
+| **Historical/documented** | Recorded in the repository during the build |
+| **User-reported** | Stated by the owner, not independently checked |
+| **Visually observed** | Seen in the owner's photographs (cite the source and date) |
+| **Measured** | A dated numeric reading with method or instrument recorded |
+| **Verified** | Independently confirmed after the fact, with a dated record |
+| **Unknown/proposed** | No evidence, conflicting evidence, or inference |
+
+- Never record a test as passed, a component as compliant, or a value as measured without a dated record stating who, how, and what. A ticked checkbox is not evidence. An owner's recollection of a check is User-reported, not Verified.
+- Never infer the current hardware from design documents. Where design and build diverge, record the deviation in `as-built.md §7`.
+- Do not present inferred circuit mappings or connector assignments as verified.
+- Do not write that an undocumented activity never happened. Say what the record shows: *documented absence* (no record), *owner-confirmed absence* (the owner stated it, with the date), or *unknown status*.
+- Do not write energized test procedures or prescribe electrical modifications without engineering review and owner approval.
+
+## Safety constraints on documentation
+
+- The V1 prototype is not ready for transport or deployment. Do not write anything that implies otherwise.
+- Do not recommend using the main ANL fuse as an on/off or emergency switch.
+- Do not reintroduce withdrawn procedures (destructive fuse tests, the Sanuke crimping method, the LED-based operating instructions). The list is in `verification-and-safety.md §5`.
+- Matching fuse and connector ratings are recorded as needing engineering review, not as proven violations.
+
+## Repository structure
+
+```text
+specs/001-battery-box/
+  as-built.md                    Authoritative hardware description
+  verification-and-safety.md     Authoritative verification and safety status
+  reconciliation-2026-10-25.md   Provenance record for the 2026-10-25 snapshot (R-2026-10-25)
+  spec.md, plan.md, research.md, data-model.md, quickstart.md,
+  contracts/, checklists/, docs/ Historical design documents (Jan–Mar 2026)
+  tasks.md                       Historical task list; build log and lessons learned
+
+.specify/memory/constitution.md  Governing principles
+.specify/, .github/agents/, .github/prompts/, .claude/commands/
+                                 SpecKit tooling from the original methodology. Retained as history;
+                                 not the active workflow. Do not run its scripts or prompts to create
+                                 new specs unless asked.
 ```
-specs/<feature-id>/          # One directory per feature (e.g., 001-battery-box)
-  spec.md                    # User stories + functional requirements
-  plan.md                    # Technical approach + constitution check
-  research.md                # Technical deep-dives and decision rationale
-  data-model.md              # Entity models, attributes, state machines
-  tasks.md                   # Phased task breakdown with progress tracking
-  quickstart.md              # Assembly procedures
-  contracts/                 # Component interface specifications
-  checklists/                # Quality validation checklists
-  docs/                      # Supporting docs (component-selection, shopping-list, wiring-diagram, etc.)
 
-.specify/memory/constitution.md   # Project constitution (v1.0.0)
-.specify/templates/               # Markdown templates for specs, plans, tasks, checklists
-.github/agents/                   # Speckit agent role definitions
-.github/prompts/                  # Prompt templates for each agent
-```
+## Git conventions
 
-## Branching Convention
-
-Each feature gets its own branch named `<NNN>-<feature-name>` (e.g., `001-battery-box`). The main branch is `main`.
-
-## Commit Message Convention
-
-Commits use a prefix style: `docs(001):`, `feat(001):`, `progress(001):` where the number references the feature ID.
-
-## Key Constraints When Contributing
-
-- **Every design decision must be documented** with problem statement, rationale, alternatives considered, and implementation details (Constitution Principle V).
-- **Safety is non-negotiable** — all connections rated for expected current + 25% margin, all circuits fused, fail-safe design required (Principle I).
-- **No feature without a use case** — features without identified practical problems must not be implemented (Principle VI).
-- **Incremental only** — one feature at a time, manual before automation, baseline data before optimization (Principle IV).
-- **Standardized connectors** — Anderson Powerpole for DC distribution, XT60/XT90 for high-current battery connections, USB-C PD for loads. Non-standard connectors require documented rationale (Principle II).
-
-## Current State (001-battery-box)
-
-The first feature is a portable 12V battery box built around a VEVOR 200Ah LiFePO4 battery in a Greenmade 27gal tote. Key components: Blue Sea 5026 fuse block, Victron BMV-712 monitor, Nilight 4-in-1 panel, 100A ANL main fuse. Full component details are in `specs/001-battery-box/data-model.md` and `specs/001-battery-box/docs/shopping-list.md`. Task progress is tracked in `specs/001-battery-box/tasks.md`.
+- Feature branches are named `<NNN>-<topic>` (e.g. `001-battery-box`, `001-v1-as-built`). `main` is the integration branch.
+- Battery Box V1 work is integrated through `001-battery-box`; pull requests for V1 documentation target that branch until it is merged into `main`.

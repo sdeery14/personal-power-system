@@ -3,6 +3,8 @@
 **Branch**: `001-battery-box` | **Date**: 2026-01-18 | **Spec**: [spec.md](spec.md)
 **Input**: Feature specification from `/specs/001-battery-box/spec.md`
 
+> **⚠️ HISTORICAL DESIGN DOCUMENT — superseded 2026-10-25.** This file records the Battery Box V1 design as planned in January–March 2026. It does not describe the hardware as built. For the current configuration see [as-built.md](as-built.md); for verification status, open safety concerns, and the list of withdrawn procedures see [verification-and-safety.md](verification-and-safety.md). Where this file conflicts with those documents, those documents govern. Historical text is preserved unchanged apart from the notices added on 2026-10-25. The Constitution Check below assessed the specification, not the built hardware; no compliance of the prototype has been demonstrated.
+
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
 ## Summary

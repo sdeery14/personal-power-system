@@ -5,6 +5,8 @@
 **Status**: DRAFT - Components being selected  
 **References**: [research.md](../research.md) | [component-interfaces.md](../contracts/component-interfaces.md)
 
+> **⚠️ HISTORICAL DESIGN DOCUMENT — superseded 2026-10-25.** This file records the Battery Box V1 design as planned in January–March 2026. It does not describe the hardware as built. For the current configuration see [as-built.md](../as-built.md); for verification status, open safety concerns, and the list of withdrawn procedures see [verification-and-safety.md](../verification-and-safety.md). Where this file conflicts with those documents, those documents govern. Historical text is preserved unchanged apart from the notices added on 2026-10-25. Purchase details recorded here are historical procurement data. Some selections were later changed (e.g. the Knoweasy crimper was bought instead of the TRIcrimp; the tote was abandoned) and the SB50-compatible panel socket kits used on the prototype are not recorded in this file. Unfilled placeholders are left as found.
+
 ---
 
 ## Selection Criteria
