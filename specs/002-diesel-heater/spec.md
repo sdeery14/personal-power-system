@@ -1,6 +1,6 @@
 # Diesel Heater Module (002) — Specification
 
-**Status**: Draft specification. **Nothing has been built, purchased, or approved for fabrication.**
+**Status**: Draft specification. **The heater, its supplied components, and a Greenmade 12-gallon tote are already owned, and the owner has partially assembled some heater components. No aluminum frame has been purchased or fabricated. No complete heater installation has been approved, commissioned, or verified.**
 **Date**: 2026-10-27
 **Companions**: [design.md](design.md) (preliminary mechanical concept, hazard register, open decisions), [bom.md](bom.md) (existing equipment and preliminary procurement list)
 **Governing documents**: [constitution](../../.specify/memory/constitution.md) v1.0.0, [vision.md](../../vision.md)
@@ -27,7 +27,7 @@ Nothing in this specification is Measured or Verified. Requirements marked **REC
 | ID | Source | Retrieved | Notes |
 |---|---|---|---|
 | **M1** | VEVOR user manual "Diesel Heater", models XMZ-D1 and XMZ-D2, 22 printed pages, hosted by VEVOR at <https://d2v0huudrf11kh.cloudfront.net/vevor-center-goods/VEVOR-Diesel-Heater_1691547766381.pdf> | 2026-10-27 | No revision number or date is printed in the document. The file name's numeric suffix corresponds to 2023-08-09 if read as a Unix millisecond timestamp (Proposed inference). Page 2 states the product appearance may differ from the manual. **The revision supplied in the owner's box has not been compared with this file** (see Q-01 in design.md) |
-| **M2** | VEVOR product page for product 010806799987, <https://www.vevor.com/diesel-heater-c_10321/vevor-diesel-air-heater-12v-2kw-bluetooth-app-lcd-display-for-car-bus-rv-indoors-p_010806799987> | 2026-10-27 | Identifies the model as XMZ-D2. Specification figures and a customer Q&A section. Q&A answers are less authoritative than M1 |
+| **M2** | VEVOR product page for product 010806799987, <https://www.vevor.com/diesel-heater-c_10321/vevor-diesel-air-heater-12v-2kw-bluetooth-app-lcd-display-for-car-bus-rv-indoors-p_010806799987> | 2026-10-27 | Identifies the model as XMZ-D2. A "Product specification" table (size, net weight, outlet pipe inner diameter, working temperature, electrical and fuel figures) and a customer Q&A section. Q&A answers are less authoritative than M1 |
 
 Citations below use the form M1 p.N (printed page number) or M2.
 
@@ -54,18 +54,21 @@ The module is a frame that holds the heater and its supplied fuel tank in a fixe
 - Connecting the heater to Battery Box V1. The battery box has no approved load connector and open safety concerns ([verification-and-safety.md](../001-battery-box/verification-and-safety.md)). The electrical interface is specified here only as requirements on a future Battery Box V2.
 - Operating procedures, energized tests, and any instruction that involves fuel or fire. Those require engineering review and owner approval and are not written in this PR.
 - Indoor or in-tent placement of the heater unit itself. The heater is to be placed outside the shelter with only the hot-air duct entering it (SR-05).
+- Overnight operation and unattended operation. Both are unresolved operating-policy questions (SR-12, Q-10). Neither is approved.
 
 ## 5. Existing equipment
 
 | Item | Identity | Evidence |
 |---|---|---|
 | Heater | VEVOR 12 V diesel air heater, product 010806799987, model XMZ-D2, "split type" (separate tank, pump, and controller) | User-reported (product ID); Manufacturer-stated (model and type, M2; M1 p.2, p.9) |
-| Heater body size | approximately 13.4 × 4.5 × 5.5 in | User-reported; source of the figure not stated. M2 does not list dimensions |
+| Heater product size | 13.4 × 4.5 × 5.5 in (340 × 115 × 140 mm) | Manufacturer-stated (M2 product specification, C21). The owner's tape measure gave the same 13.4 in length (User-reported; not Verified) |
+| Heater net weight | 11 lb / 5 kg | Manufacturer-stated (M2, C22). **Scope unknown**: M2 does not say whether this is the heater alone or the kit. Not to be used as the standalone heater mass until clarified (Q-11) |
+| Assembly state | Some heater components have been partially assembled by the owner; which ones, and to what state, is not recorded | User-reported (2026-10-27) |
 | Heater mounting plate | Supplied metal plate, 5 7/16 × 6 11/16 in | User-reported, tape measure, date not established. M1 p.9 shows the plate with a seal and "double head screw nut" fixings; M1 p.8 lists "machine fixing piece" ×1 and "machine fixing screws" ×4 |
 | Fuel tank | Supplied 10 L (2.6 gal) tank, approximately 16 × 16 × 3 in excluding filler neck | Manufacturer-stated capacity (M2; M1 p.8 "fuel tank" ×1); User-reported dimensions, tape measure, date not established |
 | Tank mounting points | Three recessed points: two lower points horizontally aligned about 6 13/16 in apart; one upper point about 7 7/8 in above the lower row. Some holes have thin plastic membranes | User-reported, tape measure, date not established. M1 p.9 shows screws on the tank and the text "use this screw to tighten the fuel tank fixed to the metal plate of the vehicle"; M1 p.8 lists "oil tank accessories" ×1 (contents not itemized) |
 | Supplied accessories | Intake pipe, exhaust pipe, silencer with fixing piece, blowpipe (hot-air duct), rotary tuyere, clamps, pipe clips, air filter element, oil pipe, oil filter, pulse fuel pump with sheath, LCD switch, remote, power cord | Manufacturer-stated packing list (M1 p.7–8). **Not yet inventoried by the owner against the box** (Q-02) |
-| Greenmade 12-gallon tote | Owned; not the operating enclosure | Owner decision (2026-10-27) |
+| Greenmade 12-gallon tote | Purchased by the owner; not the operating enclosure | User-reported (owned); Owner decision 2026-10-27 (not the enclosure) |
 | Battery Box V1 | 12.8 V 200 Ah LiFePO4 bench prototype | Historical; see [as-built.md](../001-battery-box/as-built.md). Not approved for this load |
 
 Full detail and the procurement list are in [bom.md](bom.md).
@@ -95,8 +98,14 @@ These are the statements in M1 and M2 that bear on the design. They are quoted o
 | C17 | Fault E-01 "Abnormal voltage": supply must not be higher than 18 V or lower than 9 V | M1 p.15 |
 | C18 | Operating consumption 12 V / 3 A; fuel consumption 0.12–0.26 L/h; up to 38 h per 10 L fill; overheat protection up to 270 °C | M2 (specification section) |
 | C19 | Starting current 13 A; rated current 3 A | M2, customer Q&A. **Less authoritative than C9.** Design to C9 |
+| C20 | "Do not use cigarette lighter for startup" | M1 p.4, Safety Instruction 4 |
+| C21 | Product size "13.4×4.5×5.5 inch/340×115×140 mm" | M2, product specification |
+| C22 | Net weight "11 lbs/5 kg". M2 does not state what the weight covers (heater alone or kit) | M2, product specification |
+| C23 | "Air Outlet Pipe Inner Diameter" "3 in/76.5 mm" | M2, product specification |
+| C24 | Working temperature printed as "-104℉-104℉/-40℃-40℃". The Fahrenheit figures are identical at both ends and do not correspond to the Celsius figures (−40 °C is −40 °F; 40 °C is 104 °F). **Unreliable pending clarification** (Q-11). M1 p.4 gives only "above −40" with the unit garbled | M2, product specification; M1 p.4 |
+| C25 | The internal-structure diagram labels a heating-air "Air inlet", an "Air fan", and an "Air outlet" on the heater body, separate from the combustion chamber. The installation diagram labels the combustion "air intake" (intake pipe with air filter element) and the "escape-pipe (Combustion emissions)" separately | M1 p.5, p.9 |
 
-**Not stated anywhere in M1 or M2** (each is therefore Unknown): heater dimensions and mass; permitted mounting orientation and tilt; clearance distances from the heater body, exhaust, or silencer to surrounding materials; fuel pump mounting angle and orientation; maximum fuel line length or lift; maximum tank height above the heater; exhaust, intake, and duct pipe diameters and maximum lengths; the supplied fuse rating and wire gauge; ambient operating temperature limits (the only figure is "above −40" on M1 p.4 with the unit garbled); any carbon-monoxide guidance beyond C2 and C6.
+**Not stated in M1 or M2** (each is therefore Unknown): the standalone heater mass (C22 is a net weight of unstated scope); permitted mounting orientation and tilt; clearance distances from the heater body, exhaust, silencer, or hot-air outlet to surrounding materials; required separation between the exhaust termination and either air inlet; fuel pump mounting angle and orientation; maximum fuel line length or lift; maximum tank height above the heater; exhaust and combustion-intake pipe diameters and maximum lengths, and the maximum hot-air duct run (only the outlet inner diameter, C23, is given); the supplied fuse rating and wire gauge; a usable ambient operating temperature range (C24 is internally inconsistent); any carbon-monoxide guidance beyond C2 and C6.
 
 ## 7. Requirements
 
@@ -114,18 +123,28 @@ Requirement IDs are stable. "Source" names the constraint, principle, or decisio
 
 ### 7.2 Safety
 
+The heater has three separate air paths, and the requirements below name them deliberately (C25):
+
+- **Combustion-air intake**: the intake pipe with air filter element, drawing air into the combustion chamber.
+- **Heating-air inlet**: the fan inlet on the heater body, drawing the air that is heated and delivered through the hot-air outlet and duct into the shelter.
+- **Combustion exhaust**: the escape pipe and silencer carrying combustion products.
+
+Exhaust drawn into the heating-air inlet is delivered directly into the shelter. That path, and exhaust entering through the shelter's openings, are the module's principal carbon-monoxide hazards (H-07).
+
 | ID | Requirement | Source |
 |---|---|---|
 | SR-01 | **RECONCILE.** The tank shall be placed above the heater as the manufacturer instructs for pump operation (C12) **and** the heater shall be kept away from fuel tanks and flammable objects (C1). The design shall state, with engineering review, what vertical and horizontal separation, shielding, or spill control satisfies both before the layout is approved. Neither statement alone resolves the other | C1, C12 |
 | SR-02 | No credible fuel spill path, from the filler neck, tank seams, mounting points, fittings, oil filter, or pump, shall reach the heater body, the exhaust, or the silencer. Refuelling spills shall be considered as well as leaks in operation | C1, C3, C5, C15; constitution I |
 | SR-03 | The exhaust shall run horizontally or downward from the heater, never upward, and shall terminate outside the frame envelope and outside any shelter | C6, C16 |
 | SR-04 | The exhaust pipe and silencer shall be kept clear of the tank, fuel lines, wiring, ground cover, and anything flammable, with a clearance distance that is set by engineering review since the manufacturer gives none | C15; §6 "not stated" |
-| SR-05 | The heater unit, tank, exhaust, and intake shall be outside the shelter. Only the hot-air duct may enter it. The module shall not be operated in a closed or unventilated place | C2, C6 |
-| SR-06 | A carbon-monoxide alarm inside the shelter is a proposed requirement for first operation, to be confirmed at the first-operation gate | Proposed; constitution I |
-| SR-07 | The combustion-air inlet shall be unobstructed in every configuration, including with the duct, tank, and any weather cover fitted | C14 |
+| SR-05 | The heater unit, tank, exhaust, combustion-air intake, and heating-air inlet shall be outside the shelter. Only the hot-air duct may enter it. The module shall not be operated in a closed or unventilated place | C2, C6, C25 |
+| SR-06 | An appropriate, working carbon-monoxide alarm inside the occupied shelter is **mandatory** for first operation and for every operation after it. The alarm is a last line of defence: it does not replace safe exhaust and inlet arrangements (SR-03, SR-04, SR-11), and its presence does not relax any of them | Constitution I; review decision 2026-10-27 |
+| SR-07 | The combustion-air intake and the heating-air inlet shall each be unobstructed in every configuration, including with the duct, tank, and any weather cover fitted | C14, C25 |
 | SR-08 | The power supply shall not be interrupted during operation or during the 3–5 minute cool-down after shutdown. Any disconnect, fuse, low-voltage cutoff, or battery protection on the supply shall be reviewed against this before it is specified | C4, C8 |
 | SR-09 | No fuel shall be added while the heater is running | C3 |
 | SR-10 | With the tank full and the module standing on the worst-case ground it is specified for, it shall resist tipping under a handling push, a duct pull, and wind, to criteria set at engineering review | Constitution I; design.md §10 |
+| SR-11 | An engineering review shall demonstrate, for the intended installation and under foreseeable wind conditions, that combustion exhaust cannot be drawn into the heating-air inlet and cannot enter the occupied shelter through its openings (door, vents, duct entry). The review's accepted protective measures (exhaust termination position and direction, separation, shielding, placement of the module relative to the shelter and prevailing wind) shall be recorded before first operation. No separation distance is specified here because the manufacturer gives none | C6, C15, C25; constitution I |
+| SR-12 | Overnight operation and unattended operation are **unresolved operating-policy questions** (Q-10). Neither is approved. Nothing in this specification implies that either is acceptable | Review decision 2026-10-27 |
 
 ### 7.3 Mechanical
 
@@ -147,6 +166,7 @@ Requirement IDs are stable. "Source" names the constraint, principle, or decisio
 | ER-02 | The supplied power cord and its in-line fuse shall be used as delivered. The fuse rating and wire gauge shall be read from the supplied parts and recorded before the supply cable is sized | C13; Q-07 |
 | ER-03 | Connection to the project's battery system is deferred to Battery Box V2. The V2 interface shall provide a dedicated, fused branch meeting ER-01 and SR-08, with a connector documented per constitution Principle II | Constitution I, II; [as-built.md §4.4](../001-battery-box/as-built.md#44-branch-assignments) |
 | ER-04 | Running draw (3 A, C18) and starting draw (≥15 A capability, C9; 13 A reported, C19) shall both be recorded in any runtime estimate; the 2026 battery-box runtime estimates that assumed 3–8 A are historical and not to be reused without re-derivation | C9, C18, C19; [component-selection.md](../001-battery-box/docs/component-selection.md) (historical) |
+| ER-05 | The heater shall not be powered through a cigarette-lighter socket or plug (C20). The supply shall be a dedicated, fused connection whose cable, fuse, and connector have **not yet been selected**; they are to be specified and reviewed at the Battery Box V2 interface (ER-03) | C20; constitution I, II |
 
 ### 7.5 Environmental and transport
 
@@ -176,7 +196,7 @@ Listed so they are visible, not so they are accepted.
 | A-03 | The tank's three bosses were designed to carry the full tank hanging on a vertical surface | Unknown; M1 p.9 shows the tank fixed to "the metal plate of the vehicle" without load guidance |
 | A-04 | 20 × 40 mm extrusion with proprietary corner hardware is stiff enough for a 38 in tall frame carrying these loads | Unknown; MR-05 |
 | A-05 | A 10 L fill of diesel has a mass of about 8.2–8.5 kg, from a density of 0.82–0.85 kg/L | Proposed estimate from general reference values; not measured; tank mass not included |
-| A-06 | The heater's own mass is a few kilograms | Unknown; neither M1 nor M2 states it |
+| A-06 | The standalone heater mass is no more than the 11 lb / 5 kg net weight in C22 | Unknown; the scope of the M2 figure is not stated (Q-11). Not to be used in load or stability calculations until clarified |
 
 ## 9. Acceptance criteria
 
@@ -185,7 +205,7 @@ Listed so they are visible, not so they are accepted.
 - AC-D1 Every requirement in §7 is traceable to a constraint in §6, a constitution principle, or a dated owner decision.
 - AC-D2 Every hardware figure carries an evidence tag; owner dimensions are User-reported; nothing is Measured or Verified.
 - AC-D3 The hazard register in design.md §14 contains each item the owner listed as unresolved on 2026-10-27, none closed.
-- AC-D4 bom.md states that no rail length or hardware item is purchase-ready.
+- AC-D4 bom.md states that no custom structural material is purchase-ready and restates the same G1 conditions as §10.
 - AC-D5 Links and anchors resolve; the Battery Box V1 documents are unchanged.
 
 ### 9.2 For the eventual physical module (outcomes only; procedures to be written and approved separately)
@@ -195,23 +215,54 @@ Listed so they are visible, not so they are accepted.
 - AC-P3 A dated measurement record exists for the plate, tank, and boss dimensions.
 - AC-P4 A tip-resistance assessment with the tank full exists and is satisfied.
 - AC-P5 The electrical interface meets ER-01 through ER-03 with a dated record.
-- AC-P6 First operation is preceded by an approved procedure that satisfies SR-03 through SR-09.
+- AC-P6 First operation is preceded by an approved procedure that satisfies SR-03 through SR-11, with a working CO alarm in the shelter (SR-06) and the SR-11 review on record.
+- AC-P7 The overnight and unattended operating policy (SR-12, Q-10) is decided and recorded before any such operation; until then neither is permitted.
 
-## 10. Gates
+## 10. Release gates
 
-| Gate | Opens when | Blocks |
+Five gates separate the paper design from purchase, fabrication, power, transport, and operation. **None is open.** A gate opens only when every condition listed is met by a dated record and the owner approves that gate explicitly. An unresolved hazard that applies to the intended configuration blocks the gate for that configuration, and no gate can be bypassed by opening a later one.
+
+| Gate | Releases | Conditions |
 |---|---|---|
-| **G1 Materials purchase** | Q-01 through Q-08 in design.md are answered; SR-01 and MR-04 are resolved on paper; the member schedule carries reviewed cut lengths | Buying extrusion, brackets, fasteners, tank hardware |
-| **G2 Fabrication** | G1 passed; MR-05 structural review and SR-10 stability assessment recorded | Cutting, assembly, opening membrane holes |
-| **G3 First operation** | G2 passed; SR-02 through SR-09 satisfied; ER-01/ER-02 recorded; an approved operating procedure exists; a CO alarm decision (SR-06) is recorded | Fuel in the tank on the frame; any ignition |
+| **G1 Custom structural materials** | Purchase of extrusion, joining hardware, plate and tank fasteners, and stabilization hardware for the frame | (a) Q-01 to Q-08 answered, or recorded as unanswerable with the engineering judgement that replaces each; (b) SR-01 reconciled in writing and the tank wall and height fixed (D-03); (c) tank mounting method established (MR-04, H-01); (d) D-01, D-02, D-04, D-12 decided; (e) footprint, material section, structural load path, mounting method, and stability concept reviewed far enough to produce a purchase-ready cut list and compatible hardware (MR-05 and SR-10 at concept level); (f) the owner's explicit approval to purchase. Full structural acceptance and operating validation are not conditions here; they belong to G2 and G5 |
+| **G2 Fabrication** | Cutting, assembly, and opening the tank's membrane-covered holes | G1; the reviewed cut list; MR-05 final structural review recorded (H-11); the hole-preparation method from Q-05 recorded before any hole is opened (H-01); MR-07 mounting and sealing interface designed |
+| **G3 Power connection** | Connecting the heater to any power source | ER-01 to ER-05 satisfied by a dated record; SR-08 reviewed (H-08); fuse rating and cord gauge recorded (Q-07); the Battery Box V2 interface approved. **Battery Box V1 remains unapproved and is not a path through this gate** |
+| **G4 Transport** | Moving the assembled module in a vehicle | G2; TR-02 fuel-state decision; TR-03 mass recorded; MR-06 restraint and lifting points defined (H-10) |
+| **G5 First operation** | Fuel in the tank on the frame; ignition | G2 and G3, and G4 if the module is transported first; SR-02 to SR-05, SR-07, SR-09 satisfied; SR-11 review recorded with accepted protective measures (H-07); SR-06 CO alarm present and working in the shelter; TR-01 weather suitability established (H-09); MR-07 installed interface reviewed (H-05); SR-10 tip assessment recorded (H-02); SR-04 exhaust clearance set (H-04); an approved operating procedure; SR-12 policy recorded, with overnight and unattended operation excluded unless separately approved |
 
-**None of these gates is open.**
+Purchases that are not custom structural materials (a CO alarm, hand tools, consumables) are not gated by G1. The CO alarm is required before G5.
+
+### 10.1 Hazard-to-gate mapping
+
+| Hazard | Blocks |
+|---|---|
+| H-01 tank bosses and fasteners | G1 (method), G2 (hole preparation) |
+| H-02 tip with full tank | G1 (concept), G5 (assessment) |
+| H-03 fuel spill reaching hot surfaces | G1 (SR-01 reconciled), G5 |
+| H-04 exhaust routing and clearance | G5 |
+| H-05 heater orientation, clearances, mounting interface | G2 (design), G5 (installed) |
+| H-06 fuel pump placement | G1 (Q-08), G5 |
+| H-07 exhaust into heating-air inlet or shelter; CO | G5 |
+| H-08 power interruption during cool-down | G3 |
+| H-09 weather exposure | G5 |
+| H-10 transport and lifting | G4 |
+| H-11 frame and joint adequacy | G1 (concept), G2 (final) |
+
+### 10.2 Requirement-to-gate mapping
+
+| Gate | Requirements that must be satisfied |
+|---|---|
+| G1 | MR-01, MR-02 (reviewed envelope), MR-04, SR-01; MR-05 and SR-10 at concept level |
+| G2 | MR-03, MR-05 (final), MR-07 (design) |
+| G3 | ER-01, ER-02, ER-03, ER-05, SR-08 |
+| G4 | TR-02, TR-03, MR-06 |
+| G5 | FR-01 to FR-05, SR-02, SR-03, SR-04, SR-05, SR-06, SR-07, SR-09, SR-10, SR-11, SR-12, TR-01, MR-07 (installed) |
 
 ## 11. Constitution compliance check
 
 | Principle | Status |
 |---|---|
-| I Safety First | Hazards registered, none closed. No fuel, fire, or energized procedure is written. Electrical protection for the supply is deferred to V2 with requirements stated (ER-01, SR-08) |
+| I Safety First | Hazards registered, none closed. No fuel, fire, or energized procedure is written. Electrical protection for the supply is deferred to V2 with requirements stated (ER-01, ER-05, SR-08). A working CO alarm is mandatory for operation (SR-06) and does not substitute for the exhaust and inlet review (SR-11) |
 | II Modularity | Heater, tank, and frame are separable; electrical connector to be a documented standard type at V2 (ER-03). Non-standard items: the supplied VEVOR harness connectors (documented in bom.md as supplied) |
 | III Transparency | Runtime and current are to be measured at V2, not estimated (ER-04). The controller's engineering mode displays supply voltage (M1 p.14), which can support later logging |
 | IV Incremental Evolution | This phase is specification only. Build follows G1–G2; operation follows G3 |
@@ -224,3 +275,4 @@ Listed so they are visible, not so they are accepted.
 | Date | Change |
 |---|---|
 | 2026-10-27 | Created from the owner's 2026-10-27 brief and the VEVOR manual and product page retrieved the same day. Nothing built, purchased, measured, or verified. |
+| 2026-10-27 | PR #4 review corrections: three air paths named and SR-11 added; CO alarm made mandatory (SR-06) without substituting for exhaust and inlet review; overnight and unattended operation recorded as unresolved (SR-12); cigarette-lighter prohibition added (C20, ER-05); product-page size, net weight (scope unknown), outlet diameter, and inconsistent working temperature recorded (C21–C24); air-path labels from the manual (C25); "not stated" list revised; gates restructured as G1–G5 with hazard and requirement mappings; status corrected to distinguish owned heater equipment from the unpurchased frame. |

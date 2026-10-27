@@ -38,7 +38,7 @@ The remaining files under `specs/001-battery-box/` were written in January–Mar
 
 ## Diesel Heater Module (002)
 
-**Specification phase only. Nothing has been built, purchased, or approved for fabrication.** A portable T-slot aluminum frame for the owner's VEVOR 12 V 2 kW diesel air heater (model XMZ-D2) and its supplied 10 L tank, for winter camping. All safety hazards are open; the frame envelope and rail count are preliminary; Battery Box V1 is not approved to power it.
+**Specification phase.** A portable T-slot aluminum frame for the owner's VEVOR 12 V 2 kW diesel air heater (model XMZ-D2) and its supplied 10 L tank, for winter camping. The heater, its supplied components, and a 12-gallon tote are already owned, and some heater components have been partially assembled. No aluminum frame has been purchased or fabricated, and no heater installation has been approved, commissioned, or verified. All safety hazards are open; the frame envelope and rail count are preliminary; Battery Box V1 is not approved to power it.
 
 | Document | Purpose |
 |---|---|
@@ -60,7 +60,7 @@ vision.md                         Project purpose and philosophy
 CLAUDE.md                         Guidance for AI agents working in this repository
 .specify/memory/constitution.md   Governing principles (v1.0.0)
 specs/001-battery-box/            Battery Box V1: as-built, verification, and design history
-specs/002-diesel-heater/          Diesel Heater Module: specification, preliminary design, BOM (nothing built)
+specs/002-diesel-heater/          Diesel Heater Module: specification, preliminary design, BOM (heater owned; no frame built)
 .specify/, .github/, .claude/     SpecKit tooling retained from the original methodology (historical)
 ```
 

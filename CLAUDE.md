@@ -15,7 +15,7 @@ This is a **hardware documentation project**, not a software codebase. It record
 
 - **`specs/001-battery-box/as-built.md`** is the only authoritative description of the hardware as it exists. **`specs/001-battery-box/verification-and-safety.md`** is the only authoritative record of what has been verified and what safety concerns are open.
 - **`specs/001-battery-box/reconciliation-2026-10-25.md`** (R-2026-10-25) records where the snapshot's User-reported and Visually observed claims came from and what no reviewer inspected. Cite it, rather than the photographs, for provenance.
-- **`specs/002-diesel-heater/`** (`spec.md`, `design.md`, `bom.md`) is a **specification in progress** for a subsystem that has not been built or purchased. Its figures are Manufacturer-stated, User-reported, Owner decision, Proposed, or Unknown as tagged; no cut length, fastener, or load path is approved; the gates in `spec.md §10` are closed. Do not record anything there as built, measured, or verified without a dated record.
+- **`specs/002-diesel-heater/`** (`spec.md`, `design.md`, `bom.md`) is a **specification in progress**. The heater and its supplied parts are owned and partly assembled by the owner; no frame has been purchased or fabricated, and no installation is approved, commissioned, or verified. Its figures are Manufacturer-stated, User-reported, Owner decision, Proposed, or Unknown as tagged; no cut length, fastener, or load path is approved; the gates in `spec.md §10` are closed. Do not record anything there as built, measured, or verified without a dated record.
 - Every other file under `specs/001-battery-box/` is a **historical design document**. It describes the design as planned in Jan–Mar 2026, carries a status notice, and must not be read as a description of the current hardware or as an operating manual. Where it conflicts with the as-built documents, the as-built documents govern.
 - `tasks.md` contains the dated build log and lessons learned. That log is the primary historical record and must be preserved as written.
 
@@ -74,7 +74,7 @@ specs/001-battery-box/
   tasks.md                       Historical task list; build log and lessons learned
 
 specs/002-diesel-heater/
-  spec.md                        Requirements, manufacturer constraints, gates (nothing built)
+  spec.md                        Requirements, manufacturer constraints, release gates (no frame built)
   design.md                      Preliminary frame concept, hazard register, open decisions
   bom.md                         Owned equipment; procurement categories, not purchase-ready
 
