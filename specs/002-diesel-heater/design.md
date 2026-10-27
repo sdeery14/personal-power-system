@@ -200,5 +200,5 @@ Recorded per constitution Principle V. Each rejection stands unless a structural
 
 | Date | Change |
 |---|---|
-| 2026-10-27 | Created from the owner's 2026-10-27 brief and the VEVOR manual and product page retrieved the same day. Concept recorded as decided; all hazards open; no cut lengths; nothing built or purchased. |
+| 2026-10-27 | Created from the owner's 2026-10-27 brief and the VEVOR manual and product page retrieved the same day. Concept recorded as decided; all hazards open; no cut lengths; no aluminum frame built or purchased (the heater and its supplied parts were already owned). |
 | 2026-10-27 | PR #4 review corrections: §8 rewritten around the three air paths with the manual's labels; H-07 closure now requires the SR-11 review and accepted measures plus the CO alarm; D-13, Q-10, Q-11 added; manufacturer size, net weight (scope unknown), and outlet diameter recorded; cigarette-lighter prohibition noted; status corrected (heater owned and partly assembled, no frame purchased). Mechanical concept unchanged. |

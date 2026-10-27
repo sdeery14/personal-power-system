@@ -48,7 +48,7 @@ The remaining files under `specs/001-battery-box/` were written in January–Mar
 
 ## How work is done
 
-The project follows the AI Development Playbook v1.1, summarized in [CLAUDE.md](CLAUDE.md): evidence-based verification, scoped implementation, independent review when justified, and human approval. ChatGPT coordinates planning and review, Claude Code implements repository changes, Codex performs independent read-only review of consequential changes, and the project owner performs physical verification and gives final approval.
+The project follows the AI Development Playbook v1.2, summarized in [CLAUDE.md](CLAUDE.md): evidence-based verification, scoped implementation, independent review when justified, and human approval. ChatGPT coordinates planning and review, Claude Code implements repository changes, Codex performs independent read-only review of consequential changes, and the project owner performs physical verification and gives final approval.
 
 Hardware claims use six evidence categories: Historical/documented, User-reported, Visually observed, Measured, Verified, and Unknown/proposed. Nothing is recorded as verified without a dated record.
 

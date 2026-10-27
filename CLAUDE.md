@@ -19,7 +19,7 @@ This is a **hardware documentation project**, not a software codebase. It record
 - Every other file under `specs/001-battery-box/` is a **historical design document**. It describes the design as planned in Jan–Mar 2026, carries a status notice, and must not be read as a description of the current hardware or as an operating manual. Where it conflicts with the as-built documents, the as-built documents govern.
 - `tasks.md` contains the dated build log and lessons learned. That log is the primary historical record and must be preserved as written.
 
-## Working method: AI Development Playbook v1.1 (summary)
+## Working method: AI Development Playbook v1.2 (summary)
 
 Roles:
 

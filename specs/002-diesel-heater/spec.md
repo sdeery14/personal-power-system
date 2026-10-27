@@ -265,7 +265,7 @@ Purchases that are not custom structural materials (a CO alarm, hand tools, cons
 | I Safety First | Hazards registered, none closed. No fuel, fire, or energized procedure is written. Electrical protection for the supply is deferred to V2 with requirements stated (ER-01, ER-05, SR-08). A working CO alarm is mandatory for operation (SR-06) and does not substitute for the exhaust and inlet review (SR-11) |
 | II Modularity | Heater, tank, and frame are separable; electrical connector to be a documented standard type at V2 (ER-03). Non-standard items: the supplied VEVOR harness connectors (documented in bom.md as supplied) |
 | III Transparency | Runtime and current are to be measured at V2, not estimated (ER-04). The controller's engineering mode displays supply voltage (M1 p.14), which can support later logging |
-| IV Incremental Evolution | This phase is specification only. Build follows G1–G2; operation follows G3 |
+| IV Incremental Evolution | This phase is specification only. Purchase and fabrication follow G1–G2; approved power connection follows G3; transport follows G4; first operation follows G5 |
 | V Documentation | Sources, decisions, alternatives (design.md §16), and open questions carry IDs and dates |
 | VI Practical Utility | Named use case: winter camping heat |
 | VII Bounded Complexity | Open frame, manual operation, no automation. Rejected elements are listed with the owner's reasons |
@@ -274,5 +274,5 @@ Purchases that are not custom structural materials (a CO alarm, hand tools, cons
 
 | Date | Change |
 |---|---|
-| 2026-10-27 | Created from the owner's 2026-10-27 brief and the VEVOR manual and product page retrieved the same day. Nothing built, purchased, measured, or verified. |
+| 2026-10-27 | Created from the owner's 2026-10-27 brief and the VEVOR manual and product page retrieved the same day. No aluminum frame built or purchased (the heater and its supplied parts were already owned); nothing measured or verified. |
 | 2026-10-27 | PR #4 review corrections: three air paths named and SR-11 added; CO alarm made mandatory (SR-06) without substituting for exhaust and inlet review; overnight and unattended operation recorded as unresolved (SR-12); cigarette-lighter prohibition added (C20, ER-05); product-page size, net weight (scope unknown), outlet diameter, and inconsistent working temperature recorded (C21–C24); air-path labels from the manual (C25); "not stated" list revised; gates restructured as G1–G5 with hazard and requirement mappings; status corrected to distinguish owned heater equipment from the unpurchased frame. |

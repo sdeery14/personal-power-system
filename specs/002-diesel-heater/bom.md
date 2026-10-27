@@ -42,7 +42,7 @@ The quantities above are the manufacturer's packing list for the XMZ-D2 (M1 p.7�
 
 ## 2. Preliminary procurement list — NOT PURCHASE-READY
 
-This list names categories so the design can be costed and reviewed. **No quantity, length, part number, or supplier below is approved for purchase.** Rows gated **G1** are custom structural materials for the frame and are blocked by gate G1 in [spec.md §10](spec.md#10-release-gates); they become purchasable only when G1's conditions are met and the owner explicitly approves the purchase. Rows gated otherwise are not structural materials and are not blocked by G1, but are required before the gate named.
+This list names categories so the design can be costed and reviewed. Rows gated **G1** are custom structural materials for the frame: **no quantity, length, part number, or supplier for them is approved for purchase.** They are blocked by gate G1 in [spec.md §10](spec.md#10-release-gates) and become purchasable only when G1's conditions are met and the owner explicitly approves the purchase. Rows gated otherwise are not structural materials and are not blocked by G1; the owner may buy them at any time, and the CO alarm in particular may be bought before G1. Each is required before the gate named.
 
 | Category | Preliminary description | Qty | Readiness | Gate | Blocked by |
 |---|---|---|---|---|---|
