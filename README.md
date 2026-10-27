@@ -36,6 +36,16 @@ The remaining files under `specs/001-battery-box/` were written in January–Mar
 | [tasks.md](specs/001-battery-box/tasks.md) | Task list and the dated **build log and lessons learned**, which remain the primary historical record |
 | [docs/component-selection.md](specs/001-battery-box/docs/component-selection.md), [docs/shopping-list.md](specs/001-battery-box/docs/shopping-list.md) | Component decisions and purchase history |
 
+## Diesel Heater Module (002)
+
+**Specification phase only. Nothing has been built, purchased, or approved for fabrication.** A portable T-slot aluminum frame for the owner's VEVOR 12 V 2 kW diesel air heater (model XMZ-D2) and its supplied 10 L tank, for winter camping. All safety hazards are open; the frame envelope and rail count are preliminary; Battery Box V1 is not approved to power it.
+
+| Document | Purpose |
+|---|---|
+| [specs/002-diesel-heater/spec.md](specs/002-diesel-heater/spec.md) | Requirements, manufacturer constraints with manual page citations, unsupported assumptions, acceptance criteria, and the purchase, fabrication, and first-operation gates (all closed). |
+| [specs/002-diesel-heater/design.md](specs/002-diesel-heater/design.md) | Preliminary frame concept, member schedule without cut lengths, hazard register, open decisions and questions, rejected alternatives. |
+| [specs/002-diesel-heater/bom.md](specs/002-diesel-heater/bom.md) | Owned equipment and the manufacturer's packing list; procurement categories marked not purchase-ready. |
+
 ## How work is done
 
 The project follows the AI Development Playbook v1.1, summarized in [CLAUDE.md](CLAUDE.md): evidence-based verification, scoped implementation, independent review when justified, and human approval. ChatGPT coordinates planning and review, Claude Code implements repository changes, Codex performs independent read-only review of consequential changes, and the project owner performs physical verification and gives final approval.
@@ -50,6 +60,7 @@ vision.md                         Project purpose and philosophy
 CLAUDE.md                         Guidance for AI agents working in this repository
 .specify/memory/constitution.md   Governing principles (v1.0.0)
 specs/001-battery-box/            Battery Box V1: as-built, verification, and design history
+specs/002-diesel-heater/          Diesel Heater Module: specification, preliminary design, BOM (nothing built)
 .specify/, .github/, .claude/     SpecKit tooling retained from the original methodology (historical)
 ```
 
