@@ -45,6 +45,8 @@ The remaining files under `specs/001-battery-box/` were written in January–Mar
 | [specs/002-diesel-heater/spec.md](specs/002-diesel-heater/spec.md) | Requirements, manufacturer constraints with manual page citations, unsupported assumptions, acceptance criteria, and the purchase, fabrication, and first-operation gates (all closed). |
 | [specs/002-diesel-heater/design.md](specs/002-diesel-heater/design.md) | Preliminary frame concept, member schedule without cut lengths, hazard register, open decisions and questions, rejected alternatives. |
 | [specs/002-diesel-heater/bom.md](specs/002-diesel-heater/bom.md) | Owned equipment and the manufacturer's packing list; procurement categories marked not purchase-ready. |
+| [specs/002-diesel-heater/cad/](specs/002-diesel-heater/cad/README.md) | Parametric placeholder model of the frame concept in two layout variants (CadQuery), with committed previews and member schedules. **PRELIMINARY — NOT FOR FABRICATION**: no cut list, and modelled gaps are not clearances. |
+| [specs/002-diesel-heater/measurements/](specs/002-diesel-heater/measurements/README.md) | Measurement workflow for the owned heater, plate, tank, and supplied parts: datum conventions, identifier checklist, record template, and dated records. A record makes a value Measured; it verifies nothing and opens no gate. No records exist yet. |
 
 ## How work is done
 
@@ -60,7 +62,8 @@ vision.md                         Project purpose and philosophy
 CLAUDE.md                         Guidance for AI agents working in this repository
 .specify/memory/constitution.md   Governing principles (v1.0.0)
 specs/001-battery-box/            Battery Box V1: as-built, verification, and design history
-specs/002-diesel-heater/          Diesel Heater Module: specification, preliminary design, BOM (heater owned; no frame built)
+specs/002-diesel-heater/          Diesel Heater Module: specification, preliminary design, BOM, CAD placeholder model,
+                                  measurement workflow and records (heater owned; no frame built)
 .specify/, .github/, .claude/     SpecKit tooling retained from the original methodology (historical)
 ```
 
