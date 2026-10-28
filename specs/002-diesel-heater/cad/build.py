@@ -73,7 +73,9 @@ def write_svg(assy: cq.Assembly, path: Path, variant: P.Variant, direction=(1.0,
     label = (f'<text x="20" y="30" font-family="sans-serif" font-size="22" fill="#c00000">'
              f'{BANNER} — {variant.title}: bounding-box placeholders, illustrative placement</text>\n')
     open_tag_end = text.index(">", text.index("<svg")) + 1  # end of the opening <svg ...> tag
-    path.write_text(text[:open_tag_end] + "\n" + label + text[open_tag_end:], encoding="utf-8")
+    text = text[:open_tag_end] + "\n" + label + text[open_tag_end:]
+    # The exporter emits one whitespace-only line; strip trailing whitespace so the committed file is clean.
+    path.write_text("\n".join(line.rstrip() for line in text.splitlines()) + "\n", encoding="utf-8")
 
 
 def _add_actors(ren, parts: list[Part], offset=(0.0, 0.0, 0.0)) -> None:
