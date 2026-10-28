@@ -25,8 +25,9 @@ Units are millimetres throughout. Inch values from the specification are convert
 | `params.py` | Every dimension, evidence-tagged; the joint and tank-wall assumptions in words |
 | `model.py` | Builds the named parts and the CadQuery assembly |
 | `build.py` | Regenerates all outputs |
+| `preview.py` | Pushes the assembly to the VS Code OCP CAD Viewer for interactive inspection |
 | `tests/test_geometry.py` | Counts, nominal sizes, mounting relationships, STEP round trip |
-| `pyproject.toml`, `uv.lock`, `.python-version` | Pinned environment: CadQuery 2.8.0 on Python 3.12 |
+| `pyproject.toml`, `uv.lock`, `.python-version` | Pinned environment: CadQuery 2.8.0 on Python 3.12; `ocp-vscode` in the `viewer` dependency group |
 | `out/isometric.png`, `out/tank-side.png`, `out/isometric.svg`, `out/member-schedule.md` | Committed outputs |
 | `out/heater-module.step` | Generated on demand; not committed |
 
@@ -48,6 +49,23 @@ uv run pytest
 - `out/isometric.png` and `out/tank-side.png` open anywhere. The SVG opens in a browser or in VS Code's preview.
 - `out/heater-module.step` opens in FreeCAD, Onshape, Fusion, or any STEP viewer. Each component appears under its identifier. Nothing here installs a viewer.
 - To edit: change a value in `params.py`, run `build.py`, run `pytest`.
+
+### Interactive viewing in VS Code
+
+The [OCP CAD Viewer](https://github.com/bernhard-42/vscode-ocp-cad-viewer) extension (tested with 4.2.0) shows the assembly in a rotatable, zoomable panel with every component listed under its identifier and drawn in its colour.
+
+1. Install the extension, then select this directory's `.venv` as the Python interpreter (Command Palette: "Python: Select Interpreter").
+2. Open the panel: Command Palette, "OCP CAD Viewer: Open Viewer".
+3. In a terminal:
+
+```text
+cd specs/002-diesel-heater/cad
+uv run python preview.py
+```
+
+Rerun the same command after changing `params.py` or `model.py`; the viewer replaces the model and reframes it. Drag to rotate, scroll to zoom, right-drag to pan; the tree on the left shows or hides each component by identifier. If no viewer is open, the script says so and exits without sending anything.
+
+The viewer dependency lives in the `viewer` dependency group of `pyproject.toml`, which `uv sync` installs by default. `build.py` and the tests never import it; `uv sync --no-group viewer` gives an environment that still regenerates STEP, SVG, PNG, and the schedule. The extension's own Quickstart setup is not needed and installs packages outside the lockfile; if it was run, `uv sync` restores the locked set.
 
 ## Checks performed by the tests
 
