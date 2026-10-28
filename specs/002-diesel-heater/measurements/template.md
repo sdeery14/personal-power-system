@@ -50,7 +50,7 @@ Identifiers in this group that were in scope for the session but not measured, w
 
 ## Discrepancies with earlier records
 
-For any identifier above that an earlier record also measured: the earlier record file, whether the two agree within their provisional ± figures, and if not, a statement that the identifier is in dispute. A reconciliation note, if this session settles a dispute: which record is selected, why, and what remains uncertain (README §7). Write "none; first record for every identifier above" when that is the case.
+For any identifier above that an earlier record also measured (README §7): the earlier record file; a check that the two readings are comparable (same feature, datum, reference surfaces, component configuration, unit; a converted comparison goes in the calculated-values table, raw rows untouched); then the two values `a` and `b`, their provisional uncertainties `u1` and `u2`, the difference, and the classification: **compatible** when `abs(a − b) <= u1 + u2`, **discrepancy** when `abs(a − b) > u1 + u2`. Compatible means consistent under the provisional uncertainties, not accurate or verified. A discrepancy puts the identifier in dispute; readings that are not comparable need a documented investigation before either is used. A reconciliation note, if this session settles a dispute: which record is selected, why, and what remains uncertain; both records are kept. Write "none; first record for every identifier above" when that is the case.
 
 -
 
