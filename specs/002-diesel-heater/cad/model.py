@@ -4,9 +4,9 @@ PRELIMINARY — NOT FOR FABRICATION.
 
 Builds a list of named parts (bounding-box placeholders) and a CadQuery
 Assembly from the values in ``params.py`` for one layout variant
-(``params.ORIGINAL`` or ``params.COMPACT``). Coordinate frame: X = width,
-Y = depth, Z = height, origin at the outside bottom corner. The tank wall is
-the X-min wall in both variants.
+(``params.ORIGINAL``, ``params.COMPACT``, or ``params.ADJUSTED``). Coordinate
+frame: X = width, Y = depth, Z = height, origin at the outside bottom corner.
+The tank wall is the X-min wall in every variant.
 """
 
 from dataclasses import dataclass
@@ -77,8 +77,12 @@ def build_parts(variant: P.Variant = P.DEFAULT_VARIANT) -> list[Part]:
 
     # -- two widthwise heater crossmembers at the middle level, spaced along Y -----
     z2 = v.level_mid_z
-    cross_note = "spacing illustrative (plate fixing pattern, Q-03)"
-    if v.layout == "beside":
+    if v.plate_holes:
+        cross_note = ("spacing derived from the owner-reported plate hole pitch (not measured, PLT-06 to PLT-09); "
+                      f"slot line under each hole line, so the member overhangs the plate edge by {P.PROFILE_MINOR / 2 - P.PLATE_HOLE_INSET:.1f} mm")
+    else:
+        cross_note = "spacing illustrative (plate fixing pattern not used, Q-03)"
+    if v.layout != "stacked":
         cross_note += "; spans the full width and passes beneath the tank zone"
     for j, yc in enumerate([v.heater_center_y - v.crossmember_spacing / 2,
                             v.heater_center_y + v.crossmember_spacing / 2], start=1):
@@ -94,14 +98,26 @@ def build_parts(variant: P.Variant = P.DEFAULT_VARIANT) -> list[Part]:
         plate_dx, plate_dy = P.PLATE_ACROSS, P.PLATE_ALONG
         heat_dx, heat_dy = P.HEATER_W, P.HEATER_L
     plate_z0 = z2 + b
-    parts.append(Part("heater_plate", "plate", "-", 0, "User-reported size; illustrative thickness, orientation, and position",
-                      "owner tape dimensions; thickness, position, and which side runs along the heater illustrative",
-                      _box(v.heater_center_x - plate_dx / 2, v.heater_center_y - plate_dy / 2, plate_z0,
-                           plate_dx, plate_dy, P.PLATE_T), DARK))
+    plate_x0, plate_y0 = v.heater_center_x - plate_dx / 2, v.heater_center_y - plate_dy / 2
+    parts.append(Part("heater_plate", "plate", "-", 0, "User-reported size and thickness estimate; illustrative orientation and position",
+                      "owner tape dimensions; thickness an owner estimate (about 1/32 in, not measured); position and which side runs along the heater illustrative",
+                      _box(plate_x0, plate_y0, plate_z0, plate_dx, plate_dy, P.PLATE_T), DARK))
     heater_z0 = plate_z0 + P.PLATE_T
     heater_note = f"manufacturer size as a bounding box; body length along {v.heater_axis}; orientation and position illustrative"
-    if v.layout == "beside":
+    if v.layout != "stacked":
         heater_note += "; heating-air inlet assumed at the end opposite the outlet cue, facing open space (SR-07)"
+
+    # -- four plate fixing-hole markers at the reported inset from the plate edges ----
+    # -- (adjusted variant): markers through the plate and the crossmember top, not fasteners
+    if v.plate_holes:
+        inset, mark_len = P.PLATE_HOLE_INSET, 10.0 + P.PLATE_T + 10.0
+        corners = [(plate_x0 + inset, plate_y0 + inset), (plate_x0 + plate_dx - inset, plate_y0 + inset),
+                   (plate_x0 + plate_dx - inset, plate_y0 + plate_dy - inset), (plate_x0 + inset, plate_y0 + plate_dy - inset)]
+        for j, (hx, hy) in enumerate(corners, start=1):
+            parts.append(Part(f"plate_hole_{j}", "hole_marker", "Z", mark_len,
+                              "User-reported hole diameter and edge clearance (not measured); plate orientation illustrative",
+                              "marker at the reported position; not a fastener; whether the heater's own fixings pass through it is open (D-16)",
+                              _cyl((hx, hy, plate_z0 - 10.0), (0, 0, 1), P.PLATE_HOLE_D, mark_len), RED))
     parts.append(Part("heater_body", "heater", "-", 0, "Manufacturer-stated size; illustrative orientation and position", heater_note,
                       _box(v.heater_center_x - heat_dx / 2, v.heater_center_y - heat_dy / 2, heater_z0,
                            heat_dx, heat_dy, P.HEATER_H), ORANGE))

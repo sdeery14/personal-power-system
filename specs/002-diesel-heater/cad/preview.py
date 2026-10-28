@@ -1,6 +1,7 @@
 """Show the PRELIMINARY Diesel Heater Module (002) model in the VS Code OCP CAD Viewer.
 
-    uv run python preview.py                      # A Original
+    uv run python preview.py                      # B1 Adjusted (default)
+    uv run python preview.py --variant original   # A Original
     uv run python preview.py --variant compact    # B1 Compact
 
 Open the viewer panel first (Command Palette: "OCP CAD Viewer: Open Viewer").

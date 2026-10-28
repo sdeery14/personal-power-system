@@ -1,4 +1,4 @@
-"""Geometry checks for the PRELIMINARY Diesel Heater Module (002) model, both variants.
+"""Geometry checks for the PRELIMINARY Diesel Heater Module (002) model, all three variants.
 
 These tests check counts, nominal dimensions, orientation, member end-face
 contact under the documented joint assumption, and the reported mounting-hole
@@ -71,11 +71,17 @@ def test_identifiers_unique_and_stable(parts, variant):
     expected |= {f"L{l}-D{j}" for l in (1, 2, 3) for j in (1, 2)}
     if variant.outlet_end:
         expected.add("heater_outlet_cue")
+    if variant.plate_holes:
+        expected |= {f"plate_hole_{j}" for j in (1, 2, 3, 4)}
     assert set(ids) == expected
 
 
 def test_part_count_per_variant(parts, variant):
-    assert len(parts) == {"original": 27, "compact": 28}[variant.key]
+    assert len(parts) == {"original": 27, "compact": 28, "adjusted": 32}[variant.key]
+
+
+B1_VARIANTS = [P.COMPACT, P.ADJUSTED]
+B1_IDS = [v.key for v in B1_VARIANTS]
 
 
 def test_roles_partition_members_and_placeholders(parts):
@@ -102,6 +108,8 @@ def test_envelope(parts, variant):
 def test_variant_envelopes_are_the_briefed_values():
     assert (P.ORIGINAL.envelope_w, P.ORIGINAL.envelope_d, P.ORIGINAL.envelope_h) == pytest.approx((20 * P.IN, 24 * P.IN, 38 * P.IN))
     assert (P.COMPACT.envelope_w, P.COMPACT.envelope_d, P.COMPACT.envelope_h) == pytest.approx((20 * P.IN, 22 * P.IN, 28 * P.IN))
+    assert (P.ADJUSTED.envelope_w, P.ADJUSTED.envelope_d, P.ADJUSTED.envelope_h) == pytest.approx((20 * P.IN, 22 * P.IN, 35 * P.IN))
+    assert P.DEFAULT_VARIANT is P.ADJUSTED
 
 
 def test_everything_inside_envelope(parts, variant):
@@ -140,9 +148,10 @@ def test_placeholder_sizes_and_heater_orientation(parts, variant):
     assert (t.xlen, t.ylen, t.zlen) == pytest.approx((P.TANK_X, P.TANK_Y, P.TANK_Z), abs=TOL)
 
 
-def test_compact_heater_length_parallel_to_tank_broad_face():
-    """B1: the 13.4 in body runs along Y, parallel to the tank's YZ broad face."""
-    parts = build_parts(P.COMPACT)
+@pytest.mark.parametrize("b1", B1_VARIANTS, ids=B1_IDS)
+def test_b1_heater_length_parallel_to_tank_broad_face(b1):
+    """B1 layouts: the 13.4 in body runs along Y, parallel to the tank's YZ broad face."""
+    parts = build_parts(b1)
     h, t = bb(by_id(parts, "heater_body")), bb(by_id(parts, "fuel_tank"))
     assert h.ylen == pytest.approx(P.HEATER_L, abs=TOL)
     assert t.ylen > t.xlen and t.zlen > t.xlen
@@ -194,16 +203,25 @@ def test_tank_rails_butt_between_the_x_min_uprights(parts, variant):
 
 # ----------------------------------------------------- mounting relationships
 
-def test_plate_rests_on_both_crossmembers_full_contact(parts):
-    """The plate's bottom face touches the top face of each crossmember, and the contact
-    patch is the full crossmember width across the full plate width: the crossmember lies
-    within the plate's Y extent and the plate lies within the crossmember's X extent."""
+def test_plate_rests_on_both_crossmembers_full_contact(parts, variant):
+    """The plate's bottom face touches the top face of each crossmember, and the plate lies
+    within the crossmember's X extent. Illustrative-spacing variants: the crossmember lies
+    within the plate's Y extent. Plate-hole variants: the crossmember's centre line (its slot
+    line) sits under the reported hole line, 6.35 mm in from the plate edge, so the 20 mm
+    member overhangs the plate edge by 3.65 mm and the contact patch is 16.35 mm wide."""
     pl = bb(by_id(parts, "heater_plate"))
-    for cid in ("HX1", "HX2"):
+    for cid, edge in (("HX1", "ymin"), ("HX2", "ymax")):
         c = bb(by_id(parts, cid))
         assert pl.zmin == pytest.approx(c.zmax, abs=TOL), cid
-        assert contains(rng(pl, "y"), rng(c, "y")), cid
         assert contains(rng(c, "x"), rng(pl, "x")), cid
+        if variant.plate_holes:
+            hole_line = getattr(pl, edge) + (P.PLATE_HOLE_INSET if edge == "ymin" else -P.PLATE_HOLE_INSET)
+            assert c.center.y == pytest.approx(hole_line, abs=TOL), cid
+            overlap = min(c.ymax, pl.ymax) - max(c.ymin, pl.ymin)
+            assert overlap == pytest.approx(P.PROFILE_MINOR / 2 + P.PLATE_HOLE_INSET, abs=TOL), cid
+            assert overlap >= 0.75 * P.PROFILE_MINOR, cid
+        else:
+            assert contains(rng(pl, "y"), rng(c, "y")), cid
 
 
 def test_crossmembers_at_middle_level_between_depth_members(parts, variant):
@@ -227,8 +245,8 @@ def test_heater_raised_with_open_space_beneath(parts, variant):
     bottom_top = P.PROFILE_MAJOR  # top face of the bottom-level members
     assert pl.zmin - bottom_top > 50.0, "no open space under the plate"
     for p in parts:
-        if p.id in ("heater_plate", "heater_body", "HX1", "HX2", "heater_outlet_cue"):
-            continue
+        if p.id in ("heater_plate", "heater_body", "HX1", "HX2", "heater_outlet_cue") or p.role == "hole_marker":
+            continue  # plate hole markers pass through the plate and crossmember top by design
         b = bb(p)
         under = not footprints_disjoint(b, pl) and b.zmax > bottom_top + TOL and b.zmin < pl.zmin - TOL
         assert not under, f"{p.id} intrudes into the space under the heater plate"
@@ -281,30 +299,86 @@ def test_relative_elevations(parts, variant):
     h, t = bb(by_id(parts, "heater_body")), bb(by_id(parts, "fuel_tank"))
     if variant.layout == "stacked":
         assert t.zmin > h.zmax  # tank entirely above the heater (A Original)
-    else:
-        # B1: tank bottom above the heater's bottom, below the heater's top; tank top above the heater
+    elif variant.layout == "beside":
+        # B1 Compact: tank bottom above the heater's bottom, below the heater's top; tank top above the heater
         assert h.zmin < t.zmin < h.zmax < t.zmax
         assert t.zmin == pytest.approx(8 * P.IN, abs=TOL)
         assert bb(by_id(parts, "heater_plate")).zmin == pytest.approx(7 * P.IN, abs=TOL)
+    else:
+        # B1 Adjusted: plate underside at 7 in; tank bottom above the heater body top by the provisional gap
+        assert variant.layout == "beside-above"
+        assert bb(by_id(parts, "heater_plate")).zmin == pytest.approx(7 * P.IN, abs=TOL)
+        assert t.zmin - h.zmax == pytest.approx(P.TANK_GAP_ABOVE_HEATER, abs=TOL)
+        assert t.zmin > h.zmax
 
 
-def test_compact_footprints_separate():
-    """B1: tank, heater, and plate occupy separate horizontal zones; no vertical stacking."""
-    parts = build_parts(P.COMPACT)
+@pytest.mark.parametrize("b1", B1_VARIANTS, ids=B1_IDS)
+def test_b1_footprints_separate(b1):
+    """B1 layouts: tank, heater, and plate occupy separate horizontal zones; no vertical stacking."""
+    parts = build_parts(b1)
     t = bb(by_id(parts, "fuel_tank"))
     for pid in ("heater_body", "heater_plate", "heater_outlet_cue"):
         assert footprints_disjoint(t, bb(by_id(parts, pid))), pid
     assert t.xmax < bb(by_id(parts, "heater_plate")).xmin  # tank at X-min, heater toward X-max
 
 
-def test_compact_modelled_gaps_are_positive_not_clearances():
+@pytest.mark.parametrize("b1", B1_VARIANTS, ids=B1_IDS)
+def test_b1_modelled_gaps_are_positive_not_clearances(b1):
     """Reports modelled bounding-box gaps. These are placeholder distances, not safe clearances."""
-    parts = build_parts(P.COMPACT)
+    parts = build_parts(b1)
     t, h, pl = (bb(by_id(parts, n)) for n in ("fuel_tank", "heater_body", "heater_plate"))
     assert h.xmin - t.xmax > 0
     assert pl.xmin - t.xmax > 0
     for cid in ("HX1", "HX2"):
         assert t.zmin - bb(by_id(parts, cid)).zmax > 0  # crossmembers pass beneath the tank with a gap
+
+
+# ------------------------------------------------------- B1 Adjusted specifics
+
+def test_adjusted_crossmember_spacing_is_the_reported_hole_pitch():
+    """The spacing is derived, not measured: 5 7/16 in minus twice (1/8 in clearance + 1/8 in radius)."""
+    assert P.PLATE_HOLE_INSET == pytest.approx(0.25 * P.IN, abs=TOL)
+    assert P.PLATE_HOLE_PITCH_ALONG == pytest.approx((5 + 7 / 16) * P.IN - 0.5 * P.IN, abs=TOL)
+    assert P.ADJUSTED.crossmember_spacing == pytest.approx(P.PLATE_HOLE_PITCH_ALONG, abs=TOL)
+    assert P.PLATE_T == pytest.approx(P.IN / 32, abs=TOL) and P.PLATE_T < P.IN / 16
+
+
+def test_adjusted_plate_holes_at_reported_inset_and_on_crossmember_lines():
+    """Four markers 6.35 mm in from each adjacent plate edge, at the reported diameter, each
+    passing through the plate and into a crossmember's top face (where a slot line would be)."""
+    parts = build_parts(P.ADJUSTED)
+    pl = bb(by_id(parts, "heater_plate"))
+    holes = [bb(by_id(parts, f"plate_hole_{j}")) for j in (1, 2, 3, 4)]
+    expect = {(round(x, 2), round(y, 2)) for x in (pl.xmin + P.PLATE_HOLE_INSET, pl.xmax - P.PLATE_HOLE_INSET)
+              for y in (pl.ymin + P.PLATE_HOLE_INSET, pl.ymax - P.PLATE_HOLE_INSET)}
+    assert {(round(h.center.x, 2), round(h.center.y, 2)) for h in holes} == expect
+    hx = [bb(by_id(parts, c)) for c in ("HX1", "HX2")]
+    for h in holes:
+        assert h.xlen == pytest.approx(P.PLATE_HOLE_D, abs=TOL) and h.ylen == pytest.approx(P.PLATE_HOLE_D, abs=TOL)
+        assert h.zmin < pl.zmin < pl.zmax < h.zmax  # through the plate
+        on = [c for c in hx if c.xmin < h.center.x < c.xmax and c.ymin < h.center.y < c.ymax and c.zmax > h.zmin]
+        assert len(on) == 1, "each hole line lies on exactly one crossmember top face"
+        assert on[0].center.y == pytest.approx(h.center.y, abs=TOL)
+
+
+def test_adjusted_filler_headroom_and_reach_are_reported_not_cleared():
+    """Geometric fit only: the tank top plus the filler/cap allowance stays below the top members,
+    and the filler cue sits inside the top rectangle in plan so it is reachable from above.
+    Whether a can or spout can actually be used there is for review (SR-02, SR-09), not this test."""
+    parts = build_parts(P.ADJUSTED)
+    t, f = bb(by_id(parts, "fuel_tank")), bb(by_id(parts, "tank_filler_neck"))
+    top_band_bottom = P.ADJUSTED.level_z[2]
+    assert t.zmax + P.FILLER_CAP_ALLOWANCE <= top_band_bottom + TOL
+    assert f.zmax < top_band_bottom
+    assert f.xmin > P.PROFILE_MINOR  # clear of the X-min top member in plan
+    assert P.ADJUSTED.envelope_h - t.zmax > P.PROFILE_MAJOR  # tank top below the top-member band
+
+
+def test_adjusted_keeps_the_twenty_member_frame():
+    """The 18-member simplification is a candidate under assessment (design.md D-14), not modelled."""
+    parts = build_parts(P.ADJUSTED)
+    assert len(members(parts)) == 20
+    assert {p.id for p in members(parts)} == {p.id for p in members(build_parts(P.COMPACT))}
 
 
 def test_outlet_cue_on_heater_end(parts, variant):
@@ -520,7 +594,8 @@ def test_build_succeeds_with_valid_pngs(tmp_path, monkeypatch, capsys):
     assert build.main([]) == 0
     assert "BUILD OK" in capsys.readouterr().out
     for rel in ("original/isometric.png", "original/tank-side.png", "compact/isometric.png",
-                "compact/top.png", "compact/front-elevation.png", "comparison.png"):
+                "compact/top.png", "compact/front-elevation.png", "adjusted/isometric.png",
+                "adjusted/top.png", "adjusted/front-elevation.png", "comparison.png"):
         build.validate_png(tmp_path / rel)
     assert (tmp_path / "comparison.md").exists()
 
