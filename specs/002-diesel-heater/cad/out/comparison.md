@@ -18,15 +18,15 @@ Generated 2026-10-28 by `build.py`. Millimetres unless stated. Positions are mod
 | Heater body Y | 247.6–362.0 | 109.2–449.6 |
 | Heater body Z | 393.0–532.7 | 180.8–320.5 |
 | Outlet cue end | none (D-07/D-08 open) | +Y |
-| Tank X | 40.0–116.2 | 40.0–116.2 |
+| Tank X | 20.0–96.2 | 20.0–96.2 |
 | Tank Y | 101.6–508.0 | 76.2–482.6 |
 | Tank Z | 535.0–941.4 | 203.2–609.6 |
 | Tank bottom minus heater top Z | +2.3 | -117.3 |
 | Rail centre Z (lower, upper) | 595.0, 795.0 | 263.2, 463.2 |
-| Filler neck centre (X, Y) | 78.1, 151.6 | 78.1, 126.2 |
+| Filler neck centre (X, Y) | 58.1, 151.6 | 58.1, 126.2 |
 | Top-level bottom face Z minus filler top Z (negative: filler rises into the top-member band, clear of the members in plan) | -36.6 | +41.2 |
-| Bounding-box gap tank → heater body (mm) | dx 23.6, dy 0.0, dz 2.3; min 23.7 | dx 216.6, dy 0.0, dz 0.0; min 216.6 |
-| Bounding-box gap tank → heater plate (mm) | dx 124.7, dy 0.0, dz 142.0; min 189.0 | dx 188.9, dy 0.0, dz 22.4; min 190.2 |
+| Bounding-box gap tank → heater body (mm) | dx 43.6, dy 0.0, dz 2.3; min 43.7 | dx 236.6, dy 0.0, dz 0.0; min 236.6 |
+| Bounding-box gap tank → heater plate (mm) | dx 144.7, dy 0.0, dz 142.0; min 202.8 | dx 208.9, dy 0.0, dz 22.4; min 210.1 |
 | Bounding-box gap tank → crossmember HX1 (mm) | dx 0.0, dy 0.0, dz 145.0; min 145.0 | dx 0.0, dy 0.0, dz 25.4; min 25.4 |
 | Bounding-box gap heater body → nearest X-max member L2-D2 (mm) | dx 7.8, dy 0.0, dz 3.0; min 8.4 | dx 40.8, dy 0.0, dz 3.0; min 41.0 |
 

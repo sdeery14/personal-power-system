@@ -2,36 +2,36 @@
 
 Generated 2026-10-28 by `build.py` from `params.py` (variant `original`). All lengths in millimetres, nominal, as modelled.
 
-**This is not a cut list.** Every length depends on the joint assumption below, which the design has not chosen (D-01, D-02), and on illustrative level heights and tank position. Gates G1–G5 in spec.md §10 are closed.
+**This is not a cut list.** Every length depends on the joint assumption below, which the design has not chosen (D-01, D-02), and on illustrative level heights and tank position. Every member's placement and connection is provisional; the Basis column names what each depends on. Gates G1–G5 in spec.md §10 are closed.
 
 Joint assumption: Uprights are continuous over the full height; every horizontal member butts between uprights or between perimeter members, with the 40 mm side vertical. This is one of several possible joint arrangements (design D-01, D-02 open). Member lengths derived from it are illustrative, not cut lengths.
 
-Tank assumption: The tank hangs on the X-min inside wall with the two lower points on the lower rail and the upper point, centred between them, on the upper rail. Which wall carries the tank (D-03), the tank's height (SR-01), and the upper point's horizontal position are all open.
+Tank assumption: The two tank rails lie in the plane of the X-min perimeter members and butt between the uprights like them, so their inside face is 20 mm from the outside of the frame. The tank hangs on that face with the two lower points on the lower rail and the upper point, centred between them, on the upper rail. Which wall carries the tank (D-03), the tank's height (SR-01), the upper point's horizontal position, and the rail-to-upright connector are all open.
 
 Layout: Tank drawn entirely above the heater to picture the manufacturer's C12 instruction. This does not address the keep-away warning (C1); SR-01 is unreconciled.
 
-| ID | Role | Axis | Nominal length (mm) | Section (mm) | Illustrative placement | Note |
+| ID | Role | Axis | Nominal length (mm) | Section (mm) | Basis (what the size and placement depend on) | Note |
 |---|---|---|---|---|---|---|
-| U1 | upright | Z | 965.2 | 20 × 40 | no | section orientation illustrative (D-02) |
-| U2 | upright | Z | 965.2 | 20 × 40 | no | section orientation illustrative (D-02) |
-| U3 | upright | Z | 965.2 | 20 × 40 | no | section orientation illustrative (D-02) |
-| U4 | upright | Z | 965.2 | 20 × 40 | no | section orientation illustrative (D-02) |
-| L1-W1 | perimeter_width | X | 468.0 | 20 × 40 | no | joint assumption; see params |
-| L1-W2 | perimeter_width | X | 468.0 | 20 × 40 | no | joint assumption; see params |
-| L1-D1 | perimeter_depth | Y | 529.6 | 20 × 40 | no | joint assumption; see params |
-| L1-D2 | perimeter_depth | Y | 529.6 | 20 × 40 | no | joint assumption; see params |
-| L2-W1 | perimeter_width | X | 468.0 | 20 × 40 | yes | level height illustrative |
-| L2-W2 | perimeter_width | X | 468.0 | 20 × 40 | yes | level height illustrative |
-| L2-D1 | perimeter_depth | Y | 529.6 | 20 × 40 | yes | level height illustrative |
-| L2-D2 | perimeter_depth | Y | 529.6 | 20 × 40 | yes | level height illustrative |
-| L3-W1 | perimeter_width | X | 468.0 | 20 × 40 | no | joint assumption; see params |
-| L3-W2 | perimeter_width | X | 468.0 | 20 × 40 | no | joint assumption; see params |
-| L3-D1 | perimeter_depth | Y | 529.6 | 20 × 40 | no | joint assumption; see params |
-| L3-D2 | perimeter_depth | Y | 529.6 | 20 × 40 | no | joint assumption; see params |
-| HX1 | heater_crossmember | X | 468.0 | 20 × 40 | yes | spacing illustrative (plate fixing pattern, Q-03) |
-| HX2 | heater_crossmember | X | 468.0 | 20 × 40 | yes | spacing illustrative (plate fixing pattern, Q-03) |
-| TR-lower | tank_rail | Y | 529.6 | 20 × 40 | yes | height follows the illustrative tank position (SR-01 open) |
-| TR-upper | tank_rail | Y | 529.6 | 20 × 40 | yes | height follows the illustrative tank position (SR-01 open) |
+| U1 | upright | Z | 965.2 | 20 × 40 | envelope height (Owner decision, preliminary); joint assumption | section orientation illustrative (D-02) |
+| U2 | upright | Z | 965.2 | 20 × 40 | envelope height (Owner decision, preliminary); joint assumption | section orientation illustrative (D-02) |
+| U3 | upright | Z | 965.2 | 20 × 40 | envelope height (Owner decision, preliminary); joint assumption | section orientation illustrative (D-02) |
+| U4 | upright | Z | 965.2 | 20 × 40 | envelope height (Owner decision, preliminary); joint assumption | section orientation illustrative (D-02) |
+| L1-W1 | perimeter_width | X | 468.0 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption | level at the envelope top or bottom |
+| L1-W2 | perimeter_width | X | 468.0 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption | level at the envelope top or bottom |
+| L1-D1 | perimeter_depth | Y | 529.6 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption | level at the envelope top or bottom |
+| L1-D2 | perimeter_depth | Y | 529.6 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption | level at the envelope top or bottom |
+| L2-W1 | perimeter_width | X | 468.0 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption; illustrative middle-level height | level height illustrative |
+| L2-W2 | perimeter_width | X | 468.0 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption; illustrative middle-level height | level height illustrative |
+| L2-D1 | perimeter_depth | Y | 529.6 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption; illustrative middle-level height | level height illustrative |
+| L2-D2 | perimeter_depth | Y | 529.6 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption; illustrative middle-level height | level height illustrative |
+| L3-W1 | perimeter_width | X | 468.0 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption | level at the envelope top or bottom |
+| L3-W2 | perimeter_width | X | 468.0 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption | level at the envelope top or bottom |
+| L3-D1 | perimeter_depth | Y | 529.6 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption | level at the envelope top or bottom |
+| L3-D2 | perimeter_depth | Y | 529.6 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption | level at the envelope top or bottom |
+| HX1 | heater_crossmember | X | 468.0 | 20 × 40 | envelope width; joint assumption; illustrative middle-level height, heater position, and spacing | spacing illustrative (plate fixing pattern, Q-03) |
+| HX2 | heater_crossmember | X | 468.0 | 20 × 40 | envelope width; joint assumption; illustrative middle-level height, heater position, and spacing | spacing illustrative (plate fixing pattern, Q-03) |
+| TR-lower | tank_rail | Y | 529.6 | 20 × 40 | envelope depth; joint assumption; illustrative tank height and hole position | height follows the illustrative tank position (SR-01 open); butts between the uprights |
+| TR-upper | tank_rail | Y | 529.6 | 20 × 40 | envelope depth; joint assumption; illustrative tank height and hole position | height follows the illustrative tank position (SR-01 open); butts between the uprights |
 
 Members: 20. Other components (placeholders): heater_plate, heater_body, fuel_tank, tank_filler_neck, tank_hole_lower_a, tank_hole_lower_b, tank_hole_upper.
 
