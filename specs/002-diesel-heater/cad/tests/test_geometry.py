@@ -353,7 +353,10 @@ def test_step_export_roundtrip_keeps_components_and_names(parts, variant, tmp_pa
     assert sorted(products) == sorted([p.id for p in parts] + [root])
     # One assembly occurrence per component under the root.
     assert len(re.findall(r"NEXT_ASSEMBLY_USAGE_OCCURRENCE\(", text)) == len(parts)
-    # Every solid re-imported matches a component's nominal bounding box, so names map to the right geometry.
+    # Every re-imported solid matches some component's nominal bounding box, so the geometry
+    # round-trips. This does NOT prove which PRODUCT name is attached to which solid: the names,
+    # the occurrence count, and the solids are checked independently. Name-to-solid binding is
+    # left for a later phase.
     boxes = {p.id: bb(p) for p in parts}
     for solid in reimported.solids().vals():
         sb = solid.BoundingBox()
@@ -407,38 +410,150 @@ def test_comparison_png_is_parallel_projection_at_one_scale(tmp_path):
     del win
 
 
-def test_build_reports_failure_and_removes_stale_png(tmp_path, monkeypatch):
-    """A render failure gives a non-zero exit status, removes the stale PNG, and keeps the other outputs."""
+def valid_png(path, size=(16, 12)):
+    """Write a small but complete, decodable PNG (the mocks must not weaken output validation)."""
+    from PIL import Image
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    Image.new("RGB", size, (250, 250, 250)).save(path)
+
+
+def _mock_png_writer(behaviour: dict):
+    """A write_png replacement; ``behaviour`` maps file name -> 'raise' | 'nothing' | 'garbage' | 'truncated' | 'ok'."""
+    calls = []
+
+    def fake_write_png(parts, path, variant, *args):
+        calls.append(path.name)
+        mode = behaviour.get(path.name, "ok")
+        if mode == "raise":
+            raise RuntimeError("simulated renderer failure")
+        if mode == "nothing":
+            return None  # returns normally, creates no file
+        if mode == "garbage":
+            path.write_bytes(b"\x89PNG\r\n\x1a\n garbage that is not a PNG stream")
+        elif mode == "truncated":
+            valid_png(path, (64, 64))
+            data = path.read_bytes()
+            path.write_bytes(data[: int(len(data) * 0.6)])  # header intact, IDAT cut short
+        else:
+            valid_png(path)
+        return None
+
+    return fake_write_png, calls
+
+
+def _assert_other_outputs_kept(out_dir):
+    for name in ("heater-module.step", "isometric.svg", "member-schedule.md"):
+        assert (out_dir / name).stat().st_size > 0, name
+
+
+def test_build_fails_when_renderer_raises(tmp_path, monkeypatch):
+    """A render exception gives a non-zero exit status, removes the stale PNG, and keeps the other outputs."""
     import build
 
     monkeypatch.setattr(build, "OUT", tmp_path)
     stale = tmp_path / "compact" / "top.png"
     stale.parent.mkdir(parents=True)
     stale.write_bytes(b"old image")
-    calls = []
-
-    def failing_write_png(parts, path, variant, *args):
-        calls.append(path.name)
-        if path.name == "top.png":
-            raise RuntimeError("simulated renderer failure")
-        path.write_bytes(b"\x89PNG new")
-
-    monkeypatch.setattr(build, "write_png", failing_write_png)
-    status = build.main(["--variant", "compact"])
-    assert status != 0
+    fake, calls = _mock_png_writer({"top.png": "raise"})
+    monkeypatch.setattr(build, "write_png", fake)
+    assert build.main(["--variant", "compact"]) == 1
     assert not stale.exists(), "a stale PNG survived a failed render"
-    assert (tmp_path / "compact" / "isometric.png").read_bytes().startswith(b"\x89PNG new")
-    assert (tmp_path / "compact" / "front-elevation.png").exists()
-    for name in ("heater-module.step", "isometric.svg", "member-schedule.md"):
-        assert (tmp_path / "compact" / name).stat().st_size > 0, name
+    build.validate_png(tmp_path / "compact" / "isometric.png")
+    build.validate_png(tmp_path / "compact" / "front-elevation.png")
+    _assert_other_outputs_kept(tmp_path / "compact")
     assert calls == ["isometric.png", "top.png", "front-elevation.png"]
 
 
-def test_build_succeeds_when_renders_succeed(tmp_path, monkeypatch):
+def test_build_fails_when_renderer_returns_without_creating_png(tmp_path, monkeypatch):
+    """Codex finding: a writer that fails natively returns normally and leaves no file."""
     import build
 
     monkeypatch.setattr(build, "OUT", tmp_path)
-    monkeypatch.setattr(build, "write_png", lambda parts, path, *a: path.write_bytes(b"\x89PNG"))
-    monkeypatch.setattr(build, "write_comparison_png", lambda pk, path: path.write_bytes(b"\x89PNG"))
+    stale = tmp_path / "compact" / "isometric.png"
+    stale.parent.mkdir(parents=True)
+    stale.write_bytes(b"old image")
+    fake, _ = _mock_png_writer({"isometric.png": "nothing"})
+    monkeypatch.setattr(build, "write_png", fake)
+    assert build.main(["--variant", "compact"]) == 1
+    assert not stale.exists()
+    build.validate_png(tmp_path / "compact" / "top.png")
+    _assert_other_outputs_kept(tmp_path / "compact")
+
+
+def test_build_fails_on_invalid_or_truncated_png(tmp_path, monkeypatch, capsys):
+    import build
+
+    monkeypatch.setattr(build, "OUT", tmp_path)
+    fake, _ = _mock_png_writer({"top.png": "garbage", "front-elevation.png": "truncated"})
+    monkeypatch.setattr(build, "write_png", fake)
+    assert build.main(["--variant", "compact"]) == 1
+    assert not (tmp_path / "compact" / "top.png").exists(), "garbage file left under the output name"
+    assert not (tmp_path / "compact" / "front-elevation.png").exists(), "truncated file left under the output name"
+    build.validate_png(tmp_path / "compact" / "isometric.png")
+    err = capsys.readouterr().err
+    assert "BUILD FAILED: 2" in err and "compact/top.png" in err and "compact/front-elevation.png" in err
+    _assert_other_outputs_kept(tmp_path / "compact")
+
+
+def test_build_fails_when_comparison_png_is_missing_or_invalid(tmp_path, monkeypatch):
+    import build
+
+    monkeypatch.setattr(build, "OUT", tmp_path)
+    fake, _ = _mock_png_writer({})
+    monkeypatch.setattr(build, "write_png", fake)
+    monkeypatch.setattr(build, "write_comparison_png", lambda pk, path: None)  # creates nothing
+    assert build.main([]) == 1
+    assert not (tmp_path / "comparison.png").exists() and (tmp_path / "comparison.md").exists()
+    monkeypatch.setattr(build, "write_comparison_png", lambda pk, path: path.write_bytes(b"\x89PNG partial"))
+    assert build.main([]) == 1
+    assert not (tmp_path / "comparison.png").exists()
+
+
+def test_build_succeeds_with_valid_pngs(tmp_path, monkeypatch, capsys):
+    import build
+
+    monkeypatch.setattr(build, "OUT", tmp_path)
+    fake, _ = _mock_png_writer({})
+    monkeypatch.setattr(build, "write_png", fake)
+    monkeypatch.setattr(build, "write_comparison_png", lambda pk, path: valid_png(path, (40, 20)))
     assert build.main([]) == 0
-    assert (tmp_path / "comparison.md").exists() and (tmp_path / "comparison.png").exists()
+    assert "BUILD OK" in capsys.readouterr().out
+    for rel in ("original/isometric.png", "original/tank-side.png", "compact/isometric.png",
+                "compact/top.png", "compact/front-elevation.png", "comparison.png"):
+        build.validate_png(tmp_path / rel)
+    assert (tmp_path / "comparison.md").exists()
+
+
+def test_native_vtk_writer_failure_is_detected(tmp_path, monkeypatch):
+    """Reproduces the Codex report: vtkPNGWriter cannot open an unwritable destination, raises no
+    Python exception, and produces no file. The real render path must still fail the build."""
+    import build
+
+    monkeypatch.setattr(build, "OUT", tmp_path)
+    view = build.VIEWS["compact"][1]  # the top view, a cheap parallel render
+    monkeypatch.setitem(build.VIEWS, "compact", [("missing-dir/top.png", *view[1:])])
+    status = build.main(["--variant", "compact"])
+    assert status == 1
+    assert not (tmp_path / "compact" / "missing-dir" / "top.png").exists()
+    _assert_other_outputs_kept(tmp_path / "compact")
+
+
+def test_validate_png_rejects_bad_files_and_accepts_real_render(tmp_path):
+    import build
+
+    with pytest.raises(build.RenderError):
+        build.validate_png(tmp_path / "absent.png")
+    (tmp_path / "empty.png").write_bytes(b"")
+    with pytest.raises(build.RenderError):
+        build.validate_png(tmp_path / "empty.png")
+    (tmp_path / "sig-only.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    with pytest.raises(build.RenderError):
+        build.validate_png(tmp_path / "sig-only.png")
+    valid_png(tmp_path / "ok.png")
+    build.validate_png(tmp_path / "ok.png")
+    # a real VTK render of the compact top view validates too
+    parts = build_parts(P.COMPACT)
+    name, direction, up, parallel, caption = build.VIEWS["compact"][1]
+    build.write_png(parts, tmp_path / "real.png", P.COMPACT, direction, up, parallel, caption)
+    build.validate_png(tmp_path / "real.png")

@@ -7,8 +7,10 @@ Writes to ./out/<variant>/: heater-module.step (not committed), isometric.svg,
 PNG views, member-schedule.md; and to ./out/: comparison.png, comparison.md.
 
 Exit status is non-zero if any PNG render fails. A PNG that is about to be
-rendered is deleted first, so a failed render leaves no file under that name
-and an old image can never pass for the current build's output.
+rendered is deleted first, and after rendering the file is checked to be a
+complete, decodable PNG (VTK writer error codes are checked too), so a failed
+render leaves no file under that name and an old or partial image can never
+pass for the current build's output.
 PRELIMINARY — NOT FOR FABRICATION.
 """
 
@@ -109,7 +111,40 @@ def _render(ren, path: Path, view_from, view_up, parallel: bool, size=(1400, 160
     writer.SetFileName(str(path))
     writer.SetInputConnection(w2i.GetOutputPort())
     writer.Write()
+    # vtkPNGWriter reports failure (for example an unwritable destination) through its
+    # error code, not a Python exception.
+    code = writer.GetErrorCode()
+    if code != 0:
+        raise RenderError(f"vtkPNGWriter error {code} ({vtk.vtkErrorCode.GetStringFromErrorCode(code)}) writing {path.name}")
     return win, ren
+
+
+class RenderError(RuntimeError):
+    """A PNG was not produced, or the file on disk is not a valid image."""
+
+
+def validate_png(path: Path) -> None:
+    """Raise RenderError unless ``path`` is a complete, decodable PNG with non-zero size.
+
+    Uses Pillow (a dependency of CadQuery through matplotlib). VTK's own PNG reader is
+    not used because it crashes the process on a truncated file.
+    """
+    from PIL import Image
+
+    if not path.is_file():
+        raise RenderError(f"{path.name} was not created")
+    if path.stat().st_size == 0:
+        raise RenderError(f"{path.name} is empty")
+    try:
+        with Image.open(path) as im:
+            im.verify()  # header and chunk CRCs
+        with Image.open(path) as im:
+            im.load()  # full decode; a truncated IDAT stream fails here
+            fmt, size = im.format, im.size
+    except Exception as exc:  # any decode failure means the file is not a valid output
+        raise RenderError(f"{path.name} is not a valid PNG: {exc!r}") from exc
+    if fmt != "PNG" or min(size) < 1:
+        raise RenderError(f"{path.name} is not a PNG image (format {fmt}, size {size})")
 
 
 def write_png(parts: list[Part], path: Path, variant: P.Variant, view_from, view_up, parallel, caption):
@@ -270,13 +305,22 @@ def write_comparison_md(parts_by_key: dict[str, list[Part]], path: Path) -> None
 # ------------------------------------------------------------------------ main
 
 def _render_or_record(fn, target: Path, failures: list[str], *args) -> None:
-    """Delete ``target``, then call ``fn(*args)`` to create it; record a failure instead of raising."""
-    target.unlink(missing_ok=True)  # never leave an old image under the name of a render that may fail
+    """Delete ``target``, call ``fn(*args)`` to create it, then validate the file on disk.
+
+    Success is recorded only if ``fn`` returns without raising AND ``target`` is a valid PNG.
+    A Python exception, a VTK writer error code, a missing file, or an undecodable file are
+    all recorded as failures, and nothing is left under ``target``.
+    """
     try:
+        target.unlink(missing_ok=True)  # never leave an old image under the name of a render that may fail
         fn(*args)
+        validate_png(target)
     except Exception as exc:  # noqa: BLE001 — recorded and reported as a failed build; never substituted
         failures.append(f"{target.relative_to(OUT).as_posix()}: {exc!r}")
-        target.unlink(missing_ok=True)  # a partially written file is not an output either
+        try:
+            target.unlink(missing_ok=True)  # a partial or invalid file is not an output either
+        except OSError:
+            pass
 
 
 def build_variant(variant: P.Variant, failures: list[str]) -> list[Part]:
