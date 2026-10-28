@@ -1,0 +1,13 @@
+[project]
+name = "diesel-heater-cad"
+version = "0.1.0"
+description = "PRELIMINARY parametric placeholder model of the Diesel Heater Module (002) frame. NOT FOR FABRICATION."
+requires-python = ">=3.12,<3.13"
+dependencies = ["cadquery==2.8.0"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
