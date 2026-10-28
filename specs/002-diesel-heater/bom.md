@@ -14,8 +14,8 @@
 | Item | Identity | Qty | Evidence | Notes |
 |---|---|---|---|---|
 | Diesel air heater, main unit | VEVOR product 010806799987; model XMZ-D2, split type; 12 V; 2 kW | 1 | User-reported (product ID); Manufacturer-stated (M2; M1 p.2, p.7, p.9) | Product size 13.4 × 4.5 × 5.5 in / 340 × 115 × 140 mm (Manufacturer-stated, M2; the 13.4 in length also User-reported by tape). Net weight 11 lb / 5 kg (Manufacturer-stated, M2) of unstated scope; standalone heater mass Unknown (Q-11). Ratings 12 V/40 W (M1 p.7); 3 A running (M2); supply ≥15 A at start (M1 p.4); no cigarette-lighter startup (M1 p.4) |
-| Heater mounting plate | Supplied metal plate | 1 | User-reported dimensions 5 7/16 × 6 11/16 in, tape measure, date not established | Listed as "machine fixing piece" (M1 p.8). Fixing pattern not recorded (Q-03) |
-| Fuel tank | Supplied 10 L (2.6 gal) tank | 1 | Manufacturer-stated capacity (M2, M1 p.8); User-reported size about 16 × 16 × 3 in excluding filler neck | Three recessed mounting points; some holes with plastic membranes (User-reported). Empty mass Unknown |
+| Heater mounting plate | Supplied metal plate | 1 | User-reported dimensions 5 7/16 × 6 11/16 in, tape measure, date not established; four fixing holes about 1/4 in diameter with about 1/8 in edge clearance (User-reported 2026-10-28, not measured); thickness estimated about 1/32 in (owner estimate 2026-10-28, not measured) | Listed as "machine fixing piece" (M1 p.8). Fixing pattern User-reported, not Measured (Q-03; checklist PLT-03 to PLT-09). The plate is thin sheet, not a structural carrier ([design.md §5](design.md#5-heater-mounting)) |
+| Fuel tank | Supplied 10 L (2.6 gal) tank | 1 | Manufacturer-stated capacity (M2, M1 p.8); User-reported size about 16 × 16 × 3 in excluding filler neck | Three recessed mounting points, reported as membrane-covered on some holes (2026-10-27) and as three through-holes (2026-10-28); unresolved until recorded (TNK-10 to TNK-12). Empty mass Unknown |
 | Tank mounting accessories | "Oil tank accessories" | 1 set | Manufacturer-stated (M1 p.8) | Contents not itemized in M1; not yet inventoried (Q-02) |
 | Pulse fuel pump with sheath and screw | Supplied | 1 | Manufacturer-stated (M1 p.8, p.9) | Mounting angle and orientation not stated (Q-08) |
 | Oil filter | Supplied | 1 | M1 p.8 | |
@@ -46,8 +46,8 @@ This list names categories so the design can be costed and reviewed. Rows gated 
 
 | Category | Preliminary description | Qty | Readiness | Gate | Blocked by |
 |---|---|---|---|---|---|
-| T-slot aluminum extrusion | 20 × 40 mm profile, 20 members per [design.md §3](design.md#3-member-schedule-preliminary-count-20) | 20, **lengths not derived** | Not purchase-ready | G1 | D-01, D-02, MR-05 concept review; envelope not approved |
-| Extrusion joining hardware | Corner brackets, gussets, or end-tapped fasteners; T-nuts and bolts | Not counted | Not purchase-ready | G1 | D-01, MR-05 concept review |
+| T-slot aluminum extrusion | 20 × 40 mm profile, 20 members per [design.md §3](design.md#3-member-schedule-preliminary-count-20) (an 18-member candidate is under assessment, D-14), for the B1 Adjusted envelope of about 20 × 22 × 35 in (MR-02 as amended 2026-10-28) | 20, **lengths not derived** | Not purchase-ready | G1 | D-01, D-02, D-14, MR-05 concept review; envelope preliminary |
+| Extrusion joining hardware | Interior corner brackets with sliding T-nuts at every joint and gussets at the base corners are the proposed concept (D-01, design.md §3); end-tapped fasteners the alternative. Sliding brackets also carry the heater crossmembers and the tank rails so their positions can be adjusted to the plate holes and the tank bosses | Not counted | Not purchase-ready | G1 | D-01, D-02, D-04, MR-05 concept review |
 | Heater plate fasteners | Fasteners from the plate to the H-X crossmembers | Not counted | Not purchase-ready | G1 | Q-03 |
 | Tank fasteners | Fasteners through the three tank points to the T-R rails | Not counted | **Not purchase-ready; not to be selected** until boss suitability and hole preparation are established | G1 | Q-02, Q-04, Q-05, MR-04 |
 | Stabilization hardware | Outriggers, adjustable feet, or other method | None selected | Not purchase-ready | G1 | D-12, SR-10 concept |
@@ -79,3 +79,4 @@ No cut list is produced in this document.
 |---|---|
 | 2026-10-27 | Created. Existing equipment per the owner's brief and the manufacturer's packing list; procurement list is categories only; nothing purchase-ready. |
 | 2026-10-27 | PR #4 review corrections: status distinguishes owned heater equipment (partly assembled) from the unpurchased frame; manufacturer size and net weight (scope unknown) recorded; §2 rows carry their gate, separating G1 custom structural materials from other supplies; §3 restates the G1 conditions from spec.md. |
+| 2026-10-28 | Plate hole pattern, edge clearance, and thickness estimate recorded as User-reported; tank hole state recorded as reported on two dates, unresolved. Extrusion row refers to the B1 Adjusted envelope and the 18-member candidate; joining-hardware row names the sliding-bracket concept. Nothing purchase-ready; G1 conditions in §3 unchanged. |
