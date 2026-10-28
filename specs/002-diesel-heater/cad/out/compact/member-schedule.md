@@ -1,0 +1,70 @@
+# Member schedule — B1 Compact — PRELIMINARY — NOT FOR FABRICATION
+
+Generated 2026-10-28 by `build.py` from `params.py` (variant `compact`). All lengths in millimetres, nominal, as modelled.
+
+**This is not a cut list.** Every length depends on the joint assumption below, which the design has not chosen (D-01, D-02), and on illustrative level heights and tank position. Gates G1–G5 in spec.md §10 are closed.
+
+Joint assumption: Uprights are continuous over the full height; every horizontal member butts between uprights or between perimeter members, with the 40 mm side vertical. This is one of several possible joint arrangements (design D-01, D-02 open). Member lengths derived from it are illustrative, not cut lengths.
+
+Tank assumption: The tank hangs on the X-min inside wall with the two lower points on the lower rail and the upper point, centred between them, on the upper rail. Which wall carries the tank (D-03), the tank's height (SR-01), and the upper point's horizontal position are all open.
+
+Layout: Tank drawn beside the heater with separate horizontal footprints, its lower part overlapping the heater's upper part in height only. Horizontal separation alone establishes no spill, fire, or thermal clearance; SR-01 and SR-02 remain open and the modelled gaps are bounding-box distances, not clearances.
+
+| ID | Role | Axis | Nominal length (mm) | Section (mm) | Illustrative placement | Note |
+|---|---|---|---|---|---|---|
+| U1 | upright | Z | 711.2 | 20 × 40 | no | section orientation illustrative (D-02) |
+| U2 | upright | Z | 711.2 | 20 × 40 | no | section orientation illustrative (D-02) |
+| U3 | upright | Z | 711.2 | 20 × 40 | no | section orientation illustrative (D-02) |
+| U4 | upright | Z | 711.2 | 20 × 40 | no | section orientation illustrative (D-02) |
+| L1-W1 | perimeter_width | X | 468.0 | 20 × 40 | no | joint assumption; see params |
+| L1-W2 | perimeter_width | X | 468.0 | 20 × 40 | no | joint assumption; see params |
+| L1-D1 | perimeter_depth | Y | 478.8 | 20 × 40 | no | joint assumption; see params |
+| L1-D2 | perimeter_depth | Y | 478.8 | 20 × 40 | no | joint assumption; see params |
+| L2-W1 | perimeter_width | X | 468.0 | 20 × 40 | yes | level height illustrative |
+| L2-W2 | perimeter_width | X | 468.0 | 20 × 40 | yes | level height illustrative |
+| L2-D1 | perimeter_depth | Y | 478.8 | 20 × 40 | yes | level height illustrative |
+| L2-D2 | perimeter_depth | Y | 478.8 | 20 × 40 | yes | level height illustrative |
+| L3-W1 | perimeter_width | X | 468.0 | 20 × 40 | no | joint assumption; see params |
+| L3-W2 | perimeter_width | X | 468.0 | 20 × 40 | no | joint assumption; see params |
+| L3-D1 | perimeter_depth | Y | 478.8 | 20 × 40 | no | joint assumption; see params |
+| L3-D2 | perimeter_depth | Y | 478.8 | 20 × 40 | no | joint assumption; see params |
+| HX1 | heater_crossmember | X | 468.0 | 20 × 40 | yes | spacing illustrative (plate fixing pattern, Q-03); spans the full width and passes beneath the tank zone |
+| HX2 | heater_crossmember | X | 468.0 | 20 × 40 | yes | spacing illustrative (plate fixing pattern, Q-03); spans the full width and passes beneath the tank zone |
+| TR-lower | tank_rail | Y | 478.8 | 20 × 40 | yes | height follows the illustrative tank position (SR-01 open) |
+| TR-upper | tank_rail | Y | 478.8 | 20 × 40 | yes | height follows the illustrative tank position (SR-01 open) |
+
+Members: 20. Other components (placeholders): heater_plate, heater_body, heater_outlet_cue, fuel_tank, tank_filler_neck, tank_hole_lower_a, tank_hole_lower_b, tank_hole_upper.
+
+## Parameters
+
+| Parameter | Value | Tag | Source |
+|---|---|---|---|
+| ENVELOPE_W | 508.0 mm | Proposed/illustrative | owner brief 2026-10-28 (B1 starting values); not in spec.md, MR-02 unchanged |
+| ENVELOPE_D | 558.8 mm | Proposed/illustrative | owner brief 2026-10-28 (B1 starting values); not in spec.md, MR-02 unchanged |
+| ENVELOPE_H | 711.2 mm | Proposed/illustrative | owner brief 2026-10-28 (B1 starting values); not in spec.md, MR-02 unchanged |
+| LEVEL_Z[1] | 137.8 mm | illustrative | middle-level height is open (design section 4) |
+| HEATER_AXIS | 1.0 0=X,1=Y | illustrative | heater orientation in the frame is open |
+| HEATER_CENTER_X | 390.0 mm | illustrative | heater position in the frame is open |
+| HEATER_CENTER_Y | 279.4 mm | illustrative | heater position in the frame is open |
+| CROSSMEMBER_SPACING | 100.0 mm | illustrative | plate fixing pattern not recorded (Q-03) |
+| TANK_BOTTOM_Z | 203.2 mm | illustrative | tank height is open; SR-01 unreconciled |
+| PROFILE_MINOR | 20.0 mm | Owner decision | spec MR-01: 20 x 40 mm T-slot |
+| PROFILE_MAJOR | 40.0 mm | Owner decision | spec MR-01: 20 x 40 mm T-slot |
+| HEATER_L | 340.4 mm | Manufacturer-stated | spec C21: 13.4 in (owner tape agrees, User-reported) |
+| HEATER_W | 114.3 mm | Manufacturer-stated | spec C21: 4.5 in |
+| HEATER_H | 139.7 mm | Manufacturer-stated | spec C21: 5.5 in |
+| PLATE_ALONG | 138.1 mm | User-reported | spec section 5: 5 7/16 in, tape measure; which plate side runs along the heater is not recorded |
+| PLATE_ACROSS | 169.9 mm | User-reported | spec section 5: 6 11/16 in, tape measure; as above |
+| OUTLET_D | 76.5 mm | Manufacturer-stated | spec C23: air outlet pipe inner diameter 3 in / 76.5 mm |
+| TANK_Y | 406.4 mm | User-reported | spec section 5: about 16 in, tape measure |
+| TANK_Z | 406.4 mm | User-reported | spec section 5: about 16 in, tape measure |
+| TANK_X | 76.2 mm | User-reported | spec section 5: about 3 in excluding filler neck |
+| HOLE_LOWER_SPACING | 173.0 mm | User-reported | spec section 5: about 6 13/16 in |
+| HOLE_UPPER_RISE | 200.0 mm | User-reported | spec section 5: about 7 7/8 in |
+| PLATE_T | 3.0 mm | illustrative | plate thickness not recorded (Q-03) |
+| TANK_HOLE_ABOVE_BOTTOM | 60.0 mm | illustrative | hole position on the tank face not recorded |
+| HOLE_DIA | 8.0 mm | illustrative | boss hole size not recorded (Q-05) |
+| FILLER_D | 40.0 mm | illustrative | filler neck size not recorded; orientation cue only |
+| FILLER_H | 20.0 mm | illustrative | as above |
+| FILLER_CORNER_INSET | 50.0 mm | illustrative | filler near a top corner per owner brief 2026-10-28; corner, angle, and size unknown |
+| OUTLET_CUE_L | 20.0 mm | illustrative | direction cue only; the outlet stub length is not recorded |
