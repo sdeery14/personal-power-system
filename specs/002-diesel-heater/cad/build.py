@@ -5,6 +5,10 @@
 
 Writes to ./out/<variant>/: heater-module.step (not committed), isometric.svg,
 PNG views, member-schedule.md; and to ./out/: comparison.png, comparison.md.
+
+Exit status is non-zero if any PNG render fails. A PNG that is about to be
+rendered is deleted first, so a failed render leaves no file under that name
+and an old image can never pass for the current build's output.
 PRELIMINARY — NOT FOR FABRICATION.
 """
 
@@ -13,6 +17,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import math
+import sys
 from pathlib import Path
 
 import cadquery as cq
@@ -39,6 +44,8 @@ VIEWS = {
          "Elevation from -Y, parallel projection: tank bottom above the plate, overlapping the heater in height only"),
     ],
 }
+COMPARISON_VIEW = ((0.55, -1.0, 0.5), (0, 0, 1))  # camera direction and view-up; always parallel projection
+COMPARISON_GAP = 300.0  # mm between the two frames along X in the comparison scene
 
 
 def write_step(assy: cq.Assembly, path: Path) -> None:
@@ -74,7 +81,8 @@ def _add_actors(ren, parts: list[Part], offset=(0.0, 0.0, 0.0)) -> None:
         ren.AddActor(actor)
 
 
-def _render(ren, path: Path, view_from, view_up, parallel: bool, size=(1400, 1600), text="") -> None:
+def _render(ren, path: Path, view_from, view_up, parallel: bool, size=(1400, 1600), text=""):
+    """Render ``ren`` off screen to ``path``; returns (window, renderer) so callers can inspect the camera."""
     import vtk
 
     banner = vtk.vtkTextActor()
@@ -87,8 +95,7 @@ def _render(ren, path: Path, view_from, view_up, parallel: bool, size=(1400, 160
     cam.SetPosition(*view_from)
     cam.SetFocalPoint(0, 0, 0)
     cam.SetViewUp(*view_up)
-    if parallel:
-        cam.ParallelProjectionOn()
+    cam.SetParallelProjection(1 if parallel else 0)
     ren.ResetCamera()  # frame the whole scene for this direction
     win = vtk.vtkRenderWindow()
     win.SetOffScreenRendering(1)
@@ -102,35 +109,46 @@ def _render(ren, path: Path, view_from, view_up, parallel: bool, size=(1400, 160
     writer.SetFileName(str(path))
     writer.SetInputConnection(w2i.GetOutputPort())
     writer.Write()
+    return win, ren
 
 
-def write_png(parts: list[Part], path: Path, variant: P.Variant, view_from, view_up, parallel, caption) -> None:
+def write_png(parts: list[Part], path: Path, variant: P.Variant, view_from, view_up, parallel, caption):
     """Shaded render through VTK's off-screen renderer, camera looking from ``view_from``."""
     import vtk  # provided by the cadquery dependency set
 
     ren = vtk.vtkRenderer()
     ren.SetBackground(1, 1, 1)
     _add_actors(ren, parts)
-    _render(ren, path, view_from, view_up, parallel,
-            text=f"{BANNER} — {variant.title}\nBounding-box placeholders; illustrative placement; gates G1-G5 closed\n{caption}")
+    return _render(ren, path, view_from, view_up, parallel,
+                   text=f"{BANNER} — {variant.title}\nBounding-box placeholders; illustrative placement; gates G1-G5 closed\n{caption}")
 
 
-def write_comparison_png(parts_by_key: dict[str, list[Part]], path: Path) -> None:
-    """Both variants in one scene at the same scale, side by side along X."""
+def comparison_offsets(keys: list[str]) -> dict[str, float]:
+    """X offset of each variant's origin in the comparison scene."""
+    offsets, x = {}, 0.0
+    for key in keys:
+        offsets[key] = x
+        x += P.VARIANTS[key].envelope_w + COMPARISON_GAP
+    return offsets
+
+
+def write_comparison_png(parts_by_key: dict[str, list[Part]], path: Path):
+    """Both variants in one scene, side by side along X, in parallel projection so one world
+    millimetre is the same number of pixels for both. Returns (window, renderer)."""
     import vtk
 
     ren = vtk.vtkRenderer()
     ren.SetBackground(1, 1, 1)
-    x = 0.0
+    offsets = comparison_offsets(list(parts_by_key))
     labels = []
     for key, parts in parts_by_key.items():
         v = P.VARIANTS[key]
-        _add_actors(ren, parts, offset=(x, 0.0, 0.0))
+        _add_actors(ren, parts, offset=(offsets[key], 0.0, 0.0))
         labels.append(f"{v.title} {v.envelope_w / P.IN:.0f} x {v.envelope_d / P.IN:.0f} x {v.envelope_h / P.IN:.0f} in")
-        x += v.envelope_w + 300.0
-    _render(ren, path, (0.55, -1.0, 0.5), (0, 0, 1), False, size=(2000, 1400),
-            text=f"{BANNER}\nSame scale, same component colours; left to right: " + " | ".join(labels)
-                 + "\nBounding-box placeholders; illustrative placement; gates G1-G5 closed")
+    view_from, view_up = COMPARISON_VIEW
+    return _render(ren, path, view_from, view_up, True, size=(2000, 1400),
+                   text=f"{BANNER}\nParallel projection, same scale, same component colours; left to right: " + " | ".join(labels)
+                        + "\nBounding-box placeholders; illustrative placement; gates G1-G5 closed")
 
 
 def write_schedule(parts: list[Part], path: Path, variant: P.Variant) -> None:
@@ -139,7 +157,7 @@ def write_schedule(parts: list[Part], path: Path, variant: P.Variant) -> None:
         "",
         f"Generated {dt.date.today().isoformat()} by `build.py` from `params.py` (variant `{variant.key}`). All lengths in millimetres, nominal, as modelled.",
         "",
-        "**This is not a cut list.** Every length depends on the joint assumption below, which the design has not chosen (D-01, D-02), and on illustrative level heights and tank position. Gates G1–G5 in spec.md §10 are closed.",
+        "**This is not a cut list.** Every length depends on the joint assumption below, which the design has not chosen (D-01, D-02), and on illustrative level heights and tank position. Every member's placement and connection is provisional; the Basis column names what each depends on. Gates G1–G5 in spec.md §10 are closed.",
         "",
         f"Joint assumption: {P.JOINT_ASSUMPTION}",
         "",
@@ -147,12 +165,12 @@ def write_schedule(parts: list[Part], path: Path, variant: P.Variant) -> None:
         "",
         f"Layout: {P.LAYOUT_NOTE[variant.layout]}",
         "",
-        "| ID | Role | Axis | Nominal length (mm) | Section (mm) | Illustrative placement | Note |",
+        "| ID | Role | Axis | Nominal length (mm) | Section (mm) | Basis (what the size and placement depend on) | Note |",
         "|---|---|---|---|---|---|---|",
     ]
     for p in members(parts):
         lines.append(f"| {p.id} | {p.role} | {p.axis} | {p.length:.1f} | {P.PROFILE_MINOR:.0f} × {P.PROFILE_MAJOR:.0f} | "
-                     f"{'yes' if p.illustrative else 'no'} | {p.note} |")
+                     f"{p.basis} | {p.note} |")
     lines += [
         "",
         f"Members: {len(members(parts))}. Other components (placeholders): "
@@ -251,7 +269,17 @@ def write_comparison_md(parts_by_key: dict[str, list[Part]], path: Path) -> None
 
 # ------------------------------------------------------------------------ main
 
-def build_variant(variant: P.Variant) -> list[Part]:
+def _render_or_record(fn, target: Path, failures: list[str], *args) -> None:
+    """Delete ``target``, then call ``fn(*args)`` to create it; record a failure instead of raising."""
+    target.unlink(missing_ok=True)  # never leave an old image under the name of a render that may fail
+    try:
+        fn(*args)
+    except Exception as exc:  # noqa: BLE001 — recorded and reported as a failed build; never substituted
+        failures.append(f"{target.relative_to(OUT).as_posix()}: {exc!r}")
+        target.unlink(missing_ok=True)  # a partially written file is not an output either
+
+
+def build_variant(variant: P.Variant, failures: list[str]) -> list[Part]:
     out = OUT / variant.key
     out.mkdir(parents=True, exist_ok=True)
     parts = build_parts(variant)
@@ -260,34 +288,37 @@ def build_variant(variant: P.Variant) -> list[Part]:
     write_svg(assy, out / "isometric.svg", variant)
     write_schedule(parts, out / "member-schedule.md", variant)
     for name, direction, up, parallel, caption in VIEWS[variant.key]:
-        try:
-            write_png(parts, out / name, variant, direction, up, parallel, caption)
-        except Exception as exc:  # noqa: BLE001 — report, never substitute
-            print(f"PNG render failed for {variant.key}/{name}: {exc!r}")
+        _render_or_record(write_png, out / name, failures, parts, out / name, variant, direction, up, parallel, caption)
     for f in sorted(out.iterdir()):
         print(f"{variant.key + '/' + f.name:32s} {f.stat().st_size:>10,d} bytes")
     return parts
 
 
-def main(argv: list[str] | None = None) -> None:
+def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--variant", choices=[*P.VARIANTS, "all"], default="all")
     args = ap.parse_args(argv)
     keys = list(P.VARIANTS) if args.variant == "all" else [args.variant]
     OUT.mkdir(exist_ok=True)
-    parts_by_key = {k: build_variant(P.VARIANTS[k]) for k in keys}
+    failures: list[str] = []
+    parts_by_key = {k: build_variant(P.VARIANTS[k], failures) for k in keys}
     if len(parts_by_key) == len(P.VARIANTS):
         write_comparison_md(parts_by_key, OUT / "comparison.md")
-        try:
-            write_comparison_png(parts_by_key, OUT / "comparison.png")
-        except Exception as exc:  # noqa: BLE001 — report, never substitute
-            print(f"PNG render failed for comparison.png: {exc!r}")
+        _render_or_record(write_comparison_png, OUT / "comparison.png", failures, parts_by_key, OUT / "comparison.png")
         for name in ("comparison.md", "comparison.png"):
             if (OUT / name).exists():
                 print(f"{name:32s} {(OUT / name).stat().st_size:>10,d} bytes")
     else:
         print("Comparison outputs are written only when all variants are built.")
+    if failures:
+        print(f"BUILD FAILED: {len(failures)} PNG render(s) failed and were removed; STEP, SVG, and schedules were written.",
+              file=sys.stderr)
+        for f in failures:
+            print(f"  {f}", file=sys.stderr)
+        return 1
+    print("BUILD OK")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

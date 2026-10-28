@@ -170,10 +170,12 @@ JOINT_ASSUMPTION = (
 )
 
 TANK_WALL_ASSUMPTION = (
-    "The tank hangs on the X-min inside wall with the two lower points on the lower "
+    "The two tank rails lie in the plane of the X-min perimeter members and butt "
+    "between the uprights like them, so their inside face is 20 mm from the outside "
+    "of the frame. The tank hangs on that face with the two lower points on the lower "
     "rail and the upper point, centred between them, on the upper rail. Which wall "
-    "carries the tank (D-03), the tank's height (SR-01), and the upper point's "
-    "horizontal position are all open."
+    "carries the tank (D-03), the tank's height (SR-01), the upper point's horizontal "
+    "position, and the rail-to-upright connector are all open."
 )
 
 LAYOUT_NOTE = {

@@ -24,7 +24,7 @@ class Part:
     role: str  # upright | perimeter_width | perimeter_depth | heater_crossmember | tank_rail | heater | plate | tank | hole_marker | filler | outlet_cue
     axis: str  # X | Y | Z for extrusion members, "-" otherwise
     length: float  # member length along its axis, or 0 for non-members
-    illustrative: bool  # True if any placement or size value is an illustrative choice
+    basis: str  # what the size and placement depend on: evidence-tagged values, illustrative parameters, assumptions
     note: str
     shape: cq.Shape
     color: tuple
@@ -59,19 +59,20 @@ def build_parts(variant: P.Variant = P.DEFAULT_VARIANT) -> list[Part]:
 
     # -- four continuous uprights: section a (X) by b (Y), full height -------------
     for i, (x0, y0) in enumerate([(0, 0), (W - a, 0), (0, D - b), (W - a, D - b)], start=1):
-        parts.append(Part(f"U{i}", "upright", "Z", H, False,
+        parts.append(Part(f"U{i}", "upright", "Z", H, f"envelope height ({v.envelope_tag}); joint assumption",
                           "section orientation illustrative (D-02)", _box(x0, y0, 0, a, b, H), GREY))
 
     # -- three perimeter levels: two widthwise + two depthwise members each ---------
     len_w = W - 2 * a  # between uprights along X
     len_d = D - 2 * b  # between uprights along Y
     for lvl, z0 in enumerate(v.level_z, start=1):
-        note = "level height illustrative" if lvl == 2 else "joint assumption; see params"
+        note = "level height illustrative" if lvl == 2 else "level at the envelope top or bottom"
+        basis = f"envelope ({v.envelope_tag}); joint assumption" + ("; illustrative middle-level height" if lvl == 2 else "")
         for j, y0 in enumerate([0, D - a], start=1):
-            parts.append(Part(f"L{lvl}-W{j}", "perimeter_width", "X", len_w, lvl == 2, note,
+            parts.append(Part(f"L{lvl}-W{j}", "perimeter_width", "X", len_w, basis, note,
                               _box(a, y0, z0, len_w, a, b), GREY))
         for j, x0 in enumerate([0, W - a], start=1):
-            parts.append(Part(f"L{lvl}-D{j}", "perimeter_depth", "Y", len_d, lvl == 2, note,
+            parts.append(Part(f"L{lvl}-D{j}", "perimeter_depth", "Y", len_d, basis, note,
                               _box(x0, b, z0, a, len_d, b), GREY))
 
     # -- two widthwise heater crossmembers at the middle level, spaced along Y -----
@@ -81,7 +82,8 @@ def build_parts(variant: P.Variant = P.DEFAULT_VARIANT) -> list[Part]:
         cross_note += "; spans the full width and passes beneath the tank zone"
     for j, yc in enumerate([v.heater_center_y - v.crossmember_spacing / 2,
                             v.heater_center_y + v.crossmember_spacing / 2], start=1):
-        parts.append(Part(f"HX{j}", "heater_crossmember", "X", len_w, True, cross_note,
+        parts.append(Part(f"HX{j}", "heater_crossmember", "X", len_w,
+                          "envelope width; joint assumption; illustrative middle-level height, heater position, and spacing", cross_note,
                           _box(a, yc - a / 2, z2, len_w, a, b), BLUE))
 
     # -- heater plate and heater body (bounding boxes), oriented by heater_axis ------
@@ -92,7 +94,7 @@ def build_parts(variant: P.Variant = P.DEFAULT_VARIANT) -> list[Part]:
         plate_dx, plate_dy = P.PLATE_ACROSS, P.PLATE_ALONG
         heat_dx, heat_dy = P.HEATER_W, P.HEATER_L
     plate_z0 = z2 + b
-    parts.append(Part("heater_plate", "plate", "-", 0, True,
+    parts.append(Part("heater_plate", "plate", "-", 0, "User-reported size; illustrative thickness, orientation, and position",
                       "owner tape dimensions; thickness, position, and which side runs along the heater illustrative",
                       _box(v.heater_center_x - plate_dx / 2, v.heater_center_y - plate_dy / 2, plate_z0,
                            plate_dx, plate_dy, P.PLATE_T), DARK))
@@ -100,7 +102,7 @@ def build_parts(variant: P.Variant = P.DEFAULT_VARIANT) -> list[Part]:
     heater_note = f"manufacturer size as a bounding box; body length along {v.heater_axis}; orientation and position illustrative"
     if v.layout == "beside":
         heater_note += "; heating-air inlet assumed at the end opposite the outlet cue, facing open space (SR-07)"
-    parts.append(Part("heater_body", "heater", "-", 0, True, heater_note,
+    parts.append(Part("heater_body", "heater", "-", 0, "Manufacturer-stated size; illustrative orientation and position", heater_note,
                       _box(v.heater_center_x - heat_dx / 2, v.heater_center_y - heat_dy / 2, heater_z0,
                            heat_dx, heat_dy, P.HEATER_H), ORANGE))
 
@@ -111,36 +113,38 @@ def build_parts(variant: P.Variant = P.DEFAULT_VARIANT) -> list[Part]:
         half = (heat_dx if ax == "X" else heat_dy) / 2
         start = [v.heater_center_x, v.heater_center_y, heater_z0 + P.HEATER_H / 2]
         start["XY".index(ax)] += sign * half
-        parts.append(Part("heater_outlet_cue", "outlet_cue", ax, P.OUTLET_CUE_L, True,
+        parts.append(Part("heater_outlet_cue", "outlet_cue", ax, P.OUTLET_CUE_L, "Manufacturer-stated diameter; illustrative end and length",
                           f"direction cue at the {v.outlet_end} end; outlet inner diameter C23; which end faces the duct is open (D-03, D-08)",
                           _cyl(tuple(start), direction, P.OUTLET_D, P.OUTLET_CUE_L), YELLOW))
 
-    # -- tank rails on the X-min inside wall, and the tank hanging on them -----------
-    tank_x0 = a + a  # inside the perimeter depth member (0..a) and the rail (a..2a)
+    # -- tank rails in the plane of the X-min perimeter members, butting between the --
+    # -- uprights like the depth members; the tank hangs on their inside face ----------
+    tank_x0 = a  # inside face of the rails and of the X-min members (0..a)
     tank_y0 = (D - P.TANK_Y) / 2
     hole_z_lower = v.tank_bottom_z + P.TANK_HOLE_ABOVE_BOTTOM
     hole_z_upper = hole_z_lower + P.HOLE_UPPER_RISE
     yc = D / 2
     for name, zc in [("TR-lower", hole_z_lower), ("TR-upper", hole_z_upper)]:
-        parts.append(Part(name, "tank_rail", "Y", len_d, True,
-                          "height follows the illustrative tank position (SR-01 open)",
-                          _box(a, b, zc - b / 2, a, len_d, b), GREEN))
-    parts.append(Part("fuel_tank", "tank", "-", 0, True,
+        parts.append(Part(name, "tank_rail", "Y", len_d,
+                          "envelope depth; joint assumption; illustrative tank height and hole position",
+                          "height follows the illustrative tank position (SR-01 open); butts between the uprights",
+                          _box(0, b, zc - b / 2, a, len_d, b), GREEN))
+    parts.append(Part("fuel_tank", "tank", "-", 0, "User-reported size; illustrative wall and height",
                       "owner tape dimensions as a bounding box; wall and height illustrative; " + P.LAYOUT_NOTE[v.layout],
                       _box(tank_x0, tank_y0, v.tank_bottom_z, P.TANK_X, P.TANK_Y, P.TANK_Z), WHITE))
-    parts.append(Part("tank_filler_neck", "filler", "-", 0, True,
+    parts.append(Part("tank_filler_neck", "filler", "-", 0, "illustrative size and corner",
                       "orientation cue near the Y-min top corner; corner, angle, and size not recorded",
                       _cyl((tank_x0 + P.TANK_X / 2, tank_y0 + P.FILLER_CORNER_INSET, v.tank_bottom_z + P.TANK_Z),
                            (0, 0, 1), P.FILLER_D, P.FILLER_H), WHITE))
 
     # -- three mounting-point markers through rail and tank (not fasteners) ----------
-    marker_len = (tank_x0 + P.TANK_X) - a
+    marker_len = tank_x0 + P.TANK_X  # from the rail outside face (x = 0) to the tank far face
     for name, y, z in [("tank_hole_lower_a", yc - P.HOLE_LOWER_SPACING / 2, hole_z_lower),
                        ("tank_hole_lower_b", yc + P.HOLE_LOWER_SPACING / 2, hole_z_lower),
                        ("tank_hole_upper", yc, hole_z_upper)]:
-        parts.append(Part(name, "hole_marker", "X", marker_len, True,
+        parts.append(Part(name, "hole_marker", "X", marker_len, "User-reported spacing; illustrative diameter and position on the tank face",
                           "marker at the reported spacing; not a fastener or boss (MR-04 open)",
-                          _cyl((a, y, z), (1, 0, 0), P.HOLE_DIA, marker_len), RED))
+                          _cyl((0, y, z), (1, 0, 0), P.HOLE_DIA, marker_len), RED))
 
     ids = [p.id for p in parts]
     assert len(ids) == len(set(ids)), "part identifiers must be unique"
@@ -156,6 +160,7 @@ def build_assembly(parts: list[Part] | None = None, variant: P.Variant = P.DEFAU
 
 
 MEMBER_ROLES = ("upright", "perimeter_width", "perimeter_depth", "heater_crossmember", "tank_rail")
+PLACEHOLDER_ROLES = ("heater", "plate", "tank", "filler", "hole_marker", "outlet_cue")
 
 
 def members(parts: list[Part]) -> list[Part]:

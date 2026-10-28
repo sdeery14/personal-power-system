@@ -1,8 +1,9 @@
 """Geometry checks for the PRELIMINARY Diesel Heater Module (002) model, both variants.
 
-These tests check counts, nominal dimensions, orientation, and the reported
-mounting-hole relationships. They do not check clearances, interference,
-loads, or any engineering adequacy, and passing them opens no release gate.
+These tests check counts, nominal dimensions, orientation, member end-face
+contact under the documented joint assumption, and the reported mounting-hole
+relationships. They do not check clearances, interference, loads, joint
+strength, or any engineering adequacy, and passing them opens no release gate.
 The bounding-box separations they assert are modelled placeholder distances,
 not safe clearances.
 """
@@ -13,7 +14,7 @@ import cadquery as cq
 import pytest
 
 import params as P
-from model import MEMBER_ROLES, build_assembly, build_parts, by_id, members
+from model import MEMBER_ROLES, PLACEHOLDER_ROLES, build_assembly, build_parts, by_id, members
 
 TOL = 0.05  # mm
 
@@ -39,6 +40,14 @@ def by_role(parts, role):
 def footprints_disjoint(a, b):
     """True if the XY footprints of two bounding boxes do not overlap."""
     return a.xmax <= b.xmin + TOL or b.xmax <= a.xmin + TOL or a.ymax <= b.ymin + TOL or b.ymax <= a.ymin + TOL
+
+
+def rng(b, ax):
+    return getattr(b, f"{ax}min"), getattr(b, f"{ax}max")
+
+
+def contains(outer, inner):
+    return outer[0] <= inner[0] + TOL and inner[1] <= outer[1] + TOL
 
 
 # ----------------------------------------------------------------- counts
@@ -67,6 +76,17 @@ def test_identifiers_unique_and_stable(parts, variant):
 
 def test_part_count_per_variant(parts, variant):
     assert len(parts) == {"original": 27, "compact": 28}[variant.key]
+
+
+def test_roles_partition_members_and_placeholders(parts):
+    """Every part is either a member (an axis and a length) or a placeholder; nothing falls between."""
+    assert not set(MEMBER_ROLES) & set(PLACEHOLDER_ROLES)
+    for p in parts:
+        assert p.role in MEMBER_ROLES or p.role in PLACEHOLDER_ROLES, p.id
+        if p.role in MEMBER_ROLES:
+            assert p.axis in ("X", "Y", "Z") and p.length > 0, p.id
+        assert p.basis and p.note, p.id
+    assert set(members(parts)) == {p for p in parts if p.role in MEMBER_ROLES}
 
 
 # ------------------------------------------------------------- dimensions
@@ -99,6 +119,7 @@ def test_every_member_has_20x40_section(parts):
         assert dims[0] == pytest.approx(P.PROFILE_MINOR, abs=TOL), p.id
         assert dims[1] == pytest.approx(P.PROFILE_MAJOR, abs=TOL), p.id
         assert dims[2] == pytest.approx(p.length, abs=TOL), p.id
+        assert getattr(b, f"{p.axis.lower()}len") == pytest.approx(p.length, abs=TOL), p.id
 
 
 def test_uprights_continuous_full_height(parts, variant):
@@ -127,14 +148,62 @@ def test_compact_heater_length_parallel_to_tank_broad_face():
     assert t.ylen > t.xlen and t.zlen > t.xlen
 
 
+# -------------------------------------------------------- member end-face contact
+
+def test_every_horizontal_member_butts_face_to_face(parts):
+    """Under the documented joint assumption every horizontal member butts against another
+    member at both ends: its end face is coplanar with, and fully inside, a face of that member.
+
+    Edge-only contact or a gap fails. This checks the modelled geometry only; it says nothing
+    about connectors, load paths, or joint strength (D-01, D-02, MR-04 open).
+    """
+    ms = members(parts)
+    for m in ms:
+        if m.axis == "Z":
+            continue
+        ax = m.axis.lower()
+        others = [o for o in ("x", "y", "z") if o != ax]
+        b = bb(m)
+        for end in ("min", "max"):
+            coord = getattr(b, f"{ax}{end}")
+            opposite = "max" if end == "min" else "min"
+            supported = False
+            for q in ms:
+                if q is m:
+                    continue
+                qb = bb(q)
+                if abs(getattr(qb, f"{ax}{opposite}") - coord) > TOL:
+                    continue
+                if all(contains(rng(qb, o), rng(b, o)) for o in others):
+                    supported = True
+                    break
+            assert supported, f"{m.id} end at {ax}={coord:.1f} has no full face contact"
+
+
+def test_tank_rails_butt_between_the_x_min_uprights(parts, variant):
+    """Rail end faces lie fully on the inside faces of U1 and U3 (the X-min uprights)."""
+    u1, u3 = bb(by_id(parts, "U1")), bb(by_id(parts, "U3"))
+    for rid in ("TR-lower", "TR-upper"):
+        r = bb(by_id(parts, rid))
+        assert r.ymin == pytest.approx(u1.ymax, abs=TOL) and r.ymax == pytest.approx(u3.ymin, abs=TOL), rid
+        for u in (u1, u3):
+            assert contains(rng(u, "x"), rng(r, "x")), rid  # the whole end face is on the upright, not just an edge
+            assert contains(rng(u, "z"), rng(r, "z")), rid
+        assert r.xmin == pytest.approx(0.0, abs=TOL) and r.xmax == pytest.approx(P.PROFILE_MINOR, abs=TOL), rid
+
+
 # ----------------------------------------------------- mounting relationships
 
-def test_plate_rests_on_both_crossmembers(parts):
+def test_plate_rests_on_both_crossmembers_full_contact(parts):
+    """The plate's bottom face touches the top face of each crossmember, and the contact
+    patch is the full crossmember width across the full plate width: the crossmember lies
+    within the plate's Y extent and the plate lies within the crossmember's X extent."""
     pl = bb(by_id(parts, "heater_plate"))
     for cid in ("HX1", "HX2"):
         c = bb(by_id(parts, cid))
         assert pl.zmin == pytest.approx(c.zmax, abs=TOL), cid
-        assert pl.ymin < c.ymin and c.ymax < pl.ymax, cid  # crossmember within the plate footprint
+        assert contains(rng(pl, "y"), rng(c, "y")), cid
+        assert contains(rng(c, "x"), rng(pl, "x")), cid
 
 
 def test_crossmembers_at_middle_level_between_depth_members(parts, variant):
@@ -192,22 +261,18 @@ def test_hole_markers_pass_through_rail_and_tank(parts):
         assert t.ymin < m.center.y < t.ymax and t.zmin < m.center.z < t.zmax, n
 
 
-def test_tank_upright_on_x_min_wall_with_filler_at_top_corner(parts):
+def test_tank_hangs_on_rail_inside_face_with_filler_at_top_corner(parts):
     t, f = bb(by_id(parts, "fuel_tank")), bb(by_id(parts, "tank_filler_neck"))
+    rails = [bb(by_id(parts, r)) for r in ("TR-lower", "TR-upper")]
     assert t.zlen > t.xlen and t.ylen > t.xlen  # broad face vertical, thin in X
-    assert t.xmin == pytest.approx(2 * P.PROFILE_MINOR, abs=TOL)  # against the rails on the X-min wall
+    for r in rails:
+        assert t.xmin == pytest.approx(r.xmax, abs=TOL)  # broad face on the rails' inside face
+        assert contains(rng(t, "y"), rng(r, "y")) or contains(rng(r, "y"), rng(t, "y"))
+        assert contains(rng(t, "z"), rng(r, "z"))  # each rail lies within the tank's height
     assert f.zmin == pytest.approx(t.zmax, abs=TOL)
     assert f.center.y == pytest.approx(t.ymin + P.FILLER_CORNER_INSET, abs=TOL)  # near the Y-min corner, not centred
     assert f.center.y < t.center.y - 0.25 * t.ylen
     assert t.xmin < f.center.x < t.xmax and t.ymin < f.ymin and f.ymax < t.ymax
-
-
-def test_rails_span_between_uprights(parts, variant):
-    for rid in ("TR-lower", "TR-upper"):
-        r = bb(by_id(parts, rid))
-        assert r.ymin == pytest.approx(P.PROFILE_MAJOR, abs=TOL)
-        assert r.ymax == pytest.approx(variant.envelope_d - P.PROFILE_MAJOR, abs=TOL)
-        assert r.xmin == pytest.approx(P.PROFILE_MINOR, abs=TOL)
 
 
 # ------------------------------------------------------- layout relationships
@@ -281,16 +346,22 @@ def test_step_export_roundtrip_keeps_components_and_names(parts, variant, tmp_pa
     build_assembly(parts, variant).export(str(path))
     reimported = cq.importers.importStep(str(path))
     assert reimported.solids().size() == len(parts)
-    names = set(re.findall(r"PRODUCT\('([^']*)'", path.read_text(encoding="utf-8", errors="replace")))
-    missing = {p.id for p in parts} - names
-    assert not missing, f"STEP lost component names: {sorted(missing)}"
-    assert f"diesel_heater_module_{variant.key}_PRELIMINARY" in names
+    text = path.read_text(encoding="utf-8", errors="replace")
+    products = re.findall(r"PRODUCT\('([^']*)'", text)
+    root = f"diesel_heater_module_{variant.key}_PRELIMINARY"
+    # Exactly one PRODUCT per component plus the root, each name exactly once, nothing extra.
+    assert sorted(products) == sorted([p.id for p in parts] + [root])
+    # One assembly occurrence per component under the root.
+    assert len(re.findall(r"NEXT_ASSEMBLY_USAGE_OCCURRENCE\(", text)) == len(parts)
+    # Every solid re-imported matches a component's nominal bounding box, so names map to the right geometry.
+    boxes = {p.id: bb(p) for p in parts}
+    for solid in reimported.solids().vals():
+        sb = solid.BoundingBox()
+        assert any(all(abs(getattr(sb, k) - getattr(b, k)) < 0.1 for k in ("xmin", "xmax", "ymin", "ymax", "zmin", "zmax"))
+                   for b in boxes.values())
 
 
-def test_every_member_role_is_known(parts):
-    for p in members(parts):
-        assert p.role in MEMBER_ROLES
-
+# ------------------------------------------------------------- build outputs
 
 def test_schedule_and_comparison_carry_banner(tmp_path):
     from build import BANNER, write_comparison_md, write_schedule
@@ -300,6 +371,74 @@ def test_schedule_and_comparison_carry_banner(tmp_path):
         write_schedule(parts_by_key[k], tmp_path / f"{k}.md", v)
         text = (tmp_path / f"{k}.md").read_text(encoding="utf-8")
         assert BANNER in text and "not a cut list" in text and v.title in text
+        assert "| no |" not in text  # no member is presented as non-provisional
     write_comparison_md(parts_by_key, tmp_path / "comparison.md")
     text = (tmp_path / "comparison.md").read_text(encoding="utf-8")
     assert BANNER in text and "do not establish safe" in text
+
+
+def test_comparison_png_is_parallel_projection_at_one_scale(tmp_path):
+    """The comparison scene uses parallel projection, and a 100 mm segment at each variant's
+    origin projects to the same pixel length (perspective would shrink the farther one)."""
+    import build
+
+    parts_by_key = {k: build_parts(v) for k, v in P.VARIANTS.items()}
+    path = tmp_path / "comparison.png"
+    win, ren = build.write_comparison_png(parts_by_key, path)
+    assert path.exists() and path.stat().st_size > 10_000
+    assert ren.GetActiveCamera().GetParallelProjection() == 1
+    offsets = build.comparison_offsets(list(parts_by_key))
+
+    def pixels(x0, y0, z0, dx, dy, dz):
+        pts = []
+        for x, y, z in ((x0, y0, z0), (x0 + dx, y0 + dy, z0 + dz)):
+            ren.SetWorldPoint(x, y, z, 1.0)
+            ren.WorldToDisplay()
+            pts.append(ren.GetDisplayPoint()[:2])
+        return ((pts[1][0] - pts[0][0]) ** 2 + (pts[1][1] - pts[0][1]) ** 2) ** 0.5
+
+    lengths = {}
+    for key, x_off in offsets.items():
+        v = P.VARIANTS[key]
+        # a 100 mm vertical segment at the near-left and far-right corners of each frame
+        lengths[key] = (pixels(x_off, 0, 0, 0, 0, 100), pixels(x_off + v.envelope_w, v.envelope_d, 0, 0, 0, 100))
+    flat = [px for pair in lengths.values() for px in pair]
+    assert max(flat) - min(flat) < 0.5, f"projected 100 mm segments differ: {lengths}"
+    del win
+
+
+def test_build_reports_failure_and_removes_stale_png(tmp_path, monkeypatch):
+    """A render failure gives a non-zero exit status, removes the stale PNG, and keeps the other outputs."""
+    import build
+
+    monkeypatch.setattr(build, "OUT", tmp_path)
+    stale = tmp_path / "compact" / "top.png"
+    stale.parent.mkdir(parents=True)
+    stale.write_bytes(b"old image")
+    calls = []
+
+    def failing_write_png(parts, path, variant, *args):
+        calls.append(path.name)
+        if path.name == "top.png":
+            raise RuntimeError("simulated renderer failure")
+        path.write_bytes(b"\x89PNG new")
+
+    monkeypatch.setattr(build, "write_png", failing_write_png)
+    status = build.main(["--variant", "compact"])
+    assert status != 0
+    assert not stale.exists(), "a stale PNG survived a failed render"
+    assert (tmp_path / "compact" / "isometric.png").read_bytes().startswith(b"\x89PNG new")
+    assert (tmp_path / "compact" / "front-elevation.png").exists()
+    for name in ("heater-module.step", "isometric.svg", "member-schedule.md"):
+        assert (tmp_path / "compact" / name).stat().st_size > 0, name
+    assert calls == ["isometric.png", "top.png", "front-elevation.png"]
+
+
+def test_build_succeeds_when_renders_succeed(tmp_path, monkeypatch):
+    import build
+
+    monkeypatch.setattr(build, "OUT", tmp_path)
+    monkeypatch.setattr(build, "write_png", lambda parts, path, *a: path.write_bytes(b"\x89PNG"))
+    monkeypatch.setattr(build, "write_comparison_png", lambda pk, path: path.write_bytes(b"\x89PNG"))
+    assert build.main([]) == 0
+    assert (tmp_path / "comparison.md").exists() and (tmp_path / "comparison.png").exists()
