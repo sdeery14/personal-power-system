@@ -13,7 +13,7 @@ The measurements are static. The heater is not powered, fuelled, or run for any 
 | [`template.md`](template.md) | Blank record. Copy it for each measuring session |
 | `YYYY-MM-DD-<group>.md` | One record per session and component group, for example `2026-11-02-heater-plate.md`. None exist yet |
 
-Photographs are held in the owner's own archive and are referred to by identifier only. No photograph is committed.
+Original photographs are held in the owner's own archive and are referred to by identifier only; no original is committed. Curated derivatives (cropped, re-encoded without EXIF or other metadata, and checked for household detail) may be committed under [`../evidence/photos/`](../evidence/photos/) with a row in [`../evidence/photo-index.md`](../evidence/photo-index.md). A committed photograph is evidence of what is visible in it, never a reading, and promotes nothing to Measured.
 
 ## 2. Workflow
 
@@ -162,7 +162,7 @@ Rules:
 - A feature the checklist did not anticipate takes the next free number in its group, added to `checklist.md` in the same commit as the record.
 - Non-numeric observations (a membrane, a marking, a direction) use the same identifiers as the features they describe.
 
-Photograph identifiers are `P-YYYYMMDD-nn`, assigned by the owner in the owner's archive. A record cites them; the repository never holds them.
+Photograph identifiers are `P-YYYYMMDD-nn`, assigned by the owner in the owner's archive. A record cites them; the repository never holds the originals. Where a curated derivative of a cited photograph is committed under `../evidence/photos/`, the record may also cite its evidence identifier (`E-nn` from `../evidence/photo-index.md`) so a reviewer can see what the record refers to.
 
 ## 7. Repeated and conflicting records
 
