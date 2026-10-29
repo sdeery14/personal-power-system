@@ -285,6 +285,39 @@ def pack_stock(lengths: list[float], stock: float = P.STOCK_LENGTH, kerf: float 
     raise RuntimeError("unreachable: one piece per bar always fits")
 
 
+# Preferred cutting arrangement for this exact member schedule (Owner approval 2026-10-29 after
+# Codex review): the exact packer's first six-bar solution left only 14.4 mm on four bars; this
+# arrangement also uses six bars and leaves 64.4 mm on its tightest bars at the 3 mm kerf.
+# It is used only if it still conserves every piece and fits the stock and kerf assumptions;
+# otherwise the general packer is the fallback.
+PREFERRED_PATTERN: tuple[tuple[float, ...], ...] = (
+    (889.0, 518.8, 518.8),
+    (889.0, 518.8, 518.8),
+    (889.0, 518.8, 518.8),
+    (889.0, 518.8, 518.8),
+    (468.0, 468.0, 468.0, 468.0),
+    (468.0, 468.0, 468.0, 468.0),
+)
+
+
+def pattern_is_valid(pattern, lengths: list[float], stock: float = P.STOCK_LENGTH, kerf: float = P.KERF_ALLOWANCE) -> bool:
+    """True if ``pattern`` uses exactly the pieces in ``lengths`` (as a multiset, to 0.05 mm) and
+    every bar fits the stock with one kerf per piece."""
+    flat = sorted(x for bar in pattern for x in bar)
+    wanted = sorted(lengths)
+    if len(flat) != len(wanted) or any(abs(a - b) > 0.05 for a, b in zip(flat, wanted)):
+        return False
+    return all(sum(bar) + kerf * len(bar) <= stock + 1e-9 for bar in pattern)
+
+
+def select_packing(lengths: list[float], stock: float = P.STOCK_LENGTH, kerf: float = P.KERF_ALLOWANCE) -> tuple[list[list[float]], str]:
+    """The preferred pattern when it is valid for these pieces, stock, and kerf; otherwise the
+    general packer. Returns (bars, basis)."""
+    if pattern_is_valid(PREFERRED_PATTERN, lengths, stock, kerf):
+        return [list(bar) for bar in PREFERRED_PATTERN], "preferred pattern"
+    return pack_stock(lengths, stock, kerf), "general packer (fewest bars; exact search), because the preferred pattern does not fit these pieces, stock, and kerf"
+
+
 def tightest_bar_margin(bars: list[list[float]], stock: float = P.STOCK_LENGTH, kerf: float = P.KERF_ALLOWANCE) -> dict:
     """The bar with the least room left: its piece count, piece sum, remaining margin after one
     kerf per piece, and the largest kerf a full, untrimmed bar tolerates for that pattern.
@@ -301,7 +334,7 @@ def tightest_bar_margin(bars: list[list[float]], stock: float = P.STOCK_LENGTH, 
 
 def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> list[list[float]]:
     pieces = cut_pieces(parts)
-    bars = pack_stock([length for _, length, _ in pieces])
+    bars, basis = select_packing([length for _, length, _ in pieces])
     total = sum(length for _, length, _ in pieces)
     by_len: dict[float, list[str]] = {}
     for pid, length, _ in pieces:
@@ -329,7 +362,9 @@ def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> lis
         "",
         f"Pieces: {len(pieces)} (the {len(members(parts))} modelled members of MR-01). Total nominal length: {total:.1f} mm ({total / 1000:.3f} m) before kerf and waste.",
         "",
-        f"## Stock packing into {P.STOCK_LENGTH:.0f} mm bars (fewest bars; exact search)",
+        f"## Stock packing into {P.STOCK_LENGTH:.0f} mm bars ({basis})",
+        "",
+        "The preferred pattern for this member schedule is 4 bars of 889 + 518.8 + 518.8 and 2 bars of 4 × 468 (Owner approval 2026-10-29 after Codex review): it uses the same six bars as the fewest-bars search but leaves the largest margin on its tightest bar. It is applied only after a check that it conserves every piece and fits the stock and kerf assumptions; if the member schedule, stock length, or kerf change so that it no longer does, the general packer takes over and this heading says so.",
         "",
         "| Bar | Pieces (mm) | Used incl. kerf (mm) | Offcut (mm) |",
         "|---|---|---|---|",
@@ -346,7 +381,7 @@ def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> lis
         f"**Margin:** the tightest bar holds {margin['pieces_sum']:.1f} mm of pieces in {margin['n']} pieces and, after {margin['n']} kerfs of {P.KERF_ALLOWANCE:.0f} mm, leaves {margin['margin']:.1f} mm. "
         f"For a full, untrimmed {P.STOCK_LENGTH:.0f} mm bar the kerf can therefore be at most {margin['max_kerf']:.1f} mm. "
         f"With a delivered shortfall s, an end-trimming allowance t (for example to square a stock end), and a real kerf k, the pattern fits only while s + t + {margin['n']} × (k − {P.KERF_ALLOWANCE:.0f}) ≤ {margin['margin']:.1f} mm. "
-        "If the measured bars or blade exceed that, the packing is to be recalculated with the measured stock length, trim, and kerf (`pack_stock`), which may or may not need another bar; it is not to be patched by assuming a seventh bar. "
+        "If the measured bars or blade exceed that, the packing is to be recalculated with the measured stock length, trim, and kerf (`select_packing`, which falls back to the general packer), which may or may not need another bar; it is not to be patched by assuming a seventh bar. "
         "Measure the delivered bars and the kerf before cutting; this is one reason the schedule is not a cut list.",
         "",
         "Not in this schedule: stabilization hardware of any kind, which is excluded from the initial purchase and build and kept as a potential future enhancement (design.md section 10, D-12); any member added at the MR-05 review; and any change to the envelope (MR-02, preliminary 34 to 36 in).",

@@ -497,69 +497,96 @@ def test_pack_stock_respects_stock_length_and_kerf():
     assert sorted(map(sorted, bars)) == [[300.0], [900.0, 900.0]]  # 900 + 900 + 2 kerfs = 1806; the 300 would need 2109
     assert pack_stock([1000.0, 997.0], stock=2000.0, kerf=3.0) == [[1000.0], [997.0]]  # 1000 + 997 + 2 kerfs = 2003 > 2000
     assert pack_stock([1000.0, 994.0], stock=2000.0, kerf=3.0) == [[1000.0, 994.0]]  # exactly 2000
-    # first-fit-decreasing would use 7 bars for the 20 members; the exact search finds 6
+    # first-fit-decreasing would use 7 bars for the 20 members; the exact search finds 6 (the
+    # schedule itself uses the documented preferred pattern, also 6, see select_packing)
     concept = [889.0] * 4 + [468.0] * 8 + [518.8] * 8
     assert len(pack_stock(concept, stock=2000.0, kerf=3.0)) == 6
     with pytest.raises(ValueError):
         pack_stock([2000.0], stock=2000.0, kerf=3.0)
 
 
-def test_adjusted_cut_schedule_packs_into_six_bars(tmp_path):
-    """The proposed order for the 20 members: 6 x 2000 mm. Each bar's pieces plus one kerf per
-    piece fit the stock; every piece is placed exactly once. A sizing estimate, not a cut list."""
-    from build import BANNER, cut_pieces, write_cut_schedule
+def test_adjusted_cut_schedule_uses_the_preferred_six_bar_pattern(tmp_path):
+    """The proposed order for the 20 members: 6 x 2000 mm in the preferred arrangement (Owner
+    approval 2026-10-29): 4 bars of 889 + 518.8 + 518.8 and 2 bars of 4 x 468. Every piece is
+    placed exactly once and each bar fits with one kerf per piece. A sizing estimate, not a cut list."""
+    from build import BANNER, PREFERRED_PATTERN, cut_pieces, write_cut_schedule
 
     parts = build_parts(P.ADJUSTED)
     bars = write_cut_schedule(parts, tmp_path / "cut-schedule.md", P.ADJUSTED)
     assert len(bars) == 6
+    assert [sorted(b) for b in bars] == [sorted(b) for b in PREFERRED_PATTERN]
+    assert sorted(map(sorted, bars)).count([468.0, 468.0, 468.0, 468.0]) == 2
+    assert sorted(map(sorted, bars)).count([518.8, 518.8, 889.0]) == 4
     placed = sorted(x for bar in bars for x in bar)
-    assert placed == sorted(length for _, length, _ in cut_pieces(parts))
+    assert placed == sorted(length for _, length, _ in cut_pieces(parts))  # piece conservation
     for bar in bars:
         assert sum(bar) + P.KERF_ALLOWANCE * len(bar) <= P.STOCK_LENGTH
     text = (tmp_path / "cut-schedule.md").read_text(encoding="utf-8")
     assert BANNER in text and "Proposed, not approved" in text and "6 × 2000 mm" in text
+    assert "(preferred pattern)" in text and "4 bars of 889 + 518.8 + 518.8 and 2 bars of 4 × 468" in text
     assert "11.450 m" in text and "FB" not in text and "20 × 40" not in text
     assert "excluded from the initial purchase and build" in text
     assert "no separate allowance for trimming" in text and "needs one more bar" not in text
 
 
+def test_preferred_pattern_is_validated_and_falls_back_to_the_packer():
+    """The preferred pattern is used only when it conserves every piece and fits the stock and
+    kerf; otherwise the general packer takes over. No new optimisation is introduced."""
+    from build import PREFERRED_PATTERN, cut_pieces, pattern_is_valid, select_packing
+
+    lengths = [length for _, length, _ in cut_pieces(build_parts(P.ADJUSTED))]
+    assert pattern_is_valid(PREFERRED_PATTERN, lengths)
+    assert not pattern_is_valid(PREFERRED_PATTERN, lengths[:-1])  # a piece missing
+    assert not pattern_is_valid(PREFERRED_PATTERN, lengths + [300.0])  # a piece extra
+    assert not pattern_is_valid(PREFERRED_PATTERN, lengths, stock=1930.0)  # 1926.6 + 9 kerf = 1935.6 > 1930
+    assert not pattern_is_valid(PREFERRED_PATTERN, lengths, kerf=24.5)  # 1926.6 + 73.5 = 2000.1 > 2000
+    bars, basis = select_packing(lengths)
+    assert basis == "preferred pattern" and len(bars) == 6
+    bars, basis = select_packing(lengths, stock=1930.0)
+    assert basis.startswith("general packer") and len(bars) >= 6
+    assert sorted(x for b in bars for x in b) == sorted(lengths)
+    assert all(sum(b) + P.KERF_ALLOWANCE * len(b) <= 1930.0 + 1e-9 for b in bars)
+    bars, basis = select_packing(lengths[:-1])  # changed member schedule
+    assert basis.startswith("general packer") and sorted(x for b in bars for x in b) == sorted(lengths[:-1])
+
+
 def test_cut_schedule_margin_arithmetic(tmp_path):
-    """Codex finding: the margin warning must be arithmetically right. The tight pattern is
-    518.8 + 518.8 + 468 + 468 = 1973.6 mm in four pieces; after four 3 mm kerfs 14.4 mm remain
-    of a 2000 mm bar; a full, untrimmed bar therefore tolerates a kerf of at most 6.6 mm; and
-    shortfall s, trim t, and kerf k fit only while s + t + 4 (k - 3) <= 14.4."""
+    """The margin warning must be arithmetically right for the preferred pattern. The tight bar is
+    889 + 518.8 + 518.8 = 1926.6 mm in three pieces; after three 3 mm kerfs 64.4 mm remain of a
+    2000 mm bar; a full, untrimmed bar therefore tolerates a kerf of at most 24.5 mm (24.47); and
+    shortfall s, trim t, and kerf k fit only while s + t + 3 (k - 3) <= 64.4."""
     from build import cut_pieces, pack_stock, tightest_bar_margin, write_cut_schedule
 
     parts = build_parts(P.ADJUSTED)
     bars = write_cut_schedule(parts, tmp_path / "cut-schedule.md", P.ADJUSTED)
     m = tightest_bar_margin(bars)
-    assert m["n"] == 4
-    assert m["pieces_sum"] == pytest.approx(1973.6, abs=0.05)
-    assert m["margin"] == pytest.approx(14.4, abs=0.05)
-    assert m["max_kerf"] == pytest.approx(6.6, abs=0.05)
-    assert m["pieces_sum"] + 4 * m["max_kerf"] == pytest.approx(P.STOCK_LENGTH, abs=0.05)
+    assert m["n"] == 3
+    assert m["pieces_sum"] == pytest.approx(1926.6, abs=0.05)
+    assert m["margin"] == pytest.approx(64.4, abs=0.05)
+    assert m["max_kerf"] == pytest.approx(3 + 64.4 / 3, abs=0.01)
+    assert m["pieces_sum"] + 3 * m["max_kerf"] == pytest.approx(P.STOCK_LENGTH, abs=0.05)
+    # The 4 x 468 bars are the looser ones: 1872 + 12 = 1884, margin 116.
+    assert max(P.STOCK_LENGTH - (sum(b) + P.KERF_ALLOWANCE * len(b)) for b in bars) == pytest.approx(116.0, abs=0.05)
     # The limit is a property of the tight pattern, checked directly: shortfall s, trim t, kerf k.
     pattern = min(bars, key=lambda b: P.STOCK_LENGTH - (sum(b) + P.KERF_ALLOWANCE * len(b)))
-    assert sorted(pattern) == [468.0, 468.0, 518.8, 518.8]
+    assert sorted(pattern) == [518.8, 518.8, 889.0]
 
     def fits(s=0.0, t=0.0, k=3.0):
         return sum(pattern) + k * len(pattern) + t <= P.STOCK_LENGTH - s + 1e-9
 
-    assert fits(k=6.6) and not fits(k=6.7)
-    assert fits(s=14.4) and not fits(s=14.5)
-    assert fits(t=14.4) and not fits(t=14.5)
-    assert fits(s=10.0, k=4.1) and not fits(s=10.0, k=4.2)  # s + 4 (k - 3) = 14.4 at k = 4.1
-    assert fits(s=5.0, t=5.0, k=4.1) and not fits(s=5.0, t=5.0, k=4.2)
-    # Past the limit the order is recalculated, not patched: the packer may then find another
-    # six-bar arrangement (it does here) rather than a seventh bar, which is why the schedule says so.
+    assert fits(k=24.4) and not fits(k=24.5)
+    assert fits(s=64.4) and not fits(s=64.5)
+    assert fits(t=64.4) and not fits(t=64.5)
+    assert fits(s=10.0, k=21.1) and not fits(s=10.0, k=21.2)  # s + 3 (k - 3) = 64.3 at k = 21.1, 64.6 at 21.2
+    assert fits(s=30.0, t=30.0, k=4.4) and not fits(s=30.0, t=30.0, k=4.5)  # 60 + 3 (k - 3): 64.2 and 64.5
+    # Past the limit the order is recalculated, not patched; the fallback packer stays valid.
     lengths = [length for _, length, _ in cut_pieces(parts)]
-    assert len(pack_stock(lengths, stock=2000.0, kerf=6.6)) == 6
-    recalculated = pack_stock(lengths, stock=2000.0, kerf=6.7)
-    assert len(recalculated) in (6, 7)
-    assert all(sum(b) + 6.7 * len(b) <= 2000.0 + 1e-9 for b in recalculated)
+    recalculated = pack_stock(lengths, stock=1930.0, kerf=3.0)
+    assert all(sum(b) + 3.0 * len(b) <= 1930.0 + 1e-9 for b in recalculated)
+    assert sorted(x for b in recalculated for x in b) == sorted(lengths)
     text = (tmp_path / "cut-schedule.md").read_text(encoding="utf-8")
-    assert "1973.6 mm of pieces in 4 pieces" in text and "leaves 14.4 mm" in text
-    assert "at most 6.6 mm" in text and "s + t + 4 × (k − 3) ≤ 14.4 mm" in text
+    assert "1926.6 mm of pieces in 3 pieces" in text and "leaves 64.4 mm" in text
+    assert "at most 24.5 mm" in text and "s + t + 3 × (k − 3) ≤ 64.4 mm" in text
     assert "recalculated" in text and "seventh bar" in text
 
 

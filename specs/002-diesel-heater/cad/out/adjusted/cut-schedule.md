@@ -16,19 +16,21 @@ Assumptions: stock length 2000 mm (longest listed pre-cut length, ZYLtech EXT-20
 
 Pieces: 20 (the 20 modelled members of MR-01). Total nominal length: 11450.4 mm (11.450 m) before kerf and waste.
 
-## Stock packing into 2000 mm bars (fewest bars; exact search)
+## Stock packing into 2000 mm bars (preferred pattern)
+
+The preferred pattern for this member schedule is 4 bars of 889 + 518.8 + 518.8 and 2 bars of 4 × 468 (Owner approval 2026-10-29 after Codex review): it uses the same six bars as the fewest-bars search but leaves the largest margin on its tightest bar. It is applied only after a check that it conserves every piece and fits the stock and kerf assumptions; if the member schedule, stock length, or kerf change so that it no longer does, the general packer takes over and this heading says so.
 
 | Bar | Pieces (mm) | Used incl. kerf (mm) | Offcut (mm) |
 |---|---|---|---|
-| 1 | 889.0 + 889.0 | 1784.0 | 216.0 |
-| 2 | 889.0 + 889.0 | 1784.0 | 216.0 |
-| 3 | 518.8 + 518.8 + 468.0 + 468.0 | 1985.6 | 14.4 |
-| 4 | 518.8 + 518.8 + 468.0 + 468.0 | 1985.6 | 14.4 |
-| 5 | 518.8 + 518.8 + 468.0 + 468.0 | 1985.6 | 14.4 |
-| 6 | 518.8 + 518.8 + 468.0 + 468.0 | 1985.6 | 14.4 |
+| 1 | 889.0 + 518.8 + 518.8 | 1935.6 | 64.4 |
+| 2 | 889.0 + 518.8 + 518.8 | 1935.6 | 64.4 |
+| 3 | 889.0 + 518.8 + 518.8 | 1935.6 | 64.4 |
+| 4 | 889.0 + 518.8 + 518.8 | 1935.6 | 64.4 |
+| 5 | 468.0 + 468.0 + 468.0 + 468.0 | 1884.0 | 116.0 |
+| 6 | 468.0 + 468.0 + 468.0 + 468.0 | 1884.0 | 116.0 |
 
 **Proposed order: 6 × 2000 mm** (12.0 m), of which 11.450 m becomes pieces and 0.550 m is kerf and offcut (5 %). A spare bar for cutting errors is a separate owner choice. The shorter listed lengths (300 to 1200 mm) would reduce cutting but their individual prices are not shown on the supplier page, so no comparison is made here.
 
-**Margin:** the tightest bar holds 1973.6 mm of pieces in 4 pieces and, after 4 kerfs of 3 mm, leaves 14.4 mm. For a full, untrimmed 2000 mm bar the kerf can therefore be at most 6.6 mm. With a delivered shortfall s, an end-trimming allowance t (for example to square a stock end), and a real kerf k, the pattern fits only while s + t + 4 × (k − 3) ≤ 14.4 mm. If the measured bars or blade exceed that, the packing is to be recalculated with the measured stock length, trim, and kerf (`pack_stock`), which may or may not need another bar; it is not to be patched by assuming a seventh bar. Measure the delivered bars and the kerf before cutting; this is one reason the schedule is not a cut list.
+**Margin:** the tightest bar holds 1926.6 mm of pieces in 3 pieces and, after 3 kerfs of 3 mm, leaves 64.4 mm. For a full, untrimmed 2000 mm bar the kerf can therefore be at most 24.5 mm. With a delivered shortfall s, an end-trimming allowance t (for example to square a stock end), and a real kerf k, the pattern fits only while s + t + 3 × (k − 3) ≤ 64.4 mm. If the measured bars or blade exceed that, the packing is to be recalculated with the measured stock length, trim, and kerf (`select_packing`, which falls back to the general packer), which may or may not need another bar; it is not to be patched by assuming a seventh bar. Measure the delivered bars and the kerf before cutting; this is one reason the schedule is not a cut list.
 
 Not in this schedule: stabilization hardware of any kind, which is excluded from the initial purchase and build and kept as a potential future enhancement (design.md section 10, D-12); any member added at the MR-05 review; and any change to the envelope (MR-02, preliminary 34 to 36 in).
