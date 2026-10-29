@@ -520,7 +520,47 @@ def test_adjusted_cut_schedule_packs_into_six_bars(tmp_path):
     assert BANNER in text and "Proposed, not approved" in text and "6 × 2000 mm" in text
     assert "11.450 m" in text and "FB" not in text and "20 × 40" not in text
     assert "excluded from the initial purchase and build" in text
-    assert "tightest bar leaves 14.4 mm" in text  # four bars are packed to within 14.4 mm; stated, not hidden
+    assert "no separate allowance for trimming" in text and "needs one more bar" not in text
+
+
+def test_cut_schedule_margin_arithmetic(tmp_path):
+    """Codex finding: the margin warning must be arithmetically right. The tight pattern is
+    518.8 + 518.8 + 468 + 468 = 1973.6 mm in four pieces; after four 3 mm kerfs 14.4 mm remain
+    of a 2000 mm bar; a full, untrimmed bar therefore tolerates a kerf of at most 6.6 mm; and
+    shortfall s, trim t, and kerf k fit only while s + t + 4 (k - 3) <= 14.4."""
+    from build import cut_pieces, pack_stock, tightest_bar_margin, write_cut_schedule
+
+    parts = build_parts(P.ADJUSTED)
+    bars = write_cut_schedule(parts, tmp_path / "cut-schedule.md", P.ADJUSTED)
+    m = tightest_bar_margin(bars)
+    assert m["n"] == 4
+    assert m["pieces_sum"] == pytest.approx(1973.6, abs=0.05)
+    assert m["margin"] == pytest.approx(14.4, abs=0.05)
+    assert m["max_kerf"] == pytest.approx(6.6, abs=0.05)
+    assert m["pieces_sum"] + 4 * m["max_kerf"] == pytest.approx(P.STOCK_LENGTH, abs=0.05)
+    # The limit is a property of the tight pattern, checked directly: shortfall s, trim t, kerf k.
+    pattern = min(bars, key=lambda b: P.STOCK_LENGTH - (sum(b) + P.KERF_ALLOWANCE * len(b)))
+    assert sorted(pattern) == [468.0, 468.0, 518.8, 518.8]
+
+    def fits(s=0.0, t=0.0, k=3.0):
+        return sum(pattern) + k * len(pattern) + t <= P.STOCK_LENGTH - s + 1e-9
+
+    assert fits(k=6.6) and not fits(k=6.7)
+    assert fits(s=14.4) and not fits(s=14.5)
+    assert fits(t=14.4) and not fits(t=14.5)
+    assert fits(s=10.0, k=4.1) and not fits(s=10.0, k=4.2)  # s + 4 (k - 3) = 14.4 at k = 4.1
+    assert fits(s=5.0, t=5.0, k=4.1) and not fits(s=5.0, t=5.0, k=4.2)
+    # Past the limit the order is recalculated, not patched: the packer may then find another
+    # six-bar arrangement (it does here) rather than a seventh bar, which is why the schedule says so.
+    lengths = [length for _, length, _ in cut_pieces(parts)]
+    assert len(pack_stock(lengths, stock=2000.0, kerf=6.6)) == 6
+    recalculated = pack_stock(lengths, stock=2000.0, kerf=6.7)
+    assert len(recalculated) in (6, 7)
+    assert all(sum(b) + 6.7 * len(b) <= 2000.0 + 1e-9 for b in recalculated)
+    text = (tmp_path / "cut-schedule.md").read_text(encoding="utf-8")
+    assert "1973.6 mm of pieces in 4 pieces" in text and "leaves 14.4 mm" in text
+    assert "at most 6.6 mm" in text and "s + t + 4 × (k − 3) ≤ 14.4 mm" in text
+    assert "recalculated" in text and "seventh bar" in text
 
 
 def test_comparison_png_is_parallel_projection_at_one_scale(tmp_path):

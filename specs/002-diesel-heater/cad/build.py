@@ -285,6 +285,20 @@ def pack_stock(lengths: list[float], stock: float = P.STOCK_LENGTH, kerf: float 
     raise RuntimeError("unreachable: one piece per bar always fits")
 
 
+def tightest_bar_margin(bars: list[list[float]], stock: float = P.STOCK_LENGTH, kerf: float = P.KERF_ALLOWANCE) -> dict:
+    """The bar with the least room left: its piece count, piece sum, remaining margin after one
+    kerf per piece, and the largest kerf a full, untrimmed bar tolerates for that pattern.
+
+    With a delivered shortfall ``s``, a trimming allowance ``t``, and a real kerf ``k`` the
+    pattern fits while ``s + t + n * (k - kerf) <= margin``; at ``s = t = 0`` the limit is
+    ``max_kerf = kerf + margin / n``.
+    """
+    bar = min(bars, key=lambda b: stock - (sum(b) + kerf * len(b)))
+    n, pieces_sum = len(bar), sum(bar)
+    margin = stock - (pieces_sum + kerf * n)
+    return {"n": n, "pieces_sum": pieces_sum, "margin": margin, "max_kerf": kerf + margin / n}
+
+
 def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> list[list[float]]:
     pieces = cut_pieces(parts)
     bars = pack_stock([length for _, length, _ in pieces])
@@ -297,7 +311,7 @@ def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> lis
         "",
         f"Generated {dt.date.today().isoformat()} by `build.py` from `params.py` (variant `{variant.key}`). Millimetres. Section 2020 (20 × 20 mm, 6 mm slot) throughout (Owner decision 2026-10-29).",
         "",
-        "**Proposed, not approved.** The lengths are the nominal model lengths of the 20 members in the member schedule. They become fabrication dimensions only when the G1(e) review records a reviewed cut list and the owner approves the purchase (spec.md §10); nothing is to be cut from this file. The stock packing is an estimate to size an order; it assumes a saw kerf per cut and does not rely on square stock ends, and the supplier states neither a cut tolerance nor end squareness.",
+        "**Proposed, not approved.** The lengths are the nominal model lengths of the 20 members in the member schedule. They become fabrication dimensions only when the G1(e) review records a reviewed cut list and the owner approves the purchase (spec.md §10); nothing is to be cut from this file. The stock packing is an estimate to size an order; it takes one kerf per piece and **no separate allowance for trimming an out-of-square stock end**, so any squaring cut must come out of the bar's margin below, and the supplier states neither a cut tolerance nor end squareness.",
         "",
         f"Assumptions: stock length {P.STOCK_LENGTH:.0f} mm (longest listed pre-cut length, ZYLtech EXT-2020, read 2026-10-29; supplier cut tolerance not stated); kerf allowance {P.KERF_ALLOWANCE:.0f} mm per cut (assumed); every piece gets its own cut; no trim allowance beyond the kerf.",
         "",
@@ -324,12 +338,16 @@ def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> lis
         used = sum(bar) + P.KERF_ALLOWANCE * len(bar)
         lines.append(f"| {j} | {' + '.join(f'{x:.1f}' for x in bar)} | {used:.1f} | {P.STOCK_LENGTH - used:.1f} |")
     waste = len(bars) * P.STOCK_LENGTH - total
-    tightest = min(P.STOCK_LENGTH - (sum(bar) + P.KERF_ALLOWANCE * len(bar)) for bar in bars)
+    margin = tightest_bar_margin(bars)
     lines += [
         "",
         f"**Proposed order: {len(bars)} × {P.STOCK_LENGTH:.0f} mm** ({len(bars) * P.STOCK_LENGTH / 1000:.1f} m), of which {total / 1000:.3f} m becomes pieces and {waste / 1000:.3f} m is kerf and offcut ({100 * waste / (len(bars) * P.STOCK_LENGTH):.0f} %). A spare bar for cutting errors is a separate owner choice. The shorter listed lengths (300 to 1200 mm) would reduce cutting but their individual prices are not shown on the supplier page, so no comparison is made here.",
         "",
-        f"**Margin:** the tightest bar leaves {tightest:.1f} mm after its kerfs. The supplier states no cut tolerance for the stock, so if a delivered bar is shorter than {P.STOCK_LENGTH - tightest:.1f} mm, or the real kerf exceeds the {P.KERF_ALLOWANCE:.0f} mm assumed, that bar's last piece will not fit and the plan needs one more bar. Measure the delivered bars before cutting; this is one reason the schedule is not a cut list.",
+        f"**Margin:** the tightest bar holds {margin['pieces_sum']:.1f} mm of pieces in {margin['n']} pieces and, after {margin['n']} kerfs of {P.KERF_ALLOWANCE:.0f} mm, leaves {margin['margin']:.1f} mm. "
+        f"For a full, untrimmed {P.STOCK_LENGTH:.0f} mm bar the kerf can therefore be at most {margin['max_kerf']:.1f} mm. "
+        f"With a delivered shortfall s, an end-trimming allowance t (for example to square a stock end), and a real kerf k, the pattern fits only while s + t + {margin['n']} × (k − {P.KERF_ALLOWANCE:.0f}) ≤ {margin['margin']:.1f} mm. "
+        "If the measured bars or blade exceed that, the packing is to be recalculated with the measured stock length, trim, and kerf (`pack_stock`), which may or may not need another bar; it is not to be patched by assuming a seventh bar. "
+        "Measure the delivered bars and the kerf before cutting; this is one reason the schedule is not a cut list.",
         "",
         "Not in this schedule: stabilization hardware of any kind, which is excluded from the initial purchase and build and kept as a potential future enhancement (design.md section 10, D-12); any member added at the MR-05 review; and any change to the envelope (MR-02, preliminary 34 to 36 in).",
     ]
