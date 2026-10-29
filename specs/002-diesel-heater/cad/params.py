@@ -52,7 +52,8 @@ SLOT_WIDTH = 6.0  # nominal slot opening of the chosen 2020 system (ZYLtech hard
 STOCK_LENGTHS = (300.0, 400.0, 500.0, 600.0, 900.0, 1000.0, 1200.0, 2000.0)  # ZYLtech EXT-2020 pre-cut lengths listed 2026-10-29
 STOCK_LENGTH = 2000.0  # proposed stock length for the cut schedule (longest listed; fewest pieces)
 KERF_ALLOWANCE = 3.0  # per cut, assumed for a hand or mitre saw blade; not a supplier figure
-FOOT_BAR_L = 508.0 + 2 * 100.0  # two stabilization foot bars across the width, extending about 100 mm beyond each side (design section 10, D-12; proposed, not modelled)
+# Stabilization hardware (foot bars, feet, outriggers) is excluded from the initial purchase and
+# build (Owner decision 2026-10-29, design section 10); nothing for it is modelled or scheduled.
 
 # ---------------------------------------------------------------- heater
 HEATER_L = 13.4 * IN  # body length, along the variant's heater axis
@@ -200,7 +201,6 @@ SHARED_PARAMS = [
     Param("SLOT_WIDTH", SLOT_WIDTH, "mm", "Manufacturer-stated", "ZYLtech 2020 hardware kit page, read 2026-10-29; not stated on the extrusion page itself"),
     Param("STOCK_LENGTH", STOCK_LENGTH, "mm", "Proposed", "longest ZYLtech EXT-2020 pre-cut length listed 2026-10-29; cut tolerance not stated by the supplier"),
     Param("KERF_ALLOWANCE", KERF_ALLOWANCE, "mm", "Proposed/illustrative", "assumed saw kerf per cut; to be replaced by the actual blade"),
-    Param("FOOT_BAR_L", FOOT_BAR_L, "mm", "Proposed", "design section 10: 508 mm width plus about 100 mm beyond each side; D-12 attachment not modelled"),
     Param("HEATER_L", HEATER_L, "mm", "Manufacturer-stated", "spec C21: 13.4 in (owner tape agrees, User-reported)"),
     Param("HEATER_W", HEATER_W, "mm", "Manufacturer-stated", "spec C21: 4.5 in"),
     Param("HEATER_H", HEATER_H, "mm", "Manufacturer-stated", "spec C21: 5.5 in"),

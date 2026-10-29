@@ -476,17 +476,18 @@ def test_adjusted_nominal_lengths_for_2020():
     assert sum(lengths.values()) == pytest.approx(4 * 889.0 + 8 * 468.0 + 8 * 518.8, abs=0.1)
 
 
-def test_cut_pieces_are_members_plus_two_foot_bars():
+def test_cut_pieces_are_exactly_the_twenty_members():
+    """Stabilization hardware is excluded from the initial build (Owner decision 2026-10-29):
+    no foot bar or other extra piece appears in the schedule."""
     from build import cut_pieces
 
     parts = build_parts(P.ADJUSTED)
     pieces = cut_pieces(parts)
-    assert len(pieces) == 22
-    assert [pid for pid, _, _ in pieces[-2:]] == ["FB1", "FB2"]
-    assert all(length == pytest.approx(P.FOOT_BAR_L) for _, length, _ in pieces[-2:])
-    assert P.FOOT_BAR_L == pytest.approx(708.0)
-    assert sum(length for _, length, _ in pieces) == pytest.approx(12866.4, abs=0.1)
-    assert len(cut_pieces(parts, include_foot_bars=False)) == 20
+    assert len(pieces) == 20
+    assert {pid for pid, _, _ in pieces} == {p.id for p in members(parts)}
+    assert not any(pid.startswith("FB") for pid, _, _ in pieces)
+    assert sum(length for _, length, _ in pieces) == pytest.approx(11450.4, abs=0.1)
+    assert not hasattr(P, "FOOT_BAR_L")
 
 
 def test_pack_stock_respects_stock_length_and_kerf():
@@ -496,28 +497,30 @@ def test_pack_stock_respects_stock_length_and_kerf():
     assert sorted(map(sorted, bars)) == [[300.0], [900.0, 900.0]]  # 900 + 900 + 2 kerfs = 1806; the 300 would need 2109
     assert pack_stock([1000.0, 997.0], stock=2000.0, kerf=3.0) == [[1000.0], [997.0]]  # 1000 + 997 + 2 kerfs = 2003 > 2000
     assert pack_stock([1000.0, 994.0], stock=2000.0, kerf=3.0) == [[1000.0, 994.0]]  # exactly 2000
-    # first-fit-decreasing would use 8 bars for the concept's pieces; the exact search finds 7
-    concept = [889.0] * 4 + [468.0] * 8 + [518.8] * 8 + [708.0] * 2
-    assert len(pack_stock(concept, stock=2000.0, kerf=3.0)) == 7
+    # first-fit-decreasing would use 7 bars for the 20 members; the exact search finds 6
+    concept = [889.0] * 4 + [468.0] * 8 + [518.8] * 8
+    assert len(pack_stock(concept, stock=2000.0, kerf=3.0)) == 6
     with pytest.raises(ValueError):
         pack_stock([2000.0], stock=2000.0, kerf=3.0)
 
 
-def test_adjusted_cut_schedule_packs_into_seven_bars(tmp_path):
-    """The proposed order for the concept: 7 x 2000 mm. Each bar's pieces plus one kerf per
+def test_adjusted_cut_schedule_packs_into_six_bars(tmp_path):
+    """The proposed order for the 20 members: 6 x 2000 mm. Each bar's pieces plus one kerf per
     piece fit the stock; every piece is placed exactly once. A sizing estimate, not a cut list."""
     from build import BANNER, cut_pieces, write_cut_schedule
 
     parts = build_parts(P.ADJUSTED)
     bars = write_cut_schedule(parts, tmp_path / "cut-schedule.md", P.ADJUSTED)
-    assert len(bars) == 7
+    assert len(bars) == 6
     placed = sorted(x for bar in bars for x in bar)
     assert placed == sorted(length for _, length, _ in cut_pieces(parts))
     for bar in bars:
         assert sum(bar) + P.KERF_ALLOWANCE * len(bar) <= P.STOCK_LENGTH
     text = (tmp_path / "cut-schedule.md").read_text(encoding="utf-8")
-    assert BANNER in text and "Proposed, not approved" in text and "7 × 2000 mm" in text
-    assert "12.866 m" in text and "FB1, FB2" in text and "20 × 40" not in text
+    assert BANNER in text and "Proposed, not approved" in text and "6 × 2000 mm" in text
+    assert "11.450 m" in text and "FB" not in text and "20 × 40" not in text
+    assert "excluded from the initial purchase and build" in text
+    assert "tightest bar leaves 14.4 mm" in text  # four bars are packed to within 14.4 mm; stated, not hidden
 
 
 def test_comparison_png_is_parallel_projection_at_one_scale(tmp_path):

@@ -235,16 +235,14 @@ def write_schedule(parts: list[Part], path: Path, variant: P.Variant) -> None:
 
 # ------------------------------------------------------------- cut schedule (proposed)
 
-def cut_pieces(parts: list[Part], include_foot_bars: bool = True) -> list[tuple[str, float, str]]:
-    """Every piece of extrusion the concept needs: (id, nominal length, basis).
+def cut_pieces(parts: list[Part]) -> list[tuple[str, float, str]]:
+    """Every piece of extrusion the initial build needs: (id, nominal length, role).
 
-    The 20 modelled members plus, when requested, the two proposed stabilization foot bars
-    (design.md section 10, D-12), which are not modelled geometrically. Nominal lengths only.
+    The 20 modelled members of MR-01 and nothing else: stabilization hardware is excluded
+    from the initial purchase and build (Owner decision 2026-10-29, design.md section 10).
+    Nominal lengths only.
     """
-    pieces = [(p.id, p.length, p.role) for p in members(parts)]
-    if include_foot_bars:
-        pieces += [(f"FB{j}", P.FOOT_BAR_L, "foot bar (proposed, design section 10, D-12; not modelled)") for j in (1, 2)]
-    return pieces
+    return [(p.id, p.length, p.role) for p in members(parts)]
 
 
 def pack_stock(lengths: list[float], stock: float = P.STOCK_LENGTH, kerf: float = P.KERF_ALLOWANCE) -> list[list[float]]:
@@ -299,7 +297,7 @@ def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> lis
         "",
         f"Generated {dt.date.today().isoformat()} by `build.py` from `params.py` (variant `{variant.key}`). Millimetres. Section 2020 (20 × 20 mm, 6 mm slot) throughout (Owner decision 2026-10-29).",
         "",
-        "**Proposed, not approved.** The lengths are nominal model lengths from the member schedule plus the two proposed foot bars. They become fabrication dimensions only when the G1(e) review records a reviewed cut list and the owner approves the purchase (spec.md §10); nothing is to be cut from this file. The stock packing is an estimate to size an order; it assumes a saw kerf per cut and does not rely on square stock ends, and the supplier states neither a cut tolerance nor end squareness.",
+        "**Proposed, not approved.** The lengths are the nominal model lengths of the 20 members in the member schedule. They become fabrication dimensions only when the G1(e) review records a reviewed cut list and the owner approves the purchase (spec.md §10); nothing is to be cut from this file. The stock packing is an estimate to size an order; it assumes a saw kerf per cut and does not rely on square stock ends, and the supplier states neither a cut tolerance nor end squareness.",
         "",
         f"Assumptions: stock length {P.STOCK_LENGTH:.0f} mm (longest listed pre-cut length, ZYLtech EXT-2020, read 2026-10-29; supplier cut tolerance not stated); kerf allowance {P.KERF_ALLOWANCE:.0f} mm per cut (assumed); every piece gets its own cut; no trim allowance beyond the kerf.",
         "",
@@ -315,7 +313,7 @@ def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> lis
         lines.append(f"| {length:.1f} | {len(ids)} | {', '.join(ids)} | {', '.join(roles)} |")
     lines += [
         "",
-        f"Pieces: {len(pieces)} ({len(members(parts))} modelled members plus 2 proposed foot bars). Total nominal length: {total:.1f} mm ({total / 1000:.3f} m) before kerf and waste.",
+        f"Pieces: {len(pieces)} (the {len(members(parts))} modelled members of MR-01). Total nominal length: {total:.1f} mm ({total / 1000:.3f} m) before kerf and waste.",
         "",
         f"## Stock packing into {P.STOCK_LENGTH:.0f} mm bars (fewest bars; exact search)",
         "",
@@ -326,11 +324,14 @@ def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> lis
         used = sum(bar) + P.KERF_ALLOWANCE * len(bar)
         lines.append(f"| {j} | {' + '.join(f'{x:.1f}' for x in bar)} | {used:.1f} | {P.STOCK_LENGTH - used:.1f} |")
     waste = len(bars) * P.STOCK_LENGTH - total
+    tightest = min(P.STOCK_LENGTH - (sum(bar) + P.KERF_ALLOWANCE * len(bar)) for bar in bars)
     lines += [
         "",
         f"**Proposed order: {len(bars)} × {P.STOCK_LENGTH:.0f} mm** ({len(bars) * P.STOCK_LENGTH / 1000:.1f} m), of which {total / 1000:.3f} m becomes pieces and {waste / 1000:.3f} m is kerf and offcut ({100 * waste / (len(bars) * P.STOCK_LENGTH):.0f} %). A spare bar for cutting errors is a separate owner choice. The shorter listed lengths (300 to 1200 mm) would reduce cutting but their individual prices are not shown on the supplier page, so no comparison is made here.",
         "",
-        "Not in this schedule: the attachment of the foot bars and the leveling feet (D-12), any member added at the MR-05 review, and any change to the envelope (MR-02, preliminary 34 to 36 in).",
+        f"**Margin:** the tightest bar leaves {tightest:.1f} mm after its kerfs. The supplier states no cut tolerance for the stock, so if a delivered bar is shorter than {P.STOCK_LENGTH - tightest:.1f} mm, or the real kerf exceeds the {P.KERF_ALLOWANCE:.0f} mm assumed, that bar's last piece will not fit and the plan needs one more bar. Measure the delivered bars before cutting; this is one reason the schedule is not a cut list.",
+        "",
+        "Not in this schedule: stabilization hardware of any kind, which is excluded from the initial purchase and build and kept as a potential future enhancement (design.md section 10, D-12); any member added at the MR-05 review; and any change to the envelope (MR-02, preliminary 34 to 36 in).",
     ]
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return bars

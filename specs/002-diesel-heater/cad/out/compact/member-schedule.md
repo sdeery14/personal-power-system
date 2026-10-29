@@ -53,7 +53,6 @@ Members: 20. Other components (placeholders): heater_plate, heater_body, heater_
 | SLOT_WIDTH | 6.0 mm | Manufacturer-stated | ZYLtech 2020 hardware kit page, read 2026-10-29; not stated on the extrusion page itself |
 | STOCK_LENGTH | 2000.0 mm | Proposed | longest ZYLtech EXT-2020 pre-cut length listed 2026-10-29; cut tolerance not stated by the supplier |
 | KERF_ALLOWANCE | 3.0 mm | Proposed/illustrative | assumed saw kerf per cut; to be replaced by the actual blade |
-| FOOT_BAR_L | 708.0 mm | Proposed | design section 10: 508 mm width plus about 100 mm beyond each side; D-12 attachment not modelled |
 | HEATER_L | 340.4 mm | Manufacturer-stated | spec C21: 13.4 in (owner tape agrees, User-reported) |
 | HEATER_W | 114.3 mm | Manufacturer-stated | spec C21: 4.5 in |
 | HEATER_H | 139.7 mm | Manufacturer-stated | spec C21: 5.5 in |
