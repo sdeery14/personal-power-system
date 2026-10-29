@@ -1,8 +1,8 @@
 # Diesel Heater Module (002) — Preliminary Mechanical Design
 
 **Status**: Preliminary concept for review. **Not approved for fabrication. No cut lengths are approved. The heater and its supplied parts are owned, and some are partially assembled; no frame material has been purchased and nothing has been fabricated.**
-**Date**: 2026-10-27
-**Companions**: [spec.md](spec.md) (requirements, manufacturer constraints C1–C25, release gates G1–G5), [bom.md](bom.md)
+**Date**: 2026-10-27; B1 Adjusted layout recorded 2026-10-28
+**Companions**: [spec.md](spec.md) (requirements, manufacturer constraints C1–C25, release gates G1–G5), [bom.md](bom.md), [cad/](cad/README.md) (placeholder model of the three layouts, `out/comparison.md`), [measurements/](measurements/README.md)
 **Evidence tags**: as defined in [spec.md §1](spec.md#1-how-to-read-this-document). Manufacturer sources M1 (manual) and M2 (product page) are identified in [spec.md §2](spec.md#2-manufacturer-sources).
 
 ---
@@ -13,14 +13,16 @@ An open, portable, three-level rectangular frame of aluminum T-slot extrusion. T
 
 Everything in this section is an **Owner decision (2026-10-27)** except where marked. The owner and ChatGPT developed the concept; this document organizes it and records what remains open.
 
+**Preferred preliminary layout, B1 Adjusted (Owner decision 2026-10-28).** Footprint about 20 × 22 in; height about 35 in (preliminary range 34 to 36 in). The heater stands upright on its plate with the plate underside about 7 in above the base, carried by two crossmembers that slide along the middle-level depth members. The tank stands upright beside the heater on the opposite wall, hung on two rails that slide on the uprights, with its bottom above the heater body's top by a provisional gap (D-15). This is a conservative geometric reading of the manufacturer's tank-above instruction (C12) combined with horizontal separation from the heater (C1). **It is not evidence that fuel delivery, spill protection, hot-surface separation, or the tank mounting are adequate**; SR-01 remains to be reconciled in writing (§6), every hazard in §14 stays open, and gates G1 to G5 stay closed. Two earlier layouts, A Original (tank entirely above the heater in a 38 in frame) and B1 Compact (28 in, tank overlapping the heater in height), are retained as alternatives in §16 and in the CAD model. Nothing here is a cut length.
+
 ## 2. Envelope and conventions
 
 | Item | Value | Evidence |
 |---|---|---|
-| Width (W) | about 20 in | Owner decision, preliminary |
-| Depth (D) | about 24 in | Owner decision, preliminary |
-| Height (H) | about 38 in | Owner decision, preliminary |
-| Extrusion | Aluminum T-slot, 20 × 40 mm where suitable | Owner decision |
+| Width (W) | about 20 in | Owner decision 2026-10-28, preliminary (unchanged from 2026-10-27) |
+| Depth (D) | about 22 in | Owner decision 2026-10-28, preliminary (was about 24 in, 2026-10-27; retained in A Original) |
+| Height (H) | about 35 in, range 34 to 36 in | Owner decision 2026-10-28, preliminary (was about 38 in, 2026-10-27; retained in A Original) |
+| Extrusion | Aluminum T-slot, 20 × 40 mm where suitable, subject to review (MR-05) | Owner decision |
 
 Conventions used below: *widthwise* members run across W; *lengthwise* members run along D; the *tank wall* is the one inside wall carrying the tank rails. Levels are numbered from the ground: L1 bottom, L2 middle, L3 top. The envelope is an outside dimension of the frame; **cut lengths depend on the joint method (D-01) and are not derived here**.
 
@@ -37,8 +39,9 @@ Conventions used below: *widthwise* members run across W; *lengthwise* members r
 
 Notes:
 
-- Which way the 20 × 40 section is oriented in each member (40 mm vertical for bending stiffness, or 40 mm horizontal for a wider mounting face) is open (D-02).
-- The heater crossmembers' spacing must suit the plate's 5 7/16 × 6 11/16 in footprint (User-reported) and the plate's fixing pattern, which is not yet recorded (Q-03).
+- Which way the 20 × 40 section is oriented in each member (40 mm vertical for bending stiffness, or 40 mm horizontal for a wider mounting face) is open (D-02). Proposal for review (2026-10-28): uprights with the 40 mm face along the depth so the tank rails land on a 40 mm face; heater crossmembers with the 40 mm face horizontal for a wide seat and two slots under the plate; tank rails with the 40 mm face vertical, facing the tank. The CAD model still draws every member 40 mm vertical.
+- **18-member candidate (D-14, under assessment, not adopted).** In the B1 layouts the middle level sits about 100 mm above the base, so the two middle-level widthwise members (`L2-W1`, `L2-W2`) add little to a frame whose base rectangle is 100 mm below them. Omitting them leaves the two middle-level depth members as the rails for the sliding heater crossmembers. What the assessment must show before MR-01 changes: the load path from the crossmembers into the depth members and uprights with the chosen brackets (D-01); racking stiffness of the frame under a handling push with only the base and top rectangles closed; and the unbraced span of the two uprights on the wall opposite the tank, about 0.7 m between the middle level and the top rectangle. Until then MR-01 stands at 20 members and the CAD model draws 20.
+- The heater crossmembers' spacing must suit the plate's fixing pattern. The owner reports (2026-10-28, not measured) four holes about 1/4 in diameter with about 1/8 in from each hole's outside edge to its two adjacent plate edges, so the hole centres are about 1/4 in in from each edge and the centre-to-centre pitch is about 4 15/16 in along the 5 7/16 in side and about 6 3/16 in along the 6 11/16 in side. Which side runs along the heater is not recorded (PLT-14), so which pitch sets the crossmember spacing is open; the CAD model uses the shorter pitch (125.4 mm). Q-03 stays open until measured.
 - The tank rails' vertical spacing must suit the boss geometry: lower pair about 6 13/16 in apart horizontally, upper point about 7 7/8 in above the lower row (User-reported). Whether two rails can meet all three points, or whether the upper point needs a short vertical or a bracket, is open (D-04).
 - The two tank rails are in addition to the perimeter lengthwise members on that wall. Whether a perimeter member at L2 or L3 can serve as one of the rails, reducing the count, is open (D-04).
 
@@ -47,17 +50,31 @@ Notes:
 | Level | Contents | Evidence |
 |---|---|---|
 | L1 (bottom, open) | Intake pipe and air filter element; exhaust pipe and silencer exiting the frame; pulse fuel pump and oil filter (position open, D-05); electrical connections | Owner decision (open level); M1 p.9 for the parts |
-| L2 (middle) | Heater on its supplied plate on H-X; the plate's seal and fixings per M1 p.9; hot-air outlet facing the duct side | Owner decision; M1 p.9 |
-| L3 (top) | Not assigned. Candidates: controller mount, duct stowage, nothing | Open (D-06) |
-| Tank wall | Tank on T-R, upright, filler at top. Height of the tank relative to L2 is **open and governed by SR-01** | Owner decision (position); height Unknown |
+| L2 (middle) | Heater on its supplied plate on H-X, plate underside about 7 in above the base in the B1 layouts; the plate's seal and fixings per M1 p.9; hot-air outlet facing the duct side | Owner decision 2026-10-28 (about 7 in, preliminary); M1 p.9 |
+| L3 (top) | Not assigned. Candidates: controller mount, duct stowage, nothing. The top rectangle is kept for stiffness and as the natural lifting location (§13) | Open (D-06) |
+| Tank wall | Tank on T-R, upright, filler at top, beside the heater on the X-min wall. In B1 Adjusted the tank bottom is above the heater body's top by a provisional gap (D-15). **SR-01 remains to be reconciled in writing** (§6) | Owner decision 2026-10-28 (position); gap Proposed |
 
-The tank is 16 × 16 × 3 in (User-reported) on a 24 in deep wall, leaving about 8 in of wall length free. Where the tank sits along the wall relative to the heater and exhaust affects SR-02 and SR-04.
+The tank is 16 × 16 × 3 in (User-reported). Its 16 in width lies along the tank wall, the X-min wall, which runs along the frame's nominal 22 in depth (the Y axis). Nominally 6 in of wall length remain; between the inside faces of the two uprights, where the rails run, the usable length is 478.8 mm, leaving about 72 mm (2.9 in). Where the tank sits along the wall relative to the heater and exhaust affects SR-02 and SR-04.
+
+**B1 Adjusted height stack-up (Proposed; geometry only, from `cad/out/comparison.md`).** Plate underside 177.8 mm (7 in); plate top 178.6 mm with the owner's 1/32 in thickness estimate; heater top 318.3 mm (C21 height); tank bottom 368.3 mm with the 50 mm provisional gap; tank top 774.7 mm with the User-reported 16 in height; top-member band 849.0 to 889.0 mm (35 in). The crossmembers under the plate occupy 137.8 to 177.8 mm, leaving about 98 mm between them and the base members and about 138 mm under the plate between the crossmembers for the heater's downward connections, whose protrusions are Unknown.
+
+The largest gap each frame height allows follows from the same stack-up: tank top = 177.8 + 0.8 + 139.7 + gap + 406.4 = 724.7 mm + gap. With the 50 mm filler and cap allowance kept below the 40 mm top-member band, gap = H − 40 − 50 − 724.7 = H − 814.7 mm; with the allowance permitted to rise to the frame top (into the band, clear of the members in plan), gap = H − 50 − 724.7 = H − 774.7 mm. Values rounded to 0.1 mm.
+
+| Frame height H | Largest gap, allowance below the top-member band | Largest gap, allowance up to the frame top |
+|---|---|---|
+| 34 in (863.6 mm) | 48.9 mm | 88.9 mm |
+| 35 in (889.0 mm) | 74.3 mm | 114.3 mm |
+| 36 in (914.4 mm) | 99.7 mm | 139.7 mm |
+
+The CAD uses 35 in with a 50 mm placeholder gap, which leaves 24.3 mm between the allowance and the top-member band; that is the 74.3 mm maximum less the 50 mm placeholder. The filler neck and cap height is Unknown (TNK-07, TNK-08); the 50 mm allowance is a placeholder. At 35 in with the 50 mm gap, the modelled headroom from the tank top plus that placeholder to the underside of the top members is 24 mm. **Filler cap access:** the filler sits inside the top rectangle in plan, about 38 mm in from the inside face of the tank-wall top member, so it is reachable from above through the open top; whether a fuel can or spout can be used there at about 800 mm height beside a 40 mm member, with the heater off and cold (C3, SR-09), is for review (D-15). None of these figures is a clearance; the gap value is a placeholder for the SR-01 review, not a safe distance.
 
 ## 5. Heater mounting
 
 - Heater product size 13.4 × 4.5 × 5.5 in / 340 × 115 × 140 mm (Manufacturer-stated, C21; the 13.4 in length also User-reported by tape measure). Net weight 11 lb / 5 kg of unstated scope (C22, Q-11); the standalone heater mass remains Unknown.
-- The supplied metal plate (5 7/16 × 6 11/16 in, User-reported) mounts on H-X. M1 p.9 shows a seal between the heater and the plate and "double head screw nut" fixings; M1 p.8 lists four machine fixing screws and one machine fixing piece. The fixing pattern and hole sizes are not recorded (Q-03).
-- The intake, exhaust, and fuel connections leave the heater through the plate downward (M1 p.9 diagram), into L1. The plate needs clear space below it.
+- The supplied metal plate (5 7/16 × 6 11/16 in, User-reported) mounts on H-X. M1 p.9 shows a seal between the heater and the plate and "double head screw nut" fixings; M1 p.8 lists four machine fixing screws and one machine fixing piece. The owner reports (2026-10-28, not measured) four holes about 1/4 in diameter about 1/8 in from each adjacent edge, and a thickness of about 1/32 in, below 1/16 in. Q-03 stays open until these are Measured (PLT-03 to PLT-09).
+- **Two mechanical interfaces, one unresolved load path (D-16).** *Interface A, heater to its supplied plate*: the factory fixing arrangement, M1's seal and "double head screw nut" fixings with four machine fixing screws (M1 p.8, p.9). Its geometry, where it bears on the plate, and how it transfers the heater's load into the plate are incompletely established (Q-03; HTR-11, HTR-16, PLT-12). *Interface B, plate to frame*: provisionally, the plate's four corner holes (User-reported 2026-10-28) bolted into T-nuts in the two crossmembers with T-slot hardware. The CAD places the crossmembers under those corner holes. It does not establish that the heater's own fixings coincide with the corner holes, and the two interfaces are **not assumed to share fasteners**. The plate's thickness of about 1/32 in is an owner estimate, not an engineering adequacy determination. Whether the plate, Interface A, Interface B, and the crossmembers together carry the heater under static, handling, and transport loads is **unresolved** until the interfaces, the connection details, and the loads have been assessed (MR-03, MR-05).
+- **Adjustable plate mounting (proposed, Interface B).** The crossmembers slide along the middle-level depth members to the plate's hole pitch. With the hole centres about 6.4 mm in from the plate edge and a 20 mm slot face centred under them, each crossmember extends about 3.7 mm beyond the plate edge on that side; this is a geometric consequence of the derived pitch, recorded and not assessed. Sliding solves alignment only; it says nothing about fastener strength or the load path (MR-05, D-16).
+- The intake, exhaust, and fuel connections leave the heater through the plate downward (M1 p.9 diagram), into L1. The plate needs clear space below it. Whether the three underside stubs and the plate's underside opening fall between the two crossmembers at the derived pitch, or foul one, is Unknown and is the one fit question that decides the crossmember arrangement (HTR-12 to HTR-14 and PLT-10, PLT-11). It is not assumed.
 - M1 p.4 item 11 says to seal all gaps between the mounting plate and the car body. In a vehicle that separates the cabin from the combustion side. In an open frame there is no cabin; whether any sealing or splash shielding is needed is for engineering review (MR-07).
 - **Orientation**: M1 draws the heater upright on its plate and gives no tilt limits. Any orientation other than upright, and the tilt a portable frame tolerates, are Unknown (A-02, Q-06).
 - **Clearances around the heater body and hot-air outlet**: not stated by the manufacturer. Unknown (Q-06).
@@ -66,19 +83,23 @@ The tank is 16 × 16 × 3 in (User-reported) on a 24 in deep wall, leaving about
 
 | Topic | What is known | What is not |
 |---|---|---|
-| Mounting points | Three recessed points; two lower, one upper (User-reported geometry). Some holes have thin plastic membranes | Whether the membranes are meant to be pierced, drilled, or left; the boss thread or through-hole size; the manufacturer's intended fastener |
+| Mounting points | Three recessed points; two lower, one upper (User-reported geometry). Reported 2026-10-27 as having thin plastic membranes on some holes and 2026-10-28 as three through-holes; both reports stand until each hole is recorded as found (TNK-10 to TNK-12) | Whether any membrane is meant to be pierced, drilled, or left; the hole or boss size; the manufacturer's intended fastener |
 | Manufacturer method | "Use this screw to tighten the fuel tank fixed to the metal plate of the vehicle" (M1 p.9); "oil tank accessories" ×1 in the packing list (M1 p.8) | What the accessory kit contains (Q-02); the load the bosses are rated for (Q-04) |
 | Load | Full tank: about 8.2–8.5 kg of fuel (A-05, Proposed) plus the tank's own mass (Unknown) | Dynamic loads in transport; fatigue of plastic bosses under vibration |
-| Position | Upright, cap at top, broad face against the rails (Owner decision) | Height relative to the heater (SR-01); separation from the exhaust (SR-04) |
+| Position | Upright, cap at top, broad face against the rails, beside the heater on the X-min wall, bottom above the heater top (Owner decision 2026-10-28) | The gap value (D-15, SR-01); separation from the exhaust (SR-04) |
+| Rails | Two rails on brackets that slide in the upright slots, so the tank height follows the chosen gap and the upper rail follows the real boss rise (proposed, D-04) | Bracket type and count; whether a perimeter member can double as a rail (D-04) |
 
-**Nothing about the bosses, the fasteners, or the rails is assumed adequate** (MR-04, MR-05). A tank shelf is not to be added unless this assessment shows the bosses cannot carry the tank (§16).
+**Nothing about the bosses, the fasteners, or the rails is assumed adequate** (MR-04, MR-05). Geometric fit on the rails establishes nothing about the strength of the plastic mounting points. VEVOR is not being contacted at this stage (owner decision 2026-10-28), so Q-04 and Q-05 close only by a documented engineering assessment. What that assessment needs: each boss's recess and hole geometry and the local wall thickness (TNK-10 to TNK-14), the accessory kit contents (TNK-16), the empty tank mass (MAS-03) with the A-05 fuel mass, and a load case that includes handling and transport. A proof-load approach, if chosen, is to be designed and approved at that review, not here. A tank shelf is not to be added unless this assessment shows the bosses cannot carry the tank (§16).
+
+**SR-01 reconciliation (Proposed, for engineering review; not closed).** C12 says the tank "should be properly placed above the main engine to facilitate the operation of the fuel pump"; C1 says to keep the heater away from fuel tanks. The B1 Adjusted layout reads C12 conservatively, with the tank's bottom above the heater body's top, and follows the direction of C1 by placing the tank on a separate horizontal footprint beside the heater. Spill paths along the structural members are **unassessed**: the two full-width crossmembers pass beneath the tank zone and could carry a spill toward the heater, and the rails, uprights, and base members are further candidate routes; SR-02 requires their review. What a review must still decide before SR-01 is closed: the vertical gap and horizontal separation values (D-15), using the heater body, exhaust, and silencer surface temperatures, which the manufacturer does not state and which would have to be established; whether a shield between tank and heater is needed; and the refuelling spill path (SR-02). Until that is written, this layout is a candidate that both instructions can be read to permit, not a reconciliation.
 
 ## 7. Fuel pump and fuel line
 
 - M1 p.9 shows the fuel path tank → oil pipe → oil filter → pulse fuel pump in its sheath → oil pipe → heater, with 12 oil pipe clips and 12 ribbons (cable ties) supplied (M1 p.8).
 - M1 states no pump mounting angle, orientation, height relative to tank or heater, or maximum line length. All are Unknown (Q-08). Diesel pulse pumps commonly have manufacturer-specified inclination ranges; **this manual does not give one, so none is assumed here**.
 - The only positional instruction is C12: tank above the heater, to facilitate pump operation. This pulls the tank upward in the frame while C1 pulls it away from the heater. See SR-01.
-- The pump position (L1 is the natural candidate) is open (D-05).
+- The pump position (L1 is the natural candidate) is open (D-05). In B1 Adjusted a pump in L1 sits below the tank outlet, whose position on the tank is Unknown (TNK-15); that is a geometric observation, not evidence that the pump will operate.
+- **The supplied fuel line's length does not establish the pump's permitted maximum line length, lift, or inclination.** Those remain Unknown (Q-08). With VEVOR not being contacted, Q-08 closes only by a documented engineering assessment that records the pump's own markings (PMP-03), the supplied line length (FUL-01), the modelled tank-outlet-to-pump and pump-to-heater heights, and the basis for any limit it adopts.
 
 ## 8. Air paths: combustion intake, heating-air inlet, hot-air outlet, and exhaust
 
@@ -94,7 +115,7 @@ The heater has three separate air paths ([spec.md §7.2](spec.md#72-safety), C25
 The heating-air inlet sits at L2 beside the heater. Whatever air surrounds the heater at L2 is what the duct delivers into the shelter. The exhaust termination must therefore be placed and directed, with wind considered, so that exhaust cannot reach the heating-air inlet or the shelter's openings. SR-11 requires an engineering review to demonstrate this and to record the accepted protective measures. **No separation distance is proposed here** because the manufacturer gives none (D-07, D-13).
 
 - Exhaust: heater → escape pipe → silencer, "(To the outside)" (M1 p.9). It must run horizontally or downward, never upward (C16), be kept clear of anything flammable and of cargo on the ground (C15), and terminate outside (C6).
-- In this frame the exhaust leaves the heater downward into L1 and must exit the envelope. The exit side, the pipe length, where the silencer sits, and how the pipe is restrained are open (D-07).
+- In this frame the exhaust leaves the heater downward into L1 and must exit the envelope. The exit side, the pipe length, where the silencer sits, and how the pipe is restrained are open (D-07). Proposal for review (2026-10-28): the exhaust turns horizontal or downward under the plate and exits on the wall opposite the tank, with the silencer outside the envelope and the termination away from the heater end that carries the heating-air inlet. Whether the pipe can make that turn in the roughly 98 mm between the crossmembers and the base members depends on the exhaust stub's protrusion and the pipe's diameter and construction (HTR-13, EXH-01 to EXH-05). No clearance is claimed.
 - Clearance from the exhaust and silencer to the tank, fuel line, wiring, extrusion, and ground cover is **not given by the manufacturer** and must be set by engineering review (SR-04). The surface temperature of the exhaust and silencer is not stated.
 - Intake: intake pipe with air filter element in L1; must stay open and clear (C14). The intake and exhaust terminations must be separated so exhaust is not drawn in; the manufacturer gives no distance (Q-06).
 - Hot-air outlet: inner diameter 3 in / 76.5 mm (C23); blowpipe and rotary tuyere (M1 p.7). The maximum duct run is not stated (Q-02 covers measuring the supplied parts).
@@ -105,9 +126,10 @@ The duct is the only part of the system that enters the shelter (SR-05). It carr
 
 ## 10. Stability and tip resistance
 
-- Footprint 20 × 24 in; height 38 in; the tank, when full, adds about 8–9 kg (A-05) high on one wall, and the heater's mass is unknown (A-06). The center of gravity will be high and off-center toward the tank wall.
+- Footprint 20 × 22 in; height about 35 in; the tank, when full, adds about 8–9 kg (A-05) high on one wall, and the heater's mass is unknown (A-06). The center of gravity will be high and off-center toward the tank wall, and higher in B1 Adjusted than in B1 Compact by the amount the tank was raised.
 - SR-10 requires a tip assessment with the tank full on the worst-case ground, under handling push, duct pull, and wind. The criteria are to be set at engineering review.
-- Options to evaluate (none selected): deployable outriggers on the tank side, a wider L1 footprint, ballast at L1, lowering the tank (in tension with C12), or adjustable feet. **Paracord staking is not a substitute for a self-supporting frame** (Owner decision 2026-10-27); it may be considered only as a supplement in wind.
+- **Illustrative centre-of-gravity outline (Proposed; not the SR-10 assessment).** With assumed masses only, since none is Measured: frame about 12 kg (about 11 m of 20 × 40 extrusion at a typical 1.1 kg/m, vendor unknown), heater 5 kg (the C22 figure, scope unknown, A-06), tank with fuel 10 kg (A-05 plus an assumed 1.5 kg empty tank), the combined centre of gravity sits roughly 50 mm from the frame's centreline toward the tank wall and roughly 470 mm above the ground. The static tip angle on level ground would then be roughly 24 degrees toward the tank wall and roughly 30 degrees in the other directions. These numbers show what the assessment will look like and which direction governs; they are not to be cited as a result.
+- **Preliminary stabilization strategy for review (D-12, none selected):** keep the pump, filter, silencer, and controller low in L1; fit outrigger feet or a wider foot on the tank wall, the governing direction; reject ballast as added mass to carry; note that the tank wall runs along the 22 in depth, so tipping toward it is across the 20 in width, the shorter base, unless the review prefers the tank on a wall that runs along the 20 in width, which makes the base in the tank direction 22 in. **Paracord staking is not a substitute for a self-supporting frame** (Owner decision 2026-10-27); it may be considered only as a supplement in wind.
 
 ## 11. Electrical
 
@@ -125,7 +147,7 @@ The manufacturer describes vehicle-interior or under-vehicle installation only (
 ## 13. Transport, restraint, and lifting
 
 - Whether the tank travels full, part-full, or empty is undecided (TR-02). A full tank on the bosses in a moving vehicle is a different load case from static use (MR-05).
-- Tie-down points and lifting handles are undefined (MR-06). The frame's total mass is unknown (TR-03).
+- Tie-down points and lifting handles are undefined (MR-06). The frame's total mass is unknown (TR-03). Proposal for review (2026-10-28): lift by the top rectangle, which is why it is retained in the 18-member candidate, and tie down at the four base corners.
 - Open (D-11).
 
 ## 14. Hazard register
@@ -154,10 +176,10 @@ Which release gate each hazard blocks is mapped in [spec.md §10.1](spec.md#101-
 
 | ID | Decision | Depends on |
 |---|---|---|
-| D-01 | Joint method for the extrusion (corner brackets, end-tapped bolts, gussets) and therefore the cut-length derivation | MR-05 |
-| D-02 | Section orientation of each member | D-01, MR-05 |
-| D-03 | Which wall is the tank wall and which side the duct leaves | SR-01, SR-04, D-07, D-08 |
-| D-04 | Tank rail arrangement: two rails only, or an added short member or bracket for the upper point; whether a perimeter member doubles as a rail | Q-04, Q-05 |
+| D-01 | Joint method for the extrusion (corner brackets, end-tapped bolts, gussets) and therefore the cut-length derivation. Proposal 2026-10-28: interior corner brackets with T-nuts at every joint, gussets at the base corners; they tolerate cut-length error and let every rail slide, which end-tapped blind joints do not | MR-05 |
+| D-02 | Section orientation of each member. Proposal 2026-10-28 in §3 | D-01, MR-05 |
+| D-03 | Which wall is the tank wall and which side the duct leaves. Proposal 2026-10-28: tank on the X-min wall as drawn, the wall that runs along the 22 in depth; duct from the heater's +Y end; exhaust exits the wall opposite the tank (§8) | SR-01, SR-04, D-07, D-08 |
+| D-04 | Tank rail arrangement: two rails only, or an added short member or bracket for the upper point; whether a perimeter member doubles as a rail. Proposal 2026-10-28: two rails on sliding brackets (§6) | Q-04, Q-05 |
 | D-05 | Pump and oil filter position | Q-08 |
 | D-06 | Use of L3 | None; may stay empty |
 | D-07 | Exhaust exit side, pipe route, silencer location, pipe restraint | SR-03, SR-04 |
@@ -165,8 +187,11 @@ Which release gate each hazard blocks is mapped in [spec.md §10.1](spec.md#101-
 | D-09 | Controller and harness mounting | SR-08, TR-01 |
 | D-10 | Weather measure, if any | TR-01 |
 | D-11 | Transport restraint, lifting, fuel state in transit | TR-02, MR-06 |
-| D-12 | Stabilization method (outriggers, footprint, ballast, feet) | SR-10 |
+| D-12 | Stabilization method (outriggers, footprint, ballast, feet). Preliminary strategy for review in §10 | SR-10 |
 | D-13 | Exhaust termination position and direction relative to the heating-air inlet, the shelter's openings, and prevailing wind | SR-11, D-07, D-08 |
+| D-14 | Whether to adopt the 18-member simplification (omit `L2-W1`, `L2-W2`) in place of MR-01's 20 members. Candidate under assessment (§3); not adopted | MR-01, MR-05, D-01 |
+| D-15 | The vertical gap between the heater body's top and the tank's bottom, and the horizontal separation, in B1 Adjusted. The CAD placeholder is 50 mm; the value is for the SR-01 engineering review and is not a clearance. Includes filler cap access (§4) | SR-01, SR-02, SR-04 |
+| D-16 | The two mechanical interfaces and their combined load path (§5): Interface A, heater to its supplied plate by the factory fixing arrangement; Interface B, plate to the crossmembers, provisionally through the four corner holes with T-slot hardware; whether the two share any fastener (not assumed); whether the plate's underside opening and the three stubs clear the crossmembers at the derived pitch. The load path is unresolved until assessed | MR-03, MR-05, MR-07, Q-03 |
 
 ### 15.2 Questions (information needed; who can answer)
 
@@ -174,7 +199,7 @@ Which release gate each hazard blocks is mapped in [spec.md §10.1](spec.md#101-
 |---|---|---|
 | Q-01 | Does the manual in the owner's box match M1? Record its revision marks, if any, and any differences on the installation diagram and safety pages | Owner |
 | Q-02 | Inventory the supplied parts against M1 p.7–8. Record the contents of "oil tank accessories" and "machine fixing piece", pipe diameters, blowpipe length, and the masses of the heater and the empty tank | Owner |
-| Q-03 | The mounting plate's fixing hole pattern and sizes, and how the heater's seal and double-head screw nuts engage it | Owner |
+| Q-03 | The mounting plate's fixing hole pattern and sizes, and how the heater's seal and double-head screw nuts engage it. Pattern and sizes User-reported 2026-10-28 (§5), not Measured; engagement still unknown | Owner |
 | Q-04 | What are the tank bosses rated to carry, and is vertical hanging on three points the intended installation? | VEVOR support; otherwise engineering review |
 | Q-05 | How are the membrane-covered holes meant to be prepared, and with what fastener? | VEVOR support; owner inspection of the accessory kit |
 | Q-06 | Permitted mounting orientation and tilt of the heater; clearance distances around the heater body, exhaust, silencer, and hot-air outlet; required separation of intake and exhaust terminations | VEVOR support; otherwise engineering review |
@@ -183,6 +208,23 @@ Which release gate each hazard blocks is mapped in [spec.md §10.1](spec.md#101-
 | Q-09 | Which CO alarm will be used in the shelter (SR-06 makes one mandatory), and what placement of the module relative to the shelter is acceptable to the owner as the starting point for the SR-11 review? | Owner |
 | Q-10 | Will overnight or unattended operation be permitted at all, and under what conditions? Unresolved; neither is approved (SR-12) | Owner, with engineering review |
 | Q-11 | What does the M2 net weight of 11 lb / 5 kg cover, and what is the correct working-temperature range, given the inconsistent figures on M2 (C22, C24)? | VEVOR support |
+
+The owner does not intend to contact VEVOR at this stage (2026-10-28). Where a question lists VEVOR, the alternative route in gate G1(a) applies: the question is recorded as unanswered and a dated engineering judgement that replaces it is written and reviewed. No such judgement exists yet for Q-04, Q-05, Q-06, Q-08, or Q-11.
+
+### 15.3 Measurements that a concrete decision needs (deliberately few)
+
+The measurement workflow and identifiers are in [measurements/](measurements/README.md). Only these readings are needed to settle a fit, structural, or safety decision for B1 Adjusted; everything else in the checklist is deferred until a decision asks for it.
+
+| Decision | Readings | Identifiers |
+|---|---|---|
+| Crossmember pitch and whether the stubs and plate opening clear the crossmembers (D-16, MR-07) | Plate orientation on the heater; underside opening extents; stub positions, diameters, and protrusions | PLT-10, PLT-11, PLT-14; HTR-12 to HTR-14 |
+| Interface A geometry, heater to plate (D-16) | Fixing stud or screw count, position, protrusion, and thread; seal | HTR-11, HTR-16, PLT-12 |
+| Exhaust turn under the plate and exit side (D-07) | Exhaust stub protrusion; pipe outside diameter, construction, shape as supplied | HTR-13; EXH-01, EXH-04, EXH-05 |
+| Frame height and filler access (D-15) | Filler position, neck and cap height | TNK-06 to TNK-08 |
+| Tank mounting method (MR-04, Q-04, Q-05) | Each mounting point as found, wall thickness, accessory kit | TNK-10 to TNK-14, TNK-16 |
+| Stability outline (SR-10) and transport (TR-03) | Heater, plate, and empty tank masses | MAS-01 to MAS-03 |
+
+Deferred: the heater's end faces and inlet (HTR-05 to HTR-10), the plate outline and thickness (PLT-01 to PLT-04, PLT-06 to PLT-09; the reported figures are enough for the concept), the silencer, intake, duct, electrical, and manual groups, and the tank's outer shape, until a decision needs them. The earlier User-reported figures stay User-reported.
 
 ## 16. Alternatives considered and rejected
 
@@ -196,9 +238,18 @@ Recorded per constitution Principle V. Each rejection stands unless a structural
 | Plastic operating enclosure, including the Greenmade 12-gallon tote | Open frame chosen for ventilation, access, and heat; an enclosure would conflict with C2 and C14 unless designed with ventilation, which is not wanted | Owner decision 2026-10-27 |
 | Paracord staking as the primary stability method | Not a self-supporting solution; frame must stand on its own (SR-10) | Owner decision 2026-10-27 |
 
+### 16.1 Layouts retained as alternatives (superseded as the preferred direction, not rejected)
+
+| Layout | Description | Status |
+|---|---|---|
+| A Original | 20 × 24 × 38 in; tank entirely above the heater, middle level about 350 mm; the 2026-10-27 concept and the original MR-02 envelope | Superseded by B1 Adjusted on 2026-10-28; kept in the CAD model (`original`) and in `cad/out/comparison.md` |
+| B1 Compact | 20 × 22 × 28 in; heater plate about 7 in, tank bottom about 8 in, tank beside the heater overlapping it in height; the owner's 2026-10-28 starting point | Superseded the same day by B1 Adjusted because the tank bottom sat below the heater top, which does not match the conservative reading of C12; kept in the CAD model (`compact`) |
+| B1 Adjusted | 20 × 22 × about 35 in; as A Original's tank-above reading combined with B1 Compact's footprint and separate footprints | **Preferred preliminary layout** (Owner decision 2026-10-28); CAD default (`adjusted`) |
+
 ## Change log
 
 | Date | Change |
 |---|---|
 | 2026-10-27 | Created from the owner's 2026-10-27 brief and the VEVOR manual and product page retrieved the same day. Concept recorded as decided; all hazards open; no cut lengths; no aluminum frame built or purchased (the heater and its supplied parts were already owned). |
 | 2026-10-27 | PR #4 review corrections: §8 rewritten around the three air paths with the manual's labels; H-07 closure now requires the SR-11 review and accepted measures plus the CO alarm; D-13, Q-10, Q-11 added; manufacturer size, net weight (scope unknown), and outlet diameter recorded; cigarette-lighter prohibition noted; status corrected (heater owned and partly assembled, no frame purchased). Mechanical concept unchanged. |
+| 2026-10-28 | B1 Adjusted recorded as the preferred preliminary layout (Owner decision): 20 × 22 × about 35 in, plate about 7 in, tank beside the heater with its bottom above the heater top; A Original and B1 Compact retained (§16.1). Height stack-up and filler access check (§4); owner-reported plate holes, edge clearance, and thickness estimate, the two fastening interfaces with their unresolved load path, and the adjustable mounting proposal (§5, D-16); adjustable tank rails, boss-strength evidence, and a Proposed SR-01 reconciliation for review (§6); fuel-line statement (§7); exhaust exit proposal (§8); illustrative centre-of-gravity outline and stabilization strategy (§10); lifting proposal (§13); proposals under D-01 to D-04 and D-12; D-14 (18-member candidate), D-15 (gap), D-16 (plate fastening) added; §15.3 lists the few measurements a decision needs. Hazards all open; no cut lengths; gates G1–G5 closed. |

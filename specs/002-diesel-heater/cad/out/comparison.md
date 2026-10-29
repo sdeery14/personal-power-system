@@ -2,35 +2,40 @@
 
 Generated 2026-10-28 by `build.py`. Millimetres unless stated. Positions are modelled bounding boxes of placeholders.
 
-**The bounding-box gaps below are modelled distances between placeholder boxes. They do not establish safe fuel-spill, fire, thermal, exhaust, or intake clearances.** The manufacturer states none (spec C-list, "not stated"); SR-01, SR-02, SR-04, SR-11 and the hazard register remain open, and gates G1–G5 are closed for both layouts. The B1 Compact envelope is an owner-proposed starting value from the 2026-10-28 brief, not the MR-02 envelope in spec.md, which is unchanged.
+**The bounding-box gaps below are modelled distances between placeholder boxes. They do not establish safe fuel-spill, fire, thermal, exhaust, or intake clearances.** The manufacturer states none (spec C-list, "not stated"); SR-01, SR-02, SR-04, SR-11 and the hazard register remain open, and gates G1–G5 are closed for every layout. B1 Adjusted is the preferred preliminary layout (Owner decision 2026-10-28; spec MR-02 as amended). A Original (the 2026-10-27 envelope) and B1 Compact (the 2026-10-28 starting point) are retained alternatives (design.md §16). Plate thickness and hole positions are owner-reported, not measured.
 
-| Quantity | A Original | B1 Compact |
-|---|---|---|
-| Envelope W × D × H (in) | 20 × 24 × 38 | 20 × 22 × 28 |
-| Envelope W × D × H (mm) | 508.0 × 609.6 × 965.2 | 508.0 × 558.8 × 711.2 |
-| Envelope tag | Owner decision, preliminary | Proposed/illustrative |
-| Layout | stacked | beside |
-| Members / parts | 20 / 27 | 20 / 28 |
-| Level member bottom faces Z | 0.0, 350.0, 925.2 | 0.0, 137.8, 671.2 |
-| Heater axis (13.4 in length) | X | Y |
-| Plate top face Z | 393.0 | 180.8 |
-| Heater body X | 139.8–480.2 | 332.8–447.2 |
-| Heater body Y | 247.6–362.0 | 109.2–449.6 |
-| Heater body Z | 393.0–532.7 | 180.8–320.5 |
-| Outlet cue end | none (D-07/D-08 open) | +Y |
-| Tank X | 20.0–96.2 | 20.0–96.2 |
-| Tank Y | 101.6–508.0 | 76.2–482.6 |
-| Tank Z | 535.0–941.4 | 203.2–609.6 |
-| Tank bottom minus heater top Z | +2.3 | -117.3 |
-| Rail centre Z (lower, upper) | 595.0, 795.0 | 263.2, 463.2 |
-| Filler neck centre (X, Y) | 58.1, 151.6 | 58.1, 126.2 |
-| Top-level bottom face Z minus filler top Z (negative: filler rises into the top-member band, clear of the members in plan) | -36.6 | +41.2 |
-| Bounding-box gap tank → heater body (mm) | dx 43.6, dy 0.0, dz 2.3; min 43.7 | dx 236.6, dy 0.0, dz 0.0; min 236.6 |
-| Bounding-box gap tank → heater plate (mm) | dx 144.7, dy 0.0, dz 142.0; min 202.8 | dx 208.9, dy 0.0, dz 22.4; min 210.1 |
-| Bounding-box gap tank → crossmember HX1 (mm) | dx 0.0, dy 0.0, dz 145.0; min 145.0 | dx 0.0, dy 0.0, dz 25.4; min 25.4 |
-| Bounding-box gap heater body → nearest X-max member L2-D2 (mm) | dx 7.8, dy 0.0, dz 3.0; min 8.4 | dx 40.8, dy 0.0, dz 3.0; min 41.0 |
+| Quantity | A Original | B1 Compact | B1 Adjusted |
+|---|---|---|---|
+| Envelope W × D × H (in) | 20 × 24 × 38 | 20 × 22 × 28 | 20 × 22 × 35 |
+| Envelope W × D × H (mm) | 508.0 × 609.6 × 965.2 | 508.0 × 558.8 × 711.2 | 508.0 × 558.8 × 889.0 |
+| Envelope tag | Owner decision, preliminary | Proposed/illustrative | Owner decision 2026-10-28, preliminary |
+| Layout | stacked | beside | beside-above |
+| Members / parts | 20 / 27 | 20 / 28 | 20 / 32 |
+| Level member bottom faces Z | 0.0, 350.0, 925.2 | 0.0, 137.8, 671.2 | 0.0, 137.8, 849.0 |
+| Heater axis (13.4 in length) | X | Y | Y |
+| Plate underside Z (open height above the bottom members in brackets) | 390.0 (350.0) | 177.8 (137.8) | 177.8 (137.8) |
+| Plate top face Z | 390.8 | 178.6 | 178.6 |
+| Crossmember spacing, centre to centre (basis) | 130.0 (illustrative) | 100.0 (illustrative) | 125.4 (reported plate hole pitch, not measured) |
+| Heater body X | 139.8–480.2 | 332.8–447.2 | 332.8–447.2 |
+| Heater body Y | 247.6–362.0 | 109.2–449.6 | 109.2–449.6 |
+| Heater body Z | 390.8–530.5 | 178.6–318.3 | 178.6–318.3 |
+| Outlet cue end | none (D-07/D-08 open) | +Y | +Y |
+| Tank X | 20.0–96.2 | 20.0–96.2 | 20.0–96.2 |
+| Tank Y | 101.6–508.0 | 76.2–482.6 | 76.2–482.6 |
+| Tank Z | 535.0–941.4 | 203.2–609.6 | 368.3–774.7 |
+| Tank bottom minus heater top Z | +4.5 | -115.1 | +50.0 |
+| Rail centre Z (lower, upper) | 595.0, 795.0 | 263.2, 463.2 | 428.3, 628.3 |
+| Filler neck centre (X, Y) | 58.1, 151.6 | 58.1, 126.2 | 58.1, 126.2 |
+| Top-level bottom face Z minus filler top Z (negative: filler rises into the top-member band, clear of the members in plan) | -36.6 | +41.2 | +53.9 |
+| Top-level bottom face Z minus (tank top + 50 mm filler/cap allowance; neck and cap not measured) | -66.2 | +11.6 | +24.3 |
+| Filler cue centre X minus X-min top member inside face (reach past the member from above) | +38.1 | +38.1 | +38.1 |
+| Bounding-box gap tank → heater body (mm) | dx 43.6, dy 0.0, dz 4.5; min 43.9 | dx 236.6, dy 0.0, dz 0.0; min 236.6 | dx 236.6, dy 0.0, dz 50.0; min 241.9 |
+| Bounding-box gap tank → heater plate (mm) | dx 144.7, dy 0.0, dz 144.2; min 204.3 | dx 208.9, dy 0.0, dz 24.6; min 210.3 | dx 208.9, dy 0.0, dz 189.7; min 282.2 |
+| Bounding-box gap tank → crossmember HX1 (mm) | dx 0.0, dy 0.0, dz 145.0; min 145.0 | dx 0.0, dy 0.0, dz 25.4; min 25.4 | dx 0.0, dy 0.0, dz 190.5; min 190.5 |
+| Bounding-box gap heater body → nearest X-max member L2-D2 (mm) | dx 7.8, dy 0.0, dz 0.8; min 7.9 | dx 40.8, dy 0.0, dz 0.8; min 40.9 | dx 40.8, dy 0.0, dz 0.8; min 40.9 |
 
 Layout notes:
 
 - **A Original**: Tank drawn entirely above the heater to picture the manufacturer's C12 instruction. This does not address the keep-away warning (C1); SR-01 is unreconciled.
 - **B1 Compact**: Tank drawn beside the heater with separate horizontal footprints, its lower part overlapping the heater's upper part in height only. Horizontal separation alone establishes no spill, fire, or thermal clearance; SR-01 and SR-02 remain open and the modelled gaps are bounding-box distances, not clearances.
+- **B1 Adjusted**: Tank drawn beside the heater with separate horizontal footprints and its bottom above the heater body's top by a provisional gap (D-15). This is a conservative geometric reading of the manufacturer's tank-above instruction (C12); it does not establish fuel delivery, spill control, hot-surface separation, or mounting adequacy. SR-01 and SR-02 remain open; the modelled gaps are bounding-box distances, not clearances.

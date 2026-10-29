@@ -1,7 +1,7 @@
 """Regenerate every output of the PRELIMINARY Diesel Heater Module (002) model.
 
-    uv run python build.py                      # both variants and the comparison
-    uv run python build.py --variant compact    # one variant only
+    uv run python build.py                      # all three variants and the comparison
+    uv run python build.py --variant adjusted   # one variant only
 
 Writes to ./out/<variant>/: heater-module.step (not committed), isometric.svg,
 PNG views, member-schedule.md; and to ./out/: comparison.png, comparison.md.
@@ -45,9 +45,17 @@ VIEWS = {
         ("front-elevation.png", (0.0, -1.0, 0.0), (0, 0, 1), True,
          "Elevation from -Y, parallel projection: tank bottom above the plate, overlapping the heater in height only"),
     ],
+    "adjusted": [
+        ("isometric.png", (1.0, 1.0, 0.8), (0, 0, 1), False,
+         "View from +X/+Y: tank (cream) on the far wall beside the heater (orange); red = reported plate holes"),
+        ("top.png", (0.0, 0.0, 1.0), (0, 1, 0), True,
+         "Top view, parallel: separate footprints; plate hole markers on the crossmember lines"),
+        ("front-elevation.png", (0.0, -1.0, 0.0), (0, 0, 1), True,
+         "Elevation from -Y, parallel: tank bottom above the heater top by the D-15 gap (not a clearance)"),
+    ],
 }
 COMPARISON_VIEW = ((0.55, -1.0, 0.5), (0, 0, 1))  # camera direction and view-up; always parallel projection
-COMPARISON_GAP = 300.0  # mm between the two frames along X in the comparison scene
+COMPARISON_GAP = 300.0  # mm between adjacent frames along X in the comparison scene
 
 
 def write_step(assy: cq.Assembly, path: Path) -> None:
@@ -65,7 +73,9 @@ def write_svg(assy: cq.Assembly, path: Path, variant: P.Variant, direction=(1.0,
     label = (f'<text x="20" y="30" font-family="sans-serif" font-size="22" fill="#c00000">'
              f'{BANNER} — {variant.title}: bounding-box placeholders, illustrative placement</text>\n')
     open_tag_end = text.index(">", text.index("<svg")) + 1  # end of the opening <svg ...> tag
-    path.write_text(text[:open_tag_end] + "\n" + label + text[open_tag_end:], encoding="utf-8")
+    text = text[:open_tag_end] + "\n" + label + text[open_tag_end:]
+    # The exporter emits one whitespace-only line; strip trailing whitespace so the committed file is clean.
+    path.write_text("\n".join(line.rstrip() for line in text.splitlines()) + "\n", encoding="utf-8")
 
 
 def _add_actors(ren, parts: list[Part], offset=(0.0, 0.0, 0.0)) -> None:
@@ -168,8 +178,8 @@ def comparison_offsets(keys: list[str]) -> dict[str, float]:
 
 
 def write_comparison_png(parts_by_key: dict[str, list[Part]], path: Path):
-    """Both variants in one scene, side by side along X, in parallel projection so one world
-    millimetre is the same number of pixels for both. Returns (window, renderer)."""
+    """All variants in one scene, side by side along X, in parallel projection so one world
+    millimetre is the same number of pixels for every frame. Returns (window, renderer)."""
     import vtk
 
     ren = vtk.vtkRenderer()
@@ -181,7 +191,7 @@ def write_comparison_png(parts_by_key: dict[str, list[Part]], path: Path):
         _add_actors(ren, parts, offset=(offsets[key], 0.0, 0.0))
         labels.append(f"{v.title} {v.envelope_w / P.IN:.0f} x {v.envelope_d / P.IN:.0f} x {v.envelope_h / P.IN:.0f} in")
     view_from, view_up = COMPARISON_VIEW
-    return _render(ren, path, view_from, view_up, True, size=(2000, 1400),
+    return _render(ren, path, view_from, view_up, True, size=(2600, 1400),
                    text=f"{BANNER}\nParallel projection, same scale, same component colours; left to right: " + " | ".join(labels)
                         + "\nBounding-box placeholders; illustrative placement; gates G1-G5 closed")
 
@@ -255,7 +265,11 @@ def comparison_rows(parts_by_key: dict[str, list[Part]]) -> list[tuple[str, dict
     add("Members / parts", lambda v, p: f"{len(members(p))} / {len(p)}")
     add("Level member bottom faces Z", lambda v, _: ", ".join(f"{z:.1f}" for z in v.level_z))
     add("Heater axis (13.4 in length)", lambda v, _: v.heater_axis)
+    add("Plate underside Z (open height above the bottom members in brackets)",
+        lambda v, _: f"{bb(v, 'heater_plate').zmin:.1f} ({bb(v, 'heater_plate').zmin - P.PROFILE_MAJOR:.1f})")
     add("Plate top face Z", lambda v, _: f"{bb(v, 'heater_plate').zmax:.1f}")
+    add("Crossmember spacing, centre to centre (basis)",
+        lambda v, _: f"{v.crossmember_spacing:.1f} ({'reported plate hole pitch, not measured' if v.plate_holes else 'illustrative'})")
     add("Heater body X", lambda v, _: _rng(bb(v, "heater_body"), "x"))
     add("Heater body Y", lambda v, _: _rng(bb(v, "heater_body"), "y"))
     add("Heater body Z", lambda v, _: _rng(bb(v, "heater_body"), "z"))
@@ -268,6 +282,10 @@ def comparison_rows(parts_by_key: dict[str, list[Part]]) -> list[tuple[str, dict
     add("Filler neck centre (X, Y)", lambda v, _: f"{bb(v, 'tank_filler_neck').center.x:.1f}, {bb(v, 'tank_filler_neck').center.y:.1f}")
     add("Top-level bottom face Z minus filler top Z (negative: filler rises into the top-member band, clear of the members in plan)",
         lambda v, _: f"{v.level_z[2] - bb(v, 'tank_filler_neck').zmax:+.1f}")
+    add(f"Top-level bottom face Z minus (tank top + {P.FILLER_CAP_ALLOWANCE:.0f} mm filler/cap allowance; neck and cap not measured)",
+        lambda v, _: f"{v.level_z[2] - (bb(v, 'fuel_tank').zmax + P.FILLER_CAP_ALLOWANCE):+.1f}")
+    add("Filler cue centre X minus X-min top member inside face (reach past the member from above)",
+        lambda v, _: f"{bb(v, 'tank_filler_neck').center.x - P.PROFILE_MINOR:+.1f}")
 
     def gap_row(label, pa, pb):
         def fn(v, _):
@@ -289,7 +307,7 @@ def write_comparison_md(parts_by_key: dict[str, list[Part]], path: Path) -> None
         "",
         f"Generated {dt.date.today().isoformat()} by `build.py`. Millimetres unless stated. Positions are modelled bounding boxes of placeholders.",
         "",
-        "**The bounding-box gaps below are modelled distances between placeholder boxes. They do not establish safe fuel-spill, fire, thermal, exhaust, or intake clearances.** The manufacturer states none (spec C-list, \"not stated\"); SR-01, SR-02, SR-04, SR-11 and the hazard register remain open, and gates G1–G5 are closed for both layouts. The B1 Compact envelope is an owner-proposed starting value from the 2026-10-28 brief, not the MR-02 envelope in spec.md, which is unchanged.",
+        "**The bounding-box gaps below are modelled distances between placeholder boxes. They do not establish safe fuel-spill, fire, thermal, exhaust, or intake clearances.** The manufacturer states none (spec C-list, \"not stated\"); SR-01, SR-02, SR-04, SR-11 and the hazard register remain open, and gates G1–G5 are closed for every layout. B1 Adjusted is the preferred preliminary layout (Owner decision 2026-10-28; spec MR-02 as amended). A Original (the 2026-10-27 envelope) and B1 Compact (the 2026-10-28 starting point) are retained alternatives (design.md §16). Plate thickness and hole positions are owner-reported, not measured.",
         "",
         "| Quantity | " + " | ".join(P.VARIANTS[k].title for k in keys) + " |",
         "|---|" + "---|" * len(keys),

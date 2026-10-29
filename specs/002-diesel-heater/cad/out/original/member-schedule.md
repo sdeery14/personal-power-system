@@ -28,8 +28,8 @@ Layout: Tank drawn entirely above the heater to picture the manufacturer's C12 i
 | L3-W2 | perimeter_width | X | 468.0 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption | level at the envelope top or bottom |
 | L3-D1 | perimeter_depth | Y | 529.6 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption | level at the envelope top or bottom |
 | L3-D2 | perimeter_depth | Y | 529.6 | 20 × 40 | envelope (Owner decision, preliminary); joint assumption | level at the envelope top or bottom |
-| HX1 | heater_crossmember | X | 468.0 | 20 × 40 | envelope width; joint assumption; illustrative middle-level height, heater position, and spacing | spacing illustrative (plate fixing pattern, Q-03) |
-| HX2 | heater_crossmember | X | 468.0 | 20 × 40 | envelope width; joint assumption; illustrative middle-level height, heater position, and spacing | spacing illustrative (plate fixing pattern, Q-03) |
+| HX1 | heater_crossmember | X | 468.0 | 20 × 40 | envelope width; joint assumption; illustrative middle-level height, heater position, and spacing | spacing illustrative (plate fixing pattern not used, Q-03) |
+| HX2 | heater_crossmember | X | 468.0 | 20 × 40 | envelope width; joint assumption; illustrative middle-level height, heater position, and spacing | spacing illustrative (plate fixing pattern not used, Q-03) |
 | TR-lower | tank_rail | Y | 529.6 | 20 × 40 | envelope depth; joint assumption; illustrative tank height and hole position | height follows the illustrative tank position (SR-01 open); butts between the uprights |
 | TR-upper | tank_rail | Y | 529.6 | 20 × 40 | envelope depth; joint assumption; illustrative tank height and hole position | height follows the illustrative tank position (SR-01 open); butts between the uprights |
 
@@ -42,11 +42,11 @@ Members: 20. Other components (placeholders): heater_plate, heater_body, fuel_ta
 | ENVELOPE_W | 508.0 mm | Owner decision, preliminary | spec MR-02: 20 x 24 x 38 in |
 | ENVELOPE_D | 609.6 mm | Owner decision, preliminary | spec MR-02: 20 x 24 x 38 in |
 | ENVELOPE_H | 965.2 mm | Owner decision, preliminary | spec MR-02: 20 x 24 x 38 in |
-| LEVEL_Z[1] | 350.0 mm | illustrative | middle-level height is open (design section 4) |
+| LEVEL_Z[1] | 350.0 mm | illustrative | middle-level height is open (design section 4); plate underside about 7 in in B1 layouts (owner brief 2026-10-28) |
 | HEATER_AXIS | 0.0 0=X,1=Y | illustrative | heater orientation in the frame is open |
 | HEATER_CENTER_X | 310.0 mm | illustrative | heater position in the frame is open |
 | HEATER_CENTER_Y | 304.8 mm | illustrative | heater position in the frame is open |
-| CROSSMEMBER_SPACING | 130.0 mm | illustrative | plate fixing pattern not recorded (Q-03) |
+| CROSSMEMBER_SPACING | 130.0 mm | illustrative | plate fixing pattern not used in this variant (Q-03) |
 | TANK_BOTTOM_Z | 535.0 mm | illustrative | tank height is open; SR-01 unreconciled |
 | PROFILE_MINOR | 20.0 mm | Owner decision | spec MR-01: 20 x 40 mm T-slot |
 | PROFILE_MAJOR | 40.0 mm | Owner decision | spec MR-01: 20 x 40 mm T-slot |
@@ -61,7 +61,14 @@ Members: 20. Other components (placeholders): heater_plate, heater_body, fuel_ta
 | TANK_X | 76.2 mm | User-reported | spec section 5: about 3 in excluding filler neck |
 | HOLE_LOWER_SPACING | 173.0 mm | User-reported | spec section 5: about 6 13/16 in |
 | HOLE_UPPER_RISE | 200.0 mm | User-reported | spec section 5: about 7 7/8 in |
-| PLATE_T | 3.0 mm | illustrative | plate thickness not recorded (Q-03) |
+| PLATE_T | 0.8 mm | User-reported (estimate) | owner estimate 2026-10-28: about 1/32 in, below 1/16 in; not measured (checklist PLT-03) |
+| PLATE_HOLE_D | 6.3 mm | User-reported | four fixing holes about 1/4 in diameter, owner-reported 2026-10-28; not measured (checklist PLT-06 to PLT-09) |
+| PLATE_HOLE_EDGE_CLEAR | 3.2 mm | User-reported | about 1/8 in from each hole's outside edge to its two adjacent plate edges, owner-reported 2026-10-28 |
+| PLATE_HOLE_INSET | 6.3 mm | derived from User-reported | hole centre from each adjacent plate edge: edge clearance + half the hole diameter |
+| PLATE_HOLE_PITCH_ALONG | 125.4 mm | derived from User-reported | hole centre to centre along the 5 7/16 in side |
+| PLATE_HOLE_PITCH_ACROSS | 157.2 mm | derived from User-reported | hole centre to centre along the 6 11/16 in side |
+| TANK_GAP_ABOVE_HEATER | 50.0 mm | Proposed/illustrative | B1 Adjusted tank bottom above the heater body top; placeholder for engineering review (D-15); not a clearance |
+| FILLER_CAP_ALLOWANCE | 50.0 mm | Proposed/illustrative | height allowed above the tank top for the filler neck and cap until measured (TNK-07, TNK-08) |
 | TANK_HOLE_ABOVE_BOTTOM | 60.0 mm | illustrative | hole position on the tank face not recorded |
 | HOLE_DIA | 8.0 mm | illustrative | boss hole size not recorded (Q-05) |
 | FILLER_D | 40.0 mm | illustrative | filler neck size not recorded; orientation cue only |
