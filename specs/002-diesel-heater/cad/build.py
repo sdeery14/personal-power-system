@@ -329,7 +329,10 @@ def tightest_bar_margin(bars: list[list[float]], stock: float = P.STOCK_LENGTH, 
     bar = min(bars, key=lambda b: stock - (sum(b) + kerf * len(b)))
     n, pieces_sum = len(bar), sum(bar)
     margin = stock - (pieces_sum + kerf * n)
-    return {"n": n, "pieces_sum": pieces_sum, "margin": margin, "max_kerf": kerf + margin / n}
+    max_kerf = kerf + margin / n
+    # The displayed one-decimal limit is rounded DOWN so it never overstates the exact bound.
+    return {"n": n, "pieces_sum": pieces_sum, "margin": margin, "max_kerf": max_kerf,
+            "max_kerf_display": math.floor(max_kerf * 10 + 1e-9) / 10}
 
 
 def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> list[list[float]]:
@@ -379,7 +382,8 @@ def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> lis
         f"**Proposed order: {len(bars)} × {P.STOCK_LENGTH:.0f} mm** ({len(bars) * P.STOCK_LENGTH / 1000:.1f} m), of which {total / 1000:.3f} m becomes pieces and {waste / 1000:.3f} m is kerf and offcut ({100 * waste / (len(bars) * P.STOCK_LENGTH):.0f} %). A spare bar for cutting errors is a separate owner choice. The shorter listed lengths (300 to 1200 mm) would reduce cutting but their individual prices are not shown on the supplier page, so no comparison is made here.",
         "",
         f"**Margin:** the tightest bar holds {margin['pieces_sum']:.1f} mm of pieces in {margin['n']} pieces and, after {margin['n']} kerfs of {P.KERF_ALLOWANCE:.0f} mm, leaves {margin['margin']:.1f} mm. "
-        f"For a full, untrimmed {P.STOCK_LENGTH:.0f} mm bar the kerf can therefore be at most {margin['max_kerf']:.1f} mm. "
+        f"For a full, untrimmed {P.STOCK_LENGTH:.0f} mm bar the kerf can therefore be at most {margin['max_kerf_display']:.1f} mm "
+        f"(exactly {P.KERF_ALLOWANCE:.0f} + {margin['margin']:.1f} / {margin['n']} = {margin['max_kerf']:.4f} mm, shown rounded down). "
         f"With a delivered shortfall s, an end-trimming allowance t (for example to square a stock end), and a real kerf k, the pattern fits only while s + t + {margin['n']} × (k − {P.KERF_ALLOWANCE:.0f}) ≤ {margin['margin']:.1f} mm. "
         "If the measured bars or blade exceed that, the packing is to be recalculated with the measured stock length, trim, and kerf (`select_packing`, which falls back to the general packer), which may or may not need another bar; it is not to be patched by assuming a seventh bar. "
         "Measure the delivered bars and the kerf before cutting; this is one reason the schedule is not a cut list.",

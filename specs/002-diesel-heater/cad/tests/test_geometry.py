@@ -553,8 +553,9 @@ def test_preferred_pattern_is_validated_and_falls_back_to_the_packer():
 def test_cut_schedule_margin_arithmetic(tmp_path):
     """The margin warning must be arithmetically right for the preferred pattern. The tight bar is
     889 + 518.8 + 518.8 = 1926.6 mm in three pieces; after three 3 mm kerfs 64.4 mm remain of a
-    2000 mm bar; a full, untrimmed bar therefore tolerates a kerf of at most 24.5 mm (24.47); and
-    shortfall s, trim t, and kerf k fit only while s + t + 3 (k - 3) <= 64.4."""
+    2000 mm bar; a full, untrimmed bar therefore tolerates a kerf of at most 3 + 64.4 / 3 = 24.4667 mm,
+    displayed rounded down as 24.4 mm (never 24.5, which would not fit); and shortfall s, trim t,
+    and kerf k fit only while s + t + 3 (k - 3) <= 64.4."""
     from build import cut_pieces, pack_stock, tightest_bar_margin, write_cut_schedule
 
     parts = build_parts(P.ADJUSTED)
@@ -563,8 +564,14 @@ def test_cut_schedule_margin_arithmetic(tmp_path):
     assert m["n"] == 3
     assert m["pieces_sum"] == pytest.approx(1926.6, abs=0.05)
     assert m["margin"] == pytest.approx(64.4, abs=0.05)
-    assert m["max_kerf"] == pytest.approx(3 + 64.4 / 3, abs=0.01)
-    assert m["pieces_sum"] + 3 * m["max_kerf"] == pytest.approx(P.STOCK_LENGTH, abs=0.05)
+    assert m["max_kerf"] == pytest.approx(3 + 64.4 / 3, abs=1e-6)  # 24.4667
+    assert m["pieces_sum"] + 3 * m["max_kerf"] == pytest.approx(P.STOCK_LENGTH, abs=1e-6)
+    # The displayed limit is the exact bound rounded DOWN to one decimal, so it is conservative:
+    # a kerf at the displayed limit fits, a kerf at the next tenth does not.
+    assert m["max_kerf_display"] == pytest.approx(24.4, abs=1e-9)
+    assert m["max_kerf_display"] <= m["max_kerf"] < m["max_kerf_display"] + 0.1
+    assert m["pieces_sum"] + 3 * m["max_kerf_display"] <= P.STOCK_LENGTH
+    assert m["pieces_sum"] + 3 * (m["max_kerf_display"] + 0.1) > P.STOCK_LENGTH
     # The 4 x 468 bars are the looser ones: 1872 + 12 = 1884, margin 116.
     assert max(P.STOCK_LENGTH - (sum(b) + P.KERF_ALLOWANCE * len(b)) for b in bars) == pytest.approx(116.0, abs=0.05)
     # The limit is a property of the tight pattern, checked directly: shortfall s, trim t, kerf k.
@@ -586,7 +593,8 @@ def test_cut_schedule_margin_arithmetic(tmp_path):
     assert sorted(x for b in recalculated for x in b) == sorted(lengths)
     text = (tmp_path / "cut-schedule.md").read_text(encoding="utf-8")
     assert "1926.6 mm of pieces in 3 pieces" in text and "leaves 64.4 mm" in text
-    assert "at most 24.5 mm" in text and "s + t + 3 × (k − 3) ≤ 64.4 mm" in text
+    assert "at most 24.4 mm" in text and "24.5" not in text  # displayed limit rounded down, never up
+    assert "exactly 3 + 64.4 / 3 = 24.4667 mm" in text and "s + t + 3 × (k − 3) ≤ 64.4 mm" in text
     assert "recalculated" in text and "seventh bar" in text
 
 
