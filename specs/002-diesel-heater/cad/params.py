@@ -18,8 +18,12 @@ Three layout variants exist for comparison in a viewer:
   2026-10-28; spec MR-02 as amended): 20 x 22 x about 35 in, tank beside the
   heater with its bottom above the heater body's top by a provisional gap.
 
-Values shared by both variants (component sizes, hole pattern, profile) are
+Values shared by all variants (component sizes, hole pattern, profile) are
 module constants. Values that differ are fields of ``Variant``.
+
+Profile: 2020 (20 x 20 mm) T-slot with a 6 mm slot for every member (Owner
+decision 2026-10-29, spec MR-01 as amended). The earlier 20 x 40 mm assumption
+is withdrawn; outputs generated before 2026-10-29 used it.
 """
 
 from dataclasses import dataclass
@@ -37,8 +41,18 @@ class Param:
 
 
 # ---------------------------------------------------------------- extrusion
-PROFILE_MINOR = 20.0  # T-slot section, short side
-PROFILE_MAJOR = 40.0  # T-slot section, long side
+# Owner decision 2026-10-29: 2020 (20 x 20 mm) T-slot extrusion, 6 mm slot, for every member
+# (spec MR-01 as amended). The earlier 20 x 40 mm assumption is withdrawn. The two names are
+# kept so the model reads the same; for a square section they are equal.
+PROFILE_MINOR = 20.0  # T-slot section, one side
+PROFILE_MAJOR = 20.0  # T-slot section, the other side (square: 2020)
+SLOT_WIDTH = 6.0  # nominal slot opening of the chosen 2020 system (ZYLtech hardware kit page, Manufacturer-stated 2026-10-29)
+
+# --------------------------------------------------- stock and cutting (proposed)
+STOCK_LENGTHS = (300.0, 400.0, 500.0, 600.0, 900.0, 1000.0, 1200.0, 2000.0)  # ZYLtech EXT-2020 pre-cut lengths listed 2026-10-29
+STOCK_LENGTH = 2000.0  # proposed stock length for the cut schedule (longest listed; fewest pieces)
+KERF_ALLOWANCE = 3.0  # per cut, assumed for a hand or mitre saw blade; not a supplier figure
+FOOT_BAR_L = 508.0 + 2 * 100.0  # two stabilization foot bars across the width, extending about 100 mm beyond each side (design section 10, D-12; proposed, not modelled)
 
 # ---------------------------------------------------------------- heater
 HEATER_L = 13.4 * IN  # body length, along the variant's heater axis
@@ -181,8 +195,12 @@ VARIANTS = {v.key: v for v in (ORIGINAL, COMPACT, ADJUSTED)}
 DEFAULT_VARIANT = ADJUSTED
 
 SHARED_PARAMS = [
-    Param("PROFILE_MINOR", PROFILE_MINOR, "mm", "Owner decision", "spec MR-01: 20 x 40 mm T-slot"),
-    Param("PROFILE_MAJOR", PROFILE_MAJOR, "mm", "Owner decision", "spec MR-01: 20 x 40 mm T-slot"),
+    Param("PROFILE_MINOR", PROFILE_MINOR, "mm", "Owner decision 2026-10-29", "spec MR-01 as amended: 2020 (20 x 20 mm) T-slot, 6 mm slot, every member"),
+    Param("PROFILE_MAJOR", PROFILE_MAJOR, "mm", "Owner decision 2026-10-29", "as above; square section"),
+    Param("SLOT_WIDTH", SLOT_WIDTH, "mm", "Manufacturer-stated", "ZYLtech 2020 hardware kit page, read 2026-10-29; not stated on the extrusion page itself"),
+    Param("STOCK_LENGTH", STOCK_LENGTH, "mm", "Proposed", "longest ZYLtech EXT-2020 pre-cut length listed 2026-10-29; cut tolerance not stated by the supplier"),
+    Param("KERF_ALLOWANCE", KERF_ALLOWANCE, "mm", "Proposed/illustrative", "assumed saw kerf per cut; to be replaced by the actual blade"),
+    Param("FOOT_BAR_L", FOOT_BAR_L, "mm", "Proposed", "design section 10: 508 mm width plus about 100 mm beyond each side; D-12 attachment not modelled"),
     Param("HEATER_L", HEATER_L, "mm", "Manufacturer-stated", "spec C21: 13.4 in (owner tape agrees, User-reported)"),
     Param("HEATER_W", HEATER_W, "mm", "Manufacturer-stated", "spec C21: 4.5 in"),
     Param("HEATER_H", HEATER_H, "mm", "Manufacturer-stated", "spec C21: 5.5 in"),
@@ -212,9 +230,12 @@ SHARED_PARAMS = [
 
 JOINT_ASSUMPTION = (
     "Uprights are continuous over the full height; every horizontal member butts "
-    "between uprights or between perimeter members, with the 40 mm side vertical. "
-    "This is one of several possible joint arrangements (design D-01, D-02 open). "
-    "Member lengths derived from it are illustrative, not cut lengths."
+    "between uprights or between perimeter members. The joint system is interior "
+    "90-degree corner brackets with M5 hammer nuts in the 6 mm slots, plus flat joining "
+    "plates at the base corners (Owner decision 2026-10-29, D-01); brackets do not change "
+    "member lengths, so the butt geometry stands. Member lengths derived from it are "
+    "nominal model lengths, not approved cut lengths, until the G1(e) review and the "
+    "owner's purchase approval (spec section 10)."
 )
 
 TANK_WALL_ASSUMPTION = (

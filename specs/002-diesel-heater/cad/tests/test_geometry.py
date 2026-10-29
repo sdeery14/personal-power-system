@@ -120,7 +120,13 @@ def test_everything_inside_envelope(parts, variant):
     assert whole.zmax <= variant.envelope_h + TOL
 
 
-def test_every_member_has_20x40_section(parts):
+def test_profile_is_2020_square():
+    """Owner decision 2026-10-29: 2020 (20 x 20 mm) T-slot, 6 mm slot, for every member."""
+    assert P.PROFILE_MINOR == P.PROFILE_MAJOR == 20.0
+    assert P.SLOT_WIDTH == 6.0
+
+
+def test_every_member_has_2020_section(parts):
     for p in members(parts):
         b = bb(p)
         dims = sorted([b.xlen, b.ylen, b.zlen])
@@ -375,7 +381,7 @@ def test_adjusted_filler_headroom_and_reach_are_reported_not_cleared():
 
 
 def test_adjusted_keeps_the_twenty_member_frame():
-    """The 18-member simplification is a candidate under assessment (design.md D-14), not modelled."""
+    """The 18-member simplification is a recorded, deprioritized alternative (design.md D-14), not modelled."""
     parts = build_parts(P.ADJUSTED)
     assert len(members(parts)) == 20
     assert {p.id for p in members(parts)} == {p.id for p in members(build_parts(P.COMPACT))}
@@ -449,9 +455,69 @@ def test_schedule_and_comparison_carry_banner(tmp_path):
         text = (tmp_path / f"{k}.md").read_text(encoding="utf-8")
         assert BANNER in text and "not a cut list" in text and v.title in text
         assert "| no |" not in text  # no member is presented as non-provisional
+        assert "20 × 20" in text and "20 × 40" not in text
     write_comparison_md(parts_by_key, tmp_path / "comparison.md")
     text = (tmp_path / "comparison.md").read_text(encoding="utf-8")
     assert BANNER in text and "do not establish safe" in text
+
+
+# ------------------------------------------------------- cut schedule (proposed)
+
+def test_adjusted_nominal_lengths_for_2020():
+    """With a square 20 mm section the depth members and rails run between uprights 20 mm
+    wide, so they are 40 mm longer than under the withdrawn 20 x 40 assumption."""
+    parts = build_parts(P.ADJUSTED)
+    lengths = {p.id: p.length for p in members(parts)}
+    assert all(lengths[f"U{i}"] == pytest.approx(35 * P.IN) for i in (1, 2, 3, 4))
+    for pid in [f"L{l}-W{j}" for l in (1, 2, 3) for j in (1, 2)] + ["HX1", "HX2"]:
+        assert lengths[pid] == pytest.approx(20 * P.IN - 2 * P.PROFILE_MINOR), pid  # 468.0
+    for pid in [f"L{l}-D{j}" for l in (1, 2, 3) for j in (1, 2)] + ["TR-lower", "TR-upper"]:
+        assert lengths[pid] == pytest.approx(22 * P.IN - 2 * P.PROFILE_MAJOR), pid  # 518.8
+    assert sum(lengths.values()) == pytest.approx(4 * 889.0 + 8 * 468.0 + 8 * 518.8, abs=0.1)
+
+
+def test_cut_pieces_are_members_plus_two_foot_bars():
+    from build import cut_pieces
+
+    parts = build_parts(P.ADJUSTED)
+    pieces = cut_pieces(parts)
+    assert len(pieces) == 22
+    assert [pid for pid, _, _ in pieces[-2:]] == ["FB1", "FB2"]
+    assert all(length == pytest.approx(P.FOOT_BAR_L) for _, length, _ in pieces[-2:])
+    assert P.FOOT_BAR_L == pytest.approx(708.0)
+    assert sum(length for _, length, _ in pieces) == pytest.approx(12866.4, abs=0.1)
+    assert len(cut_pieces(parts, include_foot_bars=False)) == 20
+
+
+def test_pack_stock_respects_stock_length_and_kerf():
+    from build import pack_stock
+
+    bars = pack_stock([900.0, 900.0, 300.0], stock=2000.0, kerf=3.0)
+    assert sorted(map(sorted, bars)) == [[300.0], [900.0, 900.0]]  # 900 + 900 + 2 kerfs = 1806; the 300 would need 2109
+    assert pack_stock([1000.0, 997.0], stock=2000.0, kerf=3.0) == [[1000.0], [997.0]]  # 1000 + 997 + 2 kerfs = 2003 > 2000
+    assert pack_stock([1000.0, 994.0], stock=2000.0, kerf=3.0) == [[1000.0, 994.0]]  # exactly 2000
+    # first-fit-decreasing would use 8 bars for the concept's pieces; the exact search finds 7
+    concept = [889.0] * 4 + [468.0] * 8 + [518.8] * 8 + [708.0] * 2
+    assert len(pack_stock(concept, stock=2000.0, kerf=3.0)) == 7
+    with pytest.raises(ValueError):
+        pack_stock([2000.0], stock=2000.0, kerf=3.0)
+
+
+def test_adjusted_cut_schedule_packs_into_seven_bars(tmp_path):
+    """The proposed order for the concept: 7 x 2000 mm. Each bar's pieces plus one kerf per
+    piece fit the stock; every piece is placed exactly once. A sizing estimate, not a cut list."""
+    from build import BANNER, cut_pieces, write_cut_schedule
+
+    parts = build_parts(P.ADJUSTED)
+    bars = write_cut_schedule(parts, tmp_path / "cut-schedule.md", P.ADJUSTED)
+    assert len(bars) == 7
+    placed = sorted(x for bar in bars for x in bar)
+    assert placed == sorted(length for _, length, _ in cut_pieces(parts))
+    for bar in bars:
+        assert sum(bar) + P.KERF_ALLOWANCE * len(bar) <= P.STOCK_LENGTH
+    text = (tmp_path / "cut-schedule.md").read_text(encoding="utf-8")
+    assert BANNER in text and "Proposed, not approved" in text and "7 × 2000 mm" in text
+    assert "12.866 m" in text and "FB1, FB2" in text and "20 × 40" not in text
 
 
 def test_comparison_png_is_parallel_projection_at_one_scale(tmp_path):

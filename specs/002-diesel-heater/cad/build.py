@@ -4,7 +4,8 @@
     uv run python build.py --variant adjusted   # one variant only
 
 Writes to ./out/<variant>/: heater-module.step (not committed), isometric.svg,
-PNG views, member-schedule.md; and to ./out/: comparison.png, comparison.md.
+PNG views, member-schedule.md, and for the default variant cut-schedule.md (a
+proposed, unapproved cut and stock plan); and to ./out/: comparison.png, comparison.md.
 
 Exit status is non-zero if any PNG render fails. A PNG that is about to be
 rendered is deleted first, and after rendering the file is checked to be a
@@ -200,9 +201,9 @@ def write_schedule(parts: list[Part], path: Path, variant: P.Variant) -> None:
     lines = [
         f"# Member schedule — {variant.title} — {BANNER}",
         "",
-        f"Generated {dt.date.today().isoformat()} by `build.py` from `params.py` (variant `{variant.key}`). All lengths in millimetres, nominal, as modelled.",
+        f"Generated {dt.date.today().isoformat()} by `build.py` from `params.py` (variant `{variant.key}`). All lengths in millimetres, nominal, as modelled. Section 2020 (20 × 20 mm, 6 mm slot) for every member (Owner decision 2026-10-29).",
         "",
-        "**This is not a cut list.** Every length depends on the joint assumption below, which the design has not chosen (D-01, D-02), and on illustrative level heights and tank position. Every member's placement and connection is provisional; the Basis column names what each depends on. Gates G1–G5 in spec.md §10 are closed.",
+        "**This is not a cut list.** Every length is a nominal model length under the joint assumption below and the illustrative level heights and tank position; none is an approved fabrication dimension until the G1(e) review and the owner's purchase approval. Every member's placement and connection is provisional; the Basis column names what each depends on. Gates G1–G5 in spec.md §10 are closed.",
         "",
         f"Joint assumption: {P.JOINT_ASSUMPTION}",
         "",
@@ -230,6 +231,109 @@ def write_schedule(parts: list[Part], path: Path, variant: P.Variant) -> None:
     for q in variant.params() + P.SHARED_PARAMS:
         lines.append(f"| {q.name} | {q.value:.1f} {q.unit} | {q.tag} | {q.source} |")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+# ------------------------------------------------------------- cut schedule (proposed)
+
+def cut_pieces(parts: list[Part], include_foot_bars: bool = True) -> list[tuple[str, float, str]]:
+    """Every piece of extrusion the concept needs: (id, nominal length, basis).
+
+    The 20 modelled members plus, when requested, the two proposed stabilization foot bars
+    (design.md section 10, D-12), which are not modelled geometrically. Nominal lengths only.
+    """
+    pieces = [(p.id, p.length, p.role) for p in members(parts)]
+    if include_foot_bars:
+        pieces += [(f"FB{j}", P.FOOT_BAR_L, "foot bar (proposed, design section 10, D-12; not modelled)") for j in (1, 2)]
+    return pieces
+
+
+def pack_stock(lengths: list[float], stock: float = P.STOCK_LENGTH, kerf: float = P.KERF_ALLOWANCE) -> list[list[float]]:
+    """Pack piece lengths into the fewest stock bars (exact search for this small problem).
+
+    A bar holds pieces whose lengths plus one kerf per piece fit within ``stock``: every
+    piece is cut at least once, and the stock ends are not assumed square. The search
+    tries the lower bound on the bar count first and increases it until an assignment
+    exists; pieces are placed in decreasing order and bars with equal remaining space are
+    treated as interchangeable. Sizes an order; it is not a cut list.
+    """
+    pieces = sorted(lengths, reverse=True)
+    for length in pieces:
+        if length + kerf > stock:
+            raise ValueError(f"piece {length} mm does not fit in {stock} mm stock")
+    need = [x + kerf for x in pieces]
+    lower = max(1, math.ceil(sum(need) / stock - 1e-9))
+
+    def place(i: int, remaining: list[float], bars: list[list[float]]) -> bool:
+        if i == len(need):
+            return True
+        tried: set[float] = set()
+        for j, room in enumerate(remaining):
+            key = round(room, 6)
+            if key in tried or need[i] > room + 1e-9:
+                continue
+            tried.add(key)
+            remaining[j] -= need[i]
+            bars[j].append(pieces[i])
+            if place(i + 1, remaining, bars):
+                return True
+            bars[j].pop()
+            remaining[j] += need[i]
+        return False
+
+    for count in range(lower, len(pieces) + 1):
+        bars: list[list[float]] = [[] for _ in range(count)]
+        if place(0, [stock] * count, bars):
+            return [bar for bar in bars if bar]
+    raise RuntimeError("unreachable: one piece per bar always fits")
+
+
+def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> list[list[float]]:
+    pieces = cut_pieces(parts)
+    bars = pack_stock([length for _, length, _ in pieces])
+    total = sum(length for _, length, _ in pieces)
+    by_len: dict[float, list[str]] = {}
+    for pid, length, _ in pieces:
+        by_len.setdefault(round(length, 1), []).append(pid)
+    lines = [
+        f"# Proposed cut schedule and stock order — {variant.title} — {BANNER}",
+        "",
+        f"Generated {dt.date.today().isoformat()} by `build.py` from `params.py` (variant `{variant.key}`). Millimetres. Section 2020 (20 × 20 mm, 6 mm slot) throughout (Owner decision 2026-10-29).",
+        "",
+        "**Proposed, not approved.** The lengths are nominal model lengths from the member schedule plus the two proposed foot bars. They become fabrication dimensions only when the G1(e) review records a reviewed cut list and the owner approves the purchase (spec.md §10); nothing is to be cut from this file. The stock packing is an estimate to size an order; it assumes a saw kerf per cut and does not rely on square stock ends, and the supplier states neither a cut tolerance nor end squareness.",
+        "",
+        f"Assumptions: stock length {P.STOCK_LENGTH:.0f} mm (longest listed pre-cut length, ZYLtech EXT-2020, read 2026-10-29; supplier cut tolerance not stated); kerf allowance {P.KERF_ALLOWANCE:.0f} mm per cut (assumed); every piece gets its own cut; no trim allowance beyond the kerf.",
+        "",
+        "## Pieces by nominal length",
+        "",
+        "| Nominal length (mm) | Qty | Pieces | Roles (basis per piece in the member schedule) |",
+        "|---|---|---|---|",
+    ]
+    role_by_id = {pid: role for pid, _, role in pieces}
+    for length in sorted(by_len, reverse=True):
+        ids = by_len[length]
+        roles = sorted({role_by_id[i] for i in ids})
+        lines.append(f"| {length:.1f} | {len(ids)} | {', '.join(ids)} | {', '.join(roles)} |")
+    lines += [
+        "",
+        f"Pieces: {len(pieces)} ({len(members(parts))} modelled members plus 2 proposed foot bars). Total nominal length: {total:.1f} mm ({total / 1000:.3f} m) before kerf and waste.",
+        "",
+        f"## Stock packing into {P.STOCK_LENGTH:.0f} mm bars (fewest bars; exact search)",
+        "",
+        "| Bar | Pieces (mm) | Used incl. kerf (mm) | Offcut (mm) |",
+        "|---|---|---|---|",
+    ]
+    for j, bar in enumerate(bars, start=1):
+        used = sum(bar) + P.KERF_ALLOWANCE * len(bar)
+        lines.append(f"| {j} | {' + '.join(f'{x:.1f}' for x in bar)} | {used:.1f} | {P.STOCK_LENGTH - used:.1f} |")
+    waste = len(bars) * P.STOCK_LENGTH - total
+    lines += [
+        "",
+        f"**Proposed order: {len(bars)} × {P.STOCK_LENGTH:.0f} mm** ({len(bars) * P.STOCK_LENGTH / 1000:.1f} m), of which {total / 1000:.3f} m becomes pieces and {waste / 1000:.3f} m is kerf and offcut ({100 * waste / (len(bars) * P.STOCK_LENGTH):.0f} %). A spare bar for cutting errors is a separate owner choice. The shorter listed lengths (300 to 1200 mm) would reduce cutting but their individual prices are not shown on the supplier page, so no comparison is made here.",
+        "",
+        "Not in this schedule: the attachment of the foot bars and the leveling feet (D-12), any member added at the MR-05 review, and any change to the envelope (MR-02, preliminary 34 to 36 in).",
+    ]
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return bars
 
 
 # ------------------------------------------------------------- comparison table
@@ -307,7 +411,7 @@ def write_comparison_md(parts_by_key: dict[str, list[Part]], path: Path) -> None
         "",
         f"Generated {dt.date.today().isoformat()} by `build.py`. Millimetres unless stated. Positions are modelled bounding boxes of placeholders.",
         "",
-        "**The bounding-box gaps below are modelled distances between placeholder boxes. They do not establish safe fuel-spill, fire, thermal, exhaust, or intake clearances.** The manufacturer states none (spec C-list, \"not stated\"); SR-01, SR-02, SR-04, SR-11 and the hazard register remain open, and gates G1–G5 are closed for every layout. B1 Adjusted is the preferred preliminary layout (Owner decision 2026-10-28; spec MR-02 as amended). A Original (the 2026-10-27 envelope) and B1 Compact (the 2026-10-28 starting point) are retained alternatives (design.md §16). Plate thickness and hole positions are owner-reported, not measured.",
+        "**The bounding-box gaps below are modelled distances between placeholder boxes. They do not establish safe fuel-spill, fire, thermal, exhaust, or intake clearances.** The manufacturer states none (spec C-list, \"not stated\"); SR-01, SR-02, SR-04, SR-11 and the hazard register remain open, and gates G1–G5 are closed for every layout. B1 Adjusted is the preferred preliminary layout (Owner decision 2026-10-28; spec MR-02 as amended). A Original (the 2026-10-27 envelope) and B1 Compact (the 2026-10-28 starting point) are retained alternatives (design.md §16). Plate thickness and hole positions are owner-reported, not measured. Every member is 2020 (20 × 20 mm) section (Owner decision 2026-10-29); figures generated before that date used 20 × 40 mm.",
         "",
         "| Quantity | " + " | ".join(P.VARIANTS[k].title for k in keys) + " |",
         "|---|" + "---|" * len(keys),
@@ -349,6 +453,8 @@ def build_variant(variant: P.Variant, failures: list[str]) -> list[Part]:
     write_step(assy, out / "heater-module.step")
     write_svg(assy, out / "isometric.svg", variant)
     write_schedule(parts, out / "member-schedule.md", variant)
+    if variant is P.DEFAULT_VARIANT:
+        write_cut_schedule(parts, out / "cut-schedule.md", variant)
     for name, direction, up, parallel, caption in VIEWS[variant.key]:
         _render_or_record(write_png, out / name, failures, parts, out / name, variant, direction, up, parallel, caption)
     for f in sorted(out.iterdir()):
