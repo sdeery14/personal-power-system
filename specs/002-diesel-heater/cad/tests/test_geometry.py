@@ -120,7 +120,13 @@ def test_everything_inside_envelope(parts, variant):
     assert whole.zmax <= variant.envelope_h + TOL
 
 
-def test_every_member_has_20x40_section(parts):
+def test_profile_is_2020_square():
+    """Owner decision 2026-10-29: 2020 (20 x 20 mm) T-slot, 6 mm slot, for every member."""
+    assert P.PROFILE_MINOR == P.PROFILE_MAJOR == 20.0
+    assert P.SLOT_WIDTH == 6.0
+
+
+def test_every_member_has_2020_section(parts):
     for p in members(parts):
         b = bb(p)
         dims = sorted([b.xlen, b.ylen, b.zlen])
@@ -375,7 +381,7 @@ def test_adjusted_filler_headroom_and_reach_are_reported_not_cleared():
 
 
 def test_adjusted_keeps_the_twenty_member_frame():
-    """The 18-member simplification is a candidate under assessment (design.md D-14), not modelled."""
+    """The 18-member simplification is a recorded, deprioritized alternative (design.md D-14), not modelled."""
     parts = build_parts(P.ADJUSTED)
     assert len(members(parts)) == 20
     assert {p.id for p in members(parts)} == {p.id for p in members(build_parts(P.COMPACT))}
@@ -449,9 +455,147 @@ def test_schedule_and_comparison_carry_banner(tmp_path):
         text = (tmp_path / f"{k}.md").read_text(encoding="utf-8")
         assert BANNER in text and "not a cut list" in text and v.title in text
         assert "| no |" not in text  # no member is presented as non-provisional
+        assert "20 × 20" in text and "20 × 40" not in text
     write_comparison_md(parts_by_key, tmp_path / "comparison.md")
     text = (tmp_path / "comparison.md").read_text(encoding="utf-8")
     assert BANNER in text and "do not establish safe" in text
+
+
+# ------------------------------------------------------- cut schedule (proposed)
+
+def test_adjusted_nominal_lengths_for_2020():
+    """With a square 20 mm section the depth members and rails run between uprights 20 mm
+    wide, so they are 40 mm longer than under the withdrawn 20 x 40 assumption."""
+    parts = build_parts(P.ADJUSTED)
+    lengths = {p.id: p.length for p in members(parts)}
+    assert all(lengths[f"U{i}"] == pytest.approx(35 * P.IN) for i in (1, 2, 3, 4))
+    for pid in [f"L{l}-W{j}" for l in (1, 2, 3) for j in (1, 2)] + ["HX1", "HX2"]:
+        assert lengths[pid] == pytest.approx(20 * P.IN - 2 * P.PROFILE_MINOR), pid  # 468.0
+    for pid in [f"L{l}-D{j}" for l in (1, 2, 3) for j in (1, 2)] + ["TR-lower", "TR-upper"]:
+        assert lengths[pid] == pytest.approx(22 * P.IN - 2 * P.PROFILE_MAJOR), pid  # 518.8
+    assert sum(lengths.values()) == pytest.approx(4 * 889.0 + 8 * 468.0 + 8 * 518.8, abs=0.1)
+
+
+def test_cut_pieces_are_exactly_the_twenty_members():
+    """Stabilization hardware is excluded from the initial build (Owner decision 2026-10-29):
+    no foot bar or other extra piece appears in the schedule."""
+    from build import cut_pieces
+
+    parts = build_parts(P.ADJUSTED)
+    pieces = cut_pieces(parts)
+    assert len(pieces) == 20
+    assert {pid for pid, _, _ in pieces} == {p.id for p in members(parts)}
+    assert not any(pid.startswith("FB") for pid, _, _ in pieces)
+    assert sum(length for _, length, _ in pieces) == pytest.approx(11450.4, abs=0.1)
+    assert not hasattr(P, "FOOT_BAR_L")
+
+
+def test_pack_stock_respects_stock_length_and_kerf():
+    from build import pack_stock
+
+    bars = pack_stock([900.0, 900.0, 300.0], stock=2000.0, kerf=3.0)
+    assert sorted(map(sorted, bars)) == [[300.0], [900.0, 900.0]]  # 900 + 900 + 2 kerfs = 1806; the 300 would need 2109
+    assert pack_stock([1000.0, 997.0], stock=2000.0, kerf=3.0) == [[1000.0], [997.0]]  # 1000 + 997 + 2 kerfs = 2003 > 2000
+    assert pack_stock([1000.0, 994.0], stock=2000.0, kerf=3.0) == [[1000.0, 994.0]]  # exactly 2000
+    # first-fit-decreasing would use 7 bars for the 20 members; the exact search finds 6 (the
+    # schedule itself uses the documented preferred pattern, also 6, see select_packing)
+    concept = [889.0] * 4 + [468.0] * 8 + [518.8] * 8
+    assert len(pack_stock(concept, stock=2000.0, kerf=3.0)) == 6
+    with pytest.raises(ValueError):
+        pack_stock([2000.0], stock=2000.0, kerf=3.0)
+
+
+def test_adjusted_cut_schedule_uses_the_preferred_six_bar_pattern(tmp_path):
+    """The proposed order for the 20 members: 6 x 2000 mm in the preferred arrangement (Owner
+    approval 2026-10-29): 4 bars of 889 + 518.8 + 518.8 and 2 bars of 4 x 468. Every piece is
+    placed exactly once and each bar fits with one kerf per piece. A sizing estimate, not a cut list."""
+    from build import BANNER, PREFERRED_PATTERN, cut_pieces, write_cut_schedule
+
+    parts = build_parts(P.ADJUSTED)
+    bars = write_cut_schedule(parts, tmp_path / "cut-schedule.md", P.ADJUSTED)
+    assert len(bars) == 6
+    assert [sorted(b) for b in bars] == [sorted(b) for b in PREFERRED_PATTERN]
+    assert sorted(map(sorted, bars)).count([468.0, 468.0, 468.0, 468.0]) == 2
+    assert sorted(map(sorted, bars)).count([518.8, 518.8, 889.0]) == 4
+    placed = sorted(x for bar in bars for x in bar)
+    assert placed == sorted(length for _, length, _ in cut_pieces(parts))  # piece conservation
+    for bar in bars:
+        assert sum(bar) + P.KERF_ALLOWANCE * len(bar) <= P.STOCK_LENGTH
+    text = (tmp_path / "cut-schedule.md").read_text(encoding="utf-8")
+    assert BANNER in text and "Proposed, not approved" in text and "6 × 2000 mm" in text
+    assert "(preferred pattern)" in text and "4 bars of 889 + 518.8 + 518.8 and 2 bars of 4 × 468" in text
+    assert "11.450 m" in text and "FB" not in text and "20 × 40" not in text
+    assert "excluded from the initial purchase and build" in text
+    assert "no separate allowance for trimming" in text and "needs one more bar" not in text
+
+
+def test_preferred_pattern_is_validated_and_falls_back_to_the_packer():
+    """The preferred pattern is used only when it conserves every piece and fits the stock and
+    kerf; otherwise the general packer takes over. No new optimisation is introduced."""
+    from build import PREFERRED_PATTERN, cut_pieces, pattern_is_valid, select_packing
+
+    lengths = [length for _, length, _ in cut_pieces(build_parts(P.ADJUSTED))]
+    assert pattern_is_valid(PREFERRED_PATTERN, lengths)
+    assert not pattern_is_valid(PREFERRED_PATTERN, lengths[:-1])  # a piece missing
+    assert not pattern_is_valid(PREFERRED_PATTERN, lengths + [300.0])  # a piece extra
+    assert not pattern_is_valid(PREFERRED_PATTERN, lengths, stock=1930.0)  # 1926.6 + 9 kerf = 1935.6 > 1930
+    assert not pattern_is_valid(PREFERRED_PATTERN, lengths, kerf=24.5)  # 1926.6 + 73.5 = 2000.1 > 2000
+    bars, basis = select_packing(lengths)
+    assert basis == "preferred pattern" and len(bars) == 6
+    bars, basis = select_packing(lengths, stock=1930.0)
+    assert basis.startswith("general packer") and len(bars) >= 6
+    assert sorted(x for b in bars for x in b) == sorted(lengths)
+    assert all(sum(b) + P.KERF_ALLOWANCE * len(b) <= 1930.0 + 1e-9 for b in bars)
+    bars, basis = select_packing(lengths[:-1])  # changed member schedule
+    assert basis.startswith("general packer") and sorted(x for b in bars for x in b) == sorted(lengths[:-1])
+
+
+def test_cut_schedule_margin_arithmetic(tmp_path):
+    """The margin warning must be arithmetically right for the preferred pattern. The tight bar is
+    889 + 518.8 + 518.8 = 1926.6 mm in three pieces; after three 3 mm kerfs 64.4 mm remain of a
+    2000 mm bar; a full, untrimmed bar therefore tolerates a kerf of at most 3 + 64.4 / 3 = 24.4667 mm,
+    displayed rounded down as 24.4 mm (never 24.5, which would not fit); and shortfall s, trim t,
+    and kerf k fit only while s + t + 3 (k - 3) <= 64.4."""
+    from build import cut_pieces, pack_stock, tightest_bar_margin, write_cut_schedule
+
+    parts = build_parts(P.ADJUSTED)
+    bars = write_cut_schedule(parts, tmp_path / "cut-schedule.md", P.ADJUSTED)
+    m = tightest_bar_margin(bars)
+    assert m["n"] == 3
+    assert m["pieces_sum"] == pytest.approx(1926.6, abs=0.05)
+    assert m["margin"] == pytest.approx(64.4, abs=0.05)
+    assert m["max_kerf"] == pytest.approx(3 + 64.4 / 3, abs=1e-6)  # 24.4667
+    assert m["pieces_sum"] + 3 * m["max_kerf"] == pytest.approx(P.STOCK_LENGTH, abs=1e-6)
+    # The displayed limit is the exact bound rounded DOWN to one decimal, so it is conservative:
+    # a kerf at the displayed limit fits, a kerf at the next tenth does not.
+    assert m["max_kerf_display"] == pytest.approx(24.4, abs=1e-9)
+    assert m["max_kerf_display"] <= m["max_kerf"] < m["max_kerf_display"] + 0.1
+    assert m["pieces_sum"] + 3 * m["max_kerf_display"] <= P.STOCK_LENGTH
+    assert m["pieces_sum"] + 3 * (m["max_kerf_display"] + 0.1) > P.STOCK_LENGTH
+    # The 4 x 468 bars are the looser ones: 1872 + 12 = 1884, margin 116.
+    assert max(P.STOCK_LENGTH - (sum(b) + P.KERF_ALLOWANCE * len(b)) for b in bars) == pytest.approx(116.0, abs=0.05)
+    # The limit is a property of the tight pattern, checked directly: shortfall s, trim t, kerf k.
+    pattern = min(bars, key=lambda b: P.STOCK_LENGTH - (sum(b) + P.KERF_ALLOWANCE * len(b)))
+    assert sorted(pattern) == [518.8, 518.8, 889.0]
+
+    def fits(s=0.0, t=0.0, k=3.0):
+        return sum(pattern) + k * len(pattern) + t <= P.STOCK_LENGTH - s + 1e-9
+
+    assert fits(k=24.4) and not fits(k=24.5)
+    assert fits(s=64.4) and not fits(s=64.5)
+    assert fits(t=64.4) and not fits(t=64.5)
+    assert fits(s=10.0, k=21.1) and not fits(s=10.0, k=21.2)  # s + 3 (k - 3) = 64.3 at k = 21.1, 64.6 at 21.2
+    assert fits(s=30.0, t=30.0, k=4.4) and not fits(s=30.0, t=30.0, k=4.5)  # 60 + 3 (k - 3): 64.2 and 64.5
+    # Past the limit the order is recalculated, not patched; the fallback packer stays valid.
+    lengths = [length for _, length, _ in cut_pieces(parts)]
+    recalculated = pack_stock(lengths, stock=1930.0, kerf=3.0)
+    assert all(sum(b) + 3.0 * len(b) <= 1930.0 + 1e-9 for b in recalculated)
+    assert sorted(x for b in recalculated for x in b) == sorted(lengths)
+    text = (tmp_path / "cut-schedule.md").read_text(encoding="utf-8")
+    assert "1926.6 mm of pieces in 3 pieces" in text and "leaves 64.4 mm" in text
+    assert "at most 24.4 mm" in text and "24.5" not in text  # displayed limit rounded down, never up
+    assert "exactly 3 + 64.4 / 3 = 24.4667 mm" in text and "s + t + 3 × (k − 3) ≤ 64.4 mm" in text
+    assert "recalculated" in text and "seventh bar" in text
 
 
 def test_comparison_png_is_parallel_projection_at_one_scale(tmp_path):

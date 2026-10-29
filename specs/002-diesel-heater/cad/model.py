@@ -54,13 +54,13 @@ _AXIS = {"X": (1, 0, 0), "Y": (0, 1, 0), "Z": (0, 0, 1)}
 def build_parts(variant: P.Variant = P.DEFAULT_VARIANT) -> list[Part]:
     v = variant
     W, D, H = v.envelope_w, v.envelope_d, v.envelope_h
-    a, b = P.PROFILE_MINOR, P.PROFILE_MAJOR  # 20, 40
+    a, b = P.PROFILE_MINOR, P.PROFILE_MAJOR  # 20, 20 (2020 square section, Owner decision 2026-10-29)
     parts: list[Part] = []
 
     # -- four continuous uprights: section a (X) by b (Y), full height -------------
     for i, (x0, y0) in enumerate([(0, 0), (W - a, 0), (0, D - b), (W - a, D - b)], start=1):
         parts.append(Part(f"U{i}", "upright", "Z", H, f"envelope height ({v.envelope_tag}); joint assumption",
-                          "section orientation illustrative (D-02)", _box(x0, y0, 0, a, b, H), GREY))
+                          "2020 square section; no orientation choice (D-02 closed 2026-10-29)", _box(x0, y0, 0, a, b, H), GREY))
 
     # -- three perimeter levels: two widthwise + two depthwise members each ---------
     len_w = W - 2 * a  # between uprights along X
