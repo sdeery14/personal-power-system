@@ -14,7 +14,7 @@ import cadquery as cq
 import pytest
 
 import params as P
-from model import MEMBER_ROLES, PLACEHOLDER_ROLES, build_assembly, build_parts, by_id, members
+from model import MEMBER_ROLES, MIDDLE_LEVEL, PLACEHOLDER_ROLES, bracket_positions, build_assembly, build_parts, by_id, members
 
 TOL = 0.05  # mm
 
@@ -54,11 +54,11 @@ def contains(outer, inner):
 
 def test_member_counts(parts):
     assert len(by_role(parts, "upright")) == 4
-    assert len(by_role(parts, "perimeter_width")) == 6
+    assert len(by_role(parts, "perimeter_width")) == 4  # top and bottom only (D-14 adopted 2026-10-30)
     assert len(by_role(parts, "perimeter_depth")) == 6
     assert len(by_role(parts, "heater_crossmember")) == 2
     assert len(by_role(parts, "tank_rail")) == 2
-    assert len(members(parts)) == 20
+    assert len(members(parts)) == 18
 
 
 def test_identifiers_unique_and_stable(parts, variant):
@@ -67,7 +67,7 @@ def test_identifiers_unique_and_stable(parts, variant):
     expected = {"U1", "U2", "U3", "U4", "HX1", "HX2", "TR-lower", "TR-upper",
                 "heater_body", "heater_plate", "fuel_tank", "tank_filler_neck",
                 "tank_hole_lower_a", "tank_hole_lower_b", "tank_hole_upper"}
-    expected |= {f"L{l}-W{j}" for l in (1, 2, 3) for j in (1, 2)}
+    expected |= {f"L{l}-W{j}" for l in (1, 3) for j in (1, 2)}  # no L2-W1, L2-W2
     expected |= {f"L{l}-D{j}" for l in (1, 2, 3) for j in (1, 2)}
     if variant.outlet_end:
         expected.add("heater_outlet_cue")
@@ -77,7 +77,7 @@ def test_identifiers_unique_and_stable(parts, variant):
 
 
 def test_part_count_per_variant(parts, variant):
-    assert len(parts) == {"original": 27, "compact": 28, "adjusted": 32}[variant.key]
+    assert len(parts) == {"original": 25, "compact": 26, "adjusted": 30}[variant.key]
 
 
 B1_VARIANTS = [P.COMPACT, P.ADJUSTED]
@@ -380,11 +380,53 @@ def test_adjusted_filler_headroom_and_reach_are_reported_not_cleared():
     assert P.ADJUSTED.envelope_h - t.zmax > P.PROFILE_MAJOR  # tank top below the top-member band
 
 
-def test_adjusted_keeps_the_twenty_member_frame():
-    """The 18-member simplification is a recorded, deprioritized alternative (design.md D-14), not modelled."""
+def test_adjusted_is_the_eighteen_member_frame():
+    """D-14 adopted (Owner decision 2026-10-30): no middle widthwise members; the middle level is
+    the two lengthwise support rails L2-D1 and L2-D2 with the heater crossmembers butting between
+    them. Every variant shares the same 18 identifiers."""
     parts = build_parts(P.ADJUSTED)
-    assert len(members(parts)) == 20
-    assert {p.id for p in members(parts)} == {p.id for p in members(build_parts(P.COMPACT))}
+    assert len(members(parts)) == 18
+    ids = {p.id for p in members(parts)}
+    assert "L2-W1" not in ids and "L2-W2" not in ids
+    assert {"L2-D1", "L2-D2", "HX1", "HX2"} <= ids
+    assert ids == {p.id for p in members(build_parts(P.COMPACT))} == {p.id for p in members(build_parts(P.ORIGINAL))}
+    assert MIDDLE_LEVEL == 2
+
+
+def test_middle_level_has_rails_only_and_crossmembers_butt_between_them(parts, variant):
+    """At the middle level nothing widthwise exists except the two heater crossmembers, and each
+    crossmember's end faces lie on the inside faces of L2-D1 and L2-D2."""
+    z0 = variant.level_mid_z
+    at_middle = [p for p in members(parts) if p.axis != "Z" and abs(bb(p).zmin - z0) < TOL]
+    assert sorted(p.id for p in at_middle) == ["HX1", "HX2", "L2-D1", "L2-D2"]
+    d1, d2 = bb(by_id(parts, "L2-D1")), bb(by_id(parts, "L2-D2"))
+    for cid in ("HX1", "HX2"):
+        c = bb(by_id(parts, cid))
+        assert c.xmin == pytest.approx(d1.xmax, abs=TOL) and c.xmax == pytest.approx(d2.xmin, abs=TOL), cid
+        for d in (d1, d2):
+            assert contains(rng(d, "y"), rng(c, "y")) and contains(rng(d, "z"), rng(c, "z")), cid
+
+
+def test_one_bracket_per_horizontal_member_end(parts):
+    """28 bracket positions: 14 horizontal members x 2 ends; the continuous uprights carry none.
+    A procurement count only (Owner decision 2026-10-30); it says nothing about joint adequacy."""
+    ends = bracket_positions(parts)
+    assert len(ends) == 28
+    horizontal = [p.id for p in members(parts) if p.axis != "Z"]
+    assert len(horizontal) == 14 and not any(pid.startswith("U") for pid, _ in ends)
+    assert sorted(ends) == sorted((pid, e) for pid in horizontal for e in ("min", "max"))
+    # 16 on the top and bottom perimeters, 4 on the middle rails, 4 on the crossmembers, 4 on the tank rails
+    groups = {"perimeter": 0, "middle_rail": 0, "crossmember": 0, "tank_rail": 0}
+    for pid, _ in ends:
+        if pid.startswith(("L1-", "L3-")):
+            groups["perimeter"] += 1
+        elif pid.startswith("L2-D"):
+            groups["middle_rail"] += 1
+        elif pid.startswith("HX"):
+            groups["crossmember"] += 1
+        elif pid.startswith("TR-"):
+            groups["tank_rail"] += 1
+    assert groups == {"perimeter": 16, "middle_rail": 4, "crossmember": 4, "tank_rail": 4}
 
 
 def test_outlet_cue_on_heater_end(parts, variant):
@@ -469,25 +511,42 @@ def test_adjusted_nominal_lengths_for_2020():
     parts = build_parts(P.ADJUSTED)
     lengths = {p.id: p.length for p in members(parts)}
     assert all(lengths[f"U{i}"] == pytest.approx(35 * P.IN) for i in (1, 2, 3, 4))
-    for pid in [f"L{l}-W{j}" for l in (1, 2, 3) for j in (1, 2)] + ["HX1", "HX2"]:
+    for pid in [f"L{l}-W{j}" for l in (1, 3) for j in (1, 2)] + ["HX1", "HX2"]:
         assert lengths[pid] == pytest.approx(20 * P.IN - 2 * P.PROFILE_MINOR), pid  # 468.0
     for pid in [f"L{l}-D{j}" for l in (1, 2, 3) for j in (1, 2)] + ["TR-lower", "TR-upper"]:
         assert lengths[pid] == pytest.approx(22 * P.IN - 2 * P.PROFILE_MAJOR), pid  # 518.8
-    assert sum(lengths.values()) == pytest.approx(4 * 889.0 + 8 * 468.0 + 8 * 518.8, abs=0.1)
+    assert sum(lengths.values()) == pytest.approx(4 * 889.0 + 6 * 468.0 + 8 * 518.8, abs=0.1)  # 10514.4
 
 
-def test_cut_pieces_are_exactly_the_twenty_members():
-    """Stabilization hardware is excluded from the initial build (Owner decision 2026-10-29):
-    no foot bar or other extra piece appears in the schedule."""
+def test_cut_pieces_are_exactly_the_eighteen_members():
+    """Stabilization hardware is excluded from the initial build (Owner decision 2026-10-29) and the
+    middle widthwise members are removed (Owner decision 2026-10-30): 4 x 889.0, 8 x 518.8, 6 x 468.0,
+    10,514.4 mm in all; the earlier 20-piece, 11,450.4 mm total is superseded."""
     from build import cut_pieces
 
     parts = build_parts(P.ADJUSTED)
     pieces = cut_pieces(parts)
-    assert len(pieces) == 20
+    assert len(pieces) == 18
     assert {pid for pid, _, _ in pieces} == {p.id for p in members(parts)}
-    assert not any(pid.startswith("FB") for pid, _, _ in pieces)
-    assert sum(length for _, length, _ in pieces) == pytest.approx(11450.4, abs=0.1)
+    assert not any(pid.startswith("FB") or pid.startswith("L2-W") for pid, _, _ in pieces)
+    counts = {}
+    for _, length, _ in pieces:
+        counts[round(length, 1)] = counts.get(round(length, 1), 0) + 1
+    assert counts == {889.0: 4, 518.8: 8, 468.0: 6}
+    assert sum(length for _, length, _ in pieces) == pytest.approx(10514.4, abs=0.1)
     assert not hasattr(P, "FOOT_BAR_L")
+
+
+def test_order_length_is_the_nearest_sixteenth_inch():
+    """The supplier lists lengths in 1/16 in steps; the exact millimetres go in the buyer notes."""
+    from build import order_length
+
+    assert order_length(889.0) == (35.0, "35 in")
+    assert order_length(518.8) == (20.4375, "20 7/16 in")  # 20.425 in nominal
+    assert order_length(468.0) == (18.4375, "18 7/16 in")  # 18.425 in nominal
+    assert order_length(25.4 * 12.5) == (12.5, "12 1/2 in")
+    inches, _ = order_length(518.8)
+    assert abs(inches * P.IN - 518.8) <= P.ORDER_LENGTH_STEP / 2 + 1e-9
 
 
 def test_pack_stock_respects_stock_length_and_kerf():
@@ -497,105 +556,108 @@ def test_pack_stock_respects_stock_length_and_kerf():
     assert sorted(map(sorted, bars)) == [[300.0], [900.0, 900.0]]  # 900 + 900 + 2 kerfs = 1806; the 300 would need 2109
     assert pack_stock([1000.0, 997.0], stock=2000.0, kerf=3.0) == [[1000.0], [997.0]]  # 1000 + 997 + 2 kerfs = 2003 > 2000
     assert pack_stock([1000.0, 994.0], stock=2000.0, kerf=3.0) == [[1000.0, 994.0]]  # exactly 2000
-    # first-fit-decreasing would use 7 bars for the 20 members; the exact search finds 6 (the
-    # schedule itself uses the documented preferred pattern, also 6, see select_packing)
-    concept = [889.0] * 4 + [468.0] * 8 + [518.8] * 8
+    # the superseded home-cutting alternative for the 18 members needs 6 bars (lower bound
+    # ceil((10514.4 + 18 x 3) / 2000) = 6), and the exact search finds a 6-bar packing
+    concept = [889.0] * 4 + [468.0] * 6 + [518.8] * 8
     assert len(pack_stock(concept, stock=2000.0, kerf=3.0)) == 6
+    # the historical 20-member schedule also packed into 6 bars
+    assert len(pack_stock(concept + [468.0] * 2, stock=2000.0, kerf=3.0)) == 6
     with pytest.raises(ValueError):
         pack_stock([2000.0], stock=2000.0, kerf=3.0)
 
 
-def test_adjusted_cut_schedule_uses_the_preferred_six_bar_pattern(tmp_path):
-    """The proposed order for the 20 members: 6 x 2000 mm in the preferred arrangement (Owner
-    approval 2026-10-29): 4 bars of 889 + 518.8 + 518.8 and 2 bars of 4 x 468. Every piece is
-    placed exactly once and each bar fits with one kerf per piece. A sizing estimate, not a cut list."""
-    from build import BANNER, PREFERRED_PATTERN, cut_pieces, write_cut_schedule
+def test_adjusted_cut_schedule_is_the_custom_cut_piece_list(tmp_path):
+    """The schedule lists the 18 pieces with their nearest listed inch length and the millimetre
+    figure for the buyer notes, the 18 cuts, and the 28 bracket kits; the stock packing is kept
+    only as a superseded alternative sized by the general packer. Proposed, not a cut list."""
+    from build import BANNER, cut_pieces, write_cut_schedule
 
     parts = build_parts(P.ADJUSTED)
     bars = write_cut_schedule(parts, tmp_path / "cut-schedule.md", P.ADJUSTED)
-    assert len(bars) == 6
-    assert [sorted(b) for b in bars] == [sorted(b) for b in PREFERRED_PATTERN]
-    assert sorted(map(sorted, bars)).count([468.0, 468.0, 468.0, 468.0]) == 2
-    assert sorted(map(sorted, bars)).count([518.8, 518.8, 889.0]) == 4
     placed = sorted(x for bar in bars for x in bar)
     assert placed == sorted(length for _, length, _ in cut_pieces(parts))  # piece conservation
+    assert len(bars) == 6
     for bar in bars:
-        assert sum(bar) + P.KERF_ALLOWANCE * len(bar) <= P.STOCK_LENGTH
+        assert sum(bar) + P.KERF_ALLOWANCE * len(bar) <= P.STOCK_LENGTH + 1e-9
     text = (tmp_path / "cut-schedule.md").read_text(encoding="utf-8")
-    assert BANNER in text and "Proposed, not approved" in text and "6 × 2000 mm" in text
-    assert "(preferred pattern)" in text and "4 bars of 889 + 518.8 + 518.8 and 2 bars of 4 × 468" in text
-    assert "11.450 m" in text and "FB" not in text and "20 × 40" not in text
+    assert BANNER in text and "Proposed, not approved" in text and "custom-cut" in text
+    assert "| 889.0 | 4 | 35 in (889.0 mm listed; state 889.0 mm in the buyer notes)" in text
+    assert "| 518.8 | 8 | 20 7/16 in (519.1 mm listed; state 518.8 mm in the buyer notes)" in text
+    assert "| 468.0 | 6 | 18 7/16 in (468.3 mm listed; state 468.0 mm in the buyer notes)" in text
+    assert "Pieces: 18" in text and "10514.4 mm (10.514 m)" in text and "Cuts: 18" in text
+    assert "Horizontal member ends: 28" in text and "**28 kits**" in text and "56 T-nuts and 56 screws" in text
+    rows = [line for line in text.splitlines() if line.startswith("| ") and line.split("|")[1].strip().replace(".", "").isdigit()]
+    assert len(rows) >= 3 and not any("L2-W" in row for row in rows)  # no removed member in the pieces table
+    assert "`L2-W1` and `L2-W2` (removed" in text
+    assert "Superseded alternative on record" in text and "nothing is to be home-cut" in text
+    assert "general packer" in text and "preferred pattern)" not in text
+    assert "11,450.4 mm" in text and "superseded" in text  # the old total named only as superseded
+    assert "11.450 m" not in text and "FB" not in text and "20 × 40" not in text
     assert "excluded from the initial purchase and build" in text
     assert "no separate allowance for trimming" in text and "needs one more bar" not in text
 
 
-def test_preferred_pattern_is_validated_and_falls_back_to_the_packer():
-    """The preferred pattern is used only when it conserves every piece and fits the stock and
-    kerf; otherwise the general packer takes over. No new optimisation is introduced."""
+HISTORICAL_20_MEMBER_PATTERN = (
+    (889.0, 518.8, 518.8), (889.0, 518.8, 518.8), (889.0, 518.8, 518.8), (889.0, 518.8, 518.8),
+    (468.0, 468.0, 468.0, 468.0), (468.0, 468.0, 468.0, 468.0),
+)  # the six-bar pattern approved 2026-10-29 for the 20-member schedule; superseded 2026-10-30
+
+
+def test_no_preferred_pattern_and_the_packer_sizes_the_superseded_alternative():
+    """No preferred home-cutting pattern is defined for the 18-member schedule (the supply is
+    custom-cut); the validation machinery still works and the general packer sizes the alternative."""
     from build import PREFERRED_PATTERN, cut_pieces, pattern_is_valid, select_packing
 
     lengths = [length for _, length, _ in cut_pieces(build_parts(P.ADJUSTED))]
-    assert pattern_is_valid(PREFERRED_PATTERN, lengths)
-    assert not pattern_is_valid(PREFERRED_PATTERN, lengths[:-1])  # a piece missing
-    assert not pattern_is_valid(PREFERRED_PATTERN, lengths + [300.0])  # a piece extra
-    assert not pattern_is_valid(PREFERRED_PATTERN, lengths, stock=1930.0)  # 1926.6 + 9 kerf = 1935.6 > 1930
-    assert not pattern_is_valid(PREFERRED_PATTERN, lengths, kerf=24.5)  # 1926.6 + 73.5 = 2000.1 > 2000
+    assert PREFERRED_PATTERN == ()
+    assert not pattern_is_valid(PREFERRED_PATTERN, lengths)  # an empty pattern places no piece
+    # the historical pattern matched the 20-member schedule, not this one
+    assert pattern_is_valid(HISTORICAL_20_MEMBER_PATTERN, lengths + [468.0, 468.0])
+    assert not pattern_is_valid(HISTORICAL_20_MEMBER_PATTERN, lengths)
+    assert not pattern_is_valid(HISTORICAL_20_MEMBER_PATTERN, lengths + [468.0, 468.0], kerf=24.5)
     bars, basis = select_packing(lengths)
-    assert basis == "preferred pattern" and len(bars) == 6
+    assert basis.startswith("general packer") and "no preferred pattern" in basis and len(bars) == 6
+    assert sorted(x for b in bars for x in b) == sorted(lengths)
     bars, basis = select_packing(lengths, stock=1930.0)
     assert basis.startswith("general packer") and len(bars) >= 6
-    assert sorted(x for b in bars for x in b) == sorted(lengths)
     assert all(sum(b) + P.KERF_ALLOWANCE * len(b) <= 1930.0 + 1e-9 for b in bars)
-    bars, basis = select_packing(lengths[:-1])  # changed member schedule
-    assert basis.startswith("general packer") and sorted(x for b in bars for x in b) == sorted(lengths[:-1])
 
 
 def test_cut_schedule_margin_arithmetic(tmp_path):
-    """The margin warning must be arithmetically right for the preferred pattern. The tight bar is
-    889 + 518.8 + 518.8 = 1926.6 mm in three pieces; after three 3 mm kerfs 64.4 mm remain of a
-    2000 mm bar; a full, untrimmed bar therefore tolerates a kerf of at most 3 + 64.4 / 3 = 24.4667 mm,
-    displayed rounded down as 24.4 mm (never 24.5, which would not fit); and shortfall s, trim t,
-    and kerf k fit only while s + t + 3 (k - 3) <= 64.4."""
+    """The margin statement for the superseded home-cutting alternative must be arithmetically
+    right for whatever packing the general packer returns: the displayed kerf limit is the exact
+    bound rounded down, a kerf at the displayed limit fits and the next tenth does not, and the
+    historical 20-member figures (1926.6 mm, 64.4 mm, 24.4 mm) are not reused."""
     from build import cut_pieces, pack_stock, tightest_bar_margin, write_cut_schedule
 
     parts = build_parts(P.ADJUSTED)
     bars = write_cut_schedule(parts, tmp_path / "cut-schedule.md", P.ADJUSTED)
     m = tightest_bar_margin(bars)
-    assert m["n"] == 3
-    assert m["pieces_sum"] == pytest.approx(1926.6, abs=0.05)
-    assert m["margin"] == pytest.approx(64.4, abs=0.05)
-    assert m["max_kerf"] == pytest.approx(3 + 64.4 / 3, abs=1e-6)  # 24.4667
-    assert m["pieces_sum"] + 3 * m["max_kerf"] == pytest.approx(P.STOCK_LENGTH, abs=1e-6)
-    # The displayed limit is the exact bound rounded DOWN to one decimal, so it is conservative:
-    # a kerf at the displayed limit fits, a kerf at the next tenth does not.
-    assert m["max_kerf_display"] == pytest.approx(24.4, abs=1e-9)
-    assert m["max_kerf_display"] <= m["max_kerf"] < m["max_kerf_display"] + 0.1
-    assert m["pieces_sum"] + 3 * m["max_kerf_display"] <= P.STOCK_LENGTH
-    assert m["pieces_sum"] + 3 * (m["max_kerf_display"] + 0.1) > P.STOCK_LENGTH
-    # The 4 x 468 bars are the looser ones: 1872 + 12 = 1884, margin 116.
-    assert max(P.STOCK_LENGTH - (sum(b) + P.KERF_ALLOWANCE * len(b)) for b in bars) == pytest.approx(116.0, abs=0.05)
-    # The limit is a property of the tight pattern, checked directly: shortfall s, trim t, kerf k.
     pattern = min(bars, key=lambda b: P.STOCK_LENGTH - (sum(b) + P.KERF_ALLOWANCE * len(b)))
-    assert sorted(pattern) == [518.8, 518.8, 889.0]
+    assert m["n"] == len(pattern) and m["pieces_sum"] == pytest.approx(sum(pattern), abs=1e-6)
+    assert m["margin"] == pytest.approx(P.STOCK_LENGTH - sum(pattern) - P.KERF_ALLOWANCE * len(pattern), abs=1e-6)
+    assert m["pieces_sum"] + m["n"] * m["max_kerf"] == pytest.approx(P.STOCK_LENGTH, abs=1e-6)
+    assert m["max_kerf_display"] <= m["max_kerf"] < m["max_kerf_display"] + 0.1
+    assert m["pieces_sum"] + m["n"] * m["max_kerf_display"] <= P.STOCK_LENGTH + 1e-9
+    assert m["pieces_sum"] + m["n"] * (m["max_kerf_display"] + 0.1) > P.STOCK_LENGTH
 
     def fits(s=0.0, t=0.0, k=3.0):
         return sum(pattern) + k * len(pattern) + t <= P.STOCK_LENGTH - s + 1e-9
 
-    assert fits(k=24.4) and not fits(k=24.5)
-    assert fits(s=64.4) and not fits(s=64.5)
-    assert fits(t=64.4) and not fits(t=64.5)
-    assert fits(s=10.0, k=21.1) and not fits(s=10.0, k=21.2)  # s + 3 (k - 3) = 64.3 at k = 21.1, 64.6 at 21.2
-    assert fits(s=30.0, t=30.0, k=4.4) and not fits(s=30.0, t=30.0, k=4.5)  # 60 + 3 (k - 3): 64.2 and 64.5
-    # Past the limit the order is recalculated, not patched; the fallback packer stays valid.
+    assert fits(k=m["max_kerf_display"]) and not fits(k=m["max_kerf_display"] + 0.1)
+    assert fits(s=m["margin"]) and not fits(s=m["margin"] + 0.1)
+    assert fits(t=m["margin"]) and not fits(t=m["margin"] + 0.1)
+    # Past the limit the order is recalculated, not patched; the packer stays valid.
     lengths = [length for _, length, _ in cut_pieces(parts)]
     recalculated = pack_stock(lengths, stock=1930.0, kerf=3.0)
     assert all(sum(b) + 3.0 * len(b) <= 1930.0 + 1e-9 for b in recalculated)
     assert sorted(x for b in recalculated for x in b) == sorted(lengths)
     text = (tmp_path / "cut-schedule.md").read_text(encoding="utf-8")
-    assert "1926.6 mm of pieces in 3 pieces" in text and "leaves 64.4 mm" in text
-    assert "at most 24.4 mm" in text and "24.5" not in text  # displayed limit rounded down, never up
-    assert "exactly 3 + 64.4 / 3 = 24.4667 mm" in text and "s + t + 3 × (k − 3) ≤ 64.4 mm" in text
-    assert "recalculated" in text and "seventh bar" in text
+    assert f"{m['pieces_sum']:.1f} mm of pieces in {m['n']} pieces" in text and f"leaves {m['margin']:.1f} mm" in text
+    assert f"at most {m['max_kerf_display']:.1f} mm" in text
+    assert f"exactly {P.KERF_ALLOWANCE:.0f} + {m['margin']:.1f} / {m['n']} = {m['max_kerf']:.4f} mm" in text
+    assert "1926.6 mm of pieces" not in text and "leaves 64.4 mm" not in text  # 20-member figures not reused
+    assert "recalculated" in text and "extra bar" in text and "seventh bar" not in text
 
 
 def test_comparison_png_is_parallel_projection_at_one_scale(tmp_path):

@@ -50,6 +50,8 @@ YELLOW = (0.95, 0.85, 0.20)
 
 _AXIS = {"X": (1, 0, 0), "Y": (0, 1, 0), "Z": (0, 0, 1)}
 
+MIDDLE_LEVEL = 2  # the level whose widthwise perimeter members are omitted (Owner decision 2026-10-30)
+
 
 def build_parts(variant: P.Variant = P.DEFAULT_VARIANT) -> list[Part]:
     v = variant
@@ -62,15 +64,20 @@ def build_parts(variant: P.Variant = P.DEFAULT_VARIANT) -> list[Part]:
         parts.append(Part(f"U{i}", "upright", "Z", H, f"envelope height ({v.envelope_tag}); joint assumption",
                           "2020 square section; no orientation choice (D-02 closed 2026-10-29)", _box(x0, y0, 0, a, b, H), GREY))
 
-    # -- three perimeter levels: two widthwise + two depthwise members each ---------
+    # -- three levels. Top and bottom: complete perimeters (two widthwise + two depthwise
+    # -- members). Middle: the two depthwise members only, as support rails for the heater
+    # -- crossmembers; the middle widthwise members L2-W1 and L2-W2 are removed (Owner
+    # -- decision 2026-10-30, D-14 adopted), so the middle level has no complete perimeter.
     len_w = W - 2 * a  # between uprights along X
     len_d = D - 2 * b  # between uprights along Y
     for lvl, z0 in enumerate(v.level_z, start=1):
-        note = "level height illustrative" if lvl == 2 else "level at the envelope top or bottom"
-        basis = f"envelope ({v.envelope_tag}); joint assumption" + ("; illustrative middle-level height" if lvl == 2 else "")
-        for j, y0 in enumerate([0, D - a], start=1):
-            parts.append(Part(f"L{lvl}-W{j}", "perimeter_width", "X", len_w, basis, note,
-                              _box(a, y0, z0, len_w, a, b), GREY))
+        middle = lvl == MIDDLE_LEVEL
+        note = "middle support rail; level height illustrative; no widthwise member at this level (D-14 adopted 2026-10-30)" if middle else "level at the envelope top or bottom"
+        basis = f"envelope ({v.envelope_tag}); joint assumption" + ("; illustrative middle-level height" if middle else "")
+        if not middle:
+            for j, y0 in enumerate([0, D - a], start=1):
+                parts.append(Part(f"L{lvl}-W{j}", "perimeter_width", "X", len_w, basis, note,
+                                  _box(a, y0, z0, len_w, a, b), GREY))
         for j, x0 in enumerate([0, W - a], start=1):
             parts.append(Part(f"L{lvl}-D{j}", "perimeter_depth", "Y", len_d, basis, note,
                               _box(x0, b, z0, a, len_d, b), GREY))
@@ -82,6 +89,7 @@ def build_parts(variant: P.Variant = P.DEFAULT_VARIANT) -> list[Part]:
                       f"slot line under each hole line, so the member overhangs the plate edge by {P.PROFILE_MINOR / 2 - P.PLATE_HOLE_INSET:.1f} mm")
     else:
         cross_note = "spacing illustrative (plate fixing pattern not used, Q-03)"
+    cross_note += "; butts between the middle support rails L2-D1 and L2-D2"
     if v.layout != "stacked":
         cross_note += "; spans the full width and passes beneath the tank zone"
     for j, yc in enumerate([v.heater_center_y - v.crossmember_spacing / 2,
@@ -181,6 +189,13 @@ PLACEHOLDER_ROLES = ("heater", "plate", "tank", "filler", "hole_marker", "outlet
 
 def members(parts: list[Part]) -> list[Part]:
     return [p for p in parts if p.role in MEMBER_ROLES]
+
+
+def bracket_positions(parts: list[Part]) -> list[tuple[str, str]]:
+    """One corner bracket per horizontal member end (Owner decision 2026-10-30): the
+    (member id, end) pairs, two per horizontal member, none on the continuous uprights.
+    A count for procurement planning; it says nothing about joint adequacy."""
+    return [(p.id, end) for p in members(parts) if p.axis != "Z" for end in ("min", "max")]
 
 
 def by_id(parts: list[Part], pid: str) -> Part:
