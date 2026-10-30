@@ -1,10 +1,10 @@
 # Member schedule — B1 Adjusted — PRELIMINARY — NOT FOR FABRICATION
 
-Generated 2026-10-29 by `build.py` from `params.py` (variant `adjusted`). All lengths in millimetres, nominal, as modelled. Section 2020 (20 × 20 mm, 6 mm slot) for every member (Owner decision 2026-10-29).
+Generated 2026-10-30 by `build.py` from `params.py` (variant `adjusted`). All lengths in millimetres, nominal, as modelled. Section 2020 (20 × 20 mm, 6 mm slot) for every member (Owner decision 2026-10-29). 18 members (Owner decision 2026-10-30, D-14 adopted): the middle level carries the two lengthwise support rails and the heater crossmembers only; `L2-W1` and `L2-W2` are removed. Schedules generated before 2026-10-30 listed 20 members.
 
 **This is not a cut list.** Every length is a nominal model length under the joint assumption below and the illustrative level heights and tank position; none is an approved fabrication dimension until the G1(e) review and the owner's purchase approval. Every member's placement and connection is provisional; the Basis column names what each depends on. Gates G1–G5 in spec.md §10 are closed.
 
-Joint assumption: Uprights are continuous over the full height; every horizontal member butts between uprights or between perimeter members. The joint system is interior 90-degree corner brackets with M5 hammer nuts in the 6 mm slots, plus flat joining plates at the base corners (Owner decision 2026-10-29, D-01); brackets do not change member lengths, so the butt geometry stands. Member lengths derived from it are nominal model lengths, not approved cut lengths, until the G1(e) review and the owner's purchase approval (spec section 10).
+Joint assumption: Uprights are continuous over the full height; every horizontal member butts between uprights or between the middle lengthwise rails. The joint system is one inside corner bracket at each of the 28 horizontal member ends (TNUTZ CBK-020-A kit: one 2-hole bracket, two M5 drop-in T-nuts, two M5 x 8 mm screws), with no doubled brackets and no base joining plates (Owner decision 2026-10-30, D-01; the 2026-10-29 selection of doubled brackets and plates is superseded). Brackets do not change member lengths, so the butt geometry stands. The bracket arrangement is treated as sufficiently rigid as a working engineering assumption for geometry and procurement planning only; it is not verified joint strength or stability (MR-05, A-04, SR-10 open). Member lengths derived from it are nominal model lengths, not approved cut lengths, until the G1(e) review and the owner's purchase approval (spec section 10).
 
 Tank assumption: The two tank rails lie in the plane of the X-min perimeter members and butt between the uprights like them, so their inside face is 20 mm from the outside of the frame. The tank hangs on that face with the two lower points on the lower rail and the upper point, centred between them, on the upper rail. Which wall carries the tank (D-03), the tank's height (SR-01), the upper point's horizontal position, and the rail-to-upright connector are all open.
 
@@ -20,20 +20,18 @@ Layout: Tank drawn beside the heater with separate horizontal footprints and its
 | L1-W2 | perimeter_width | X | 468.0 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption | level at the envelope top or bottom |
 | L1-D1 | perimeter_depth | Y | 518.8 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption | level at the envelope top or bottom |
 | L1-D2 | perimeter_depth | Y | 518.8 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption | level at the envelope top or bottom |
-| L2-W1 | perimeter_width | X | 468.0 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption; illustrative middle-level height | level height illustrative |
-| L2-W2 | perimeter_width | X | 468.0 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption; illustrative middle-level height | level height illustrative |
-| L2-D1 | perimeter_depth | Y | 518.8 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption; illustrative middle-level height | level height illustrative |
-| L2-D2 | perimeter_depth | Y | 518.8 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption; illustrative middle-level height | level height illustrative |
+| L2-D1 | perimeter_depth | Y | 518.8 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption; illustrative middle-level height | middle support rail; level height illustrative; no widthwise member at this level (D-14 adopted 2026-10-30) |
+| L2-D2 | perimeter_depth | Y | 518.8 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption; illustrative middle-level height | middle support rail; level height illustrative; no widthwise member at this level (D-14 adopted 2026-10-30) |
 | L3-W1 | perimeter_width | X | 468.0 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption | level at the envelope top or bottom |
 | L3-W2 | perimeter_width | X | 468.0 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption | level at the envelope top or bottom |
 | L3-D1 | perimeter_depth | Y | 518.8 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption | level at the envelope top or bottom |
 | L3-D2 | perimeter_depth | Y | 518.8 | 20 × 20 | envelope (Owner decision 2026-10-28, preliminary); joint assumption | level at the envelope top or bottom |
-| HX1 | heater_crossmember | X | 468.0 | 20 × 20 | envelope width; joint assumption; illustrative middle-level height, heater position, and spacing | spacing derived from the owner-reported plate hole pitch (not measured, PLT-06 to PLT-09); slot line under each hole line, so the member overhangs the plate edge by 3.7 mm; spans the full width and passes beneath the tank zone |
-| HX2 | heater_crossmember | X | 468.0 | 20 × 20 | envelope width; joint assumption; illustrative middle-level height, heater position, and spacing | spacing derived from the owner-reported plate hole pitch (not measured, PLT-06 to PLT-09); slot line under each hole line, so the member overhangs the plate edge by 3.7 mm; spans the full width and passes beneath the tank zone |
+| HX1 | heater_crossmember | X | 468.0 | 20 × 20 | envelope width; joint assumption; illustrative middle-level height, heater position, and spacing | spacing derived from the owner-reported plate hole pitch (not measured, PLT-06 to PLT-09); slot line under each hole line, so the member overhangs the plate edge by 3.7 mm; butts between the middle support rails L2-D1 and L2-D2; spans the full width and passes beneath the tank zone |
+| HX2 | heater_crossmember | X | 468.0 | 20 × 20 | envelope width; joint assumption; illustrative middle-level height, heater position, and spacing | spacing derived from the owner-reported plate hole pitch (not measured, PLT-06 to PLT-09); slot line under each hole line, so the member overhangs the plate edge by 3.7 mm; butts between the middle support rails L2-D1 and L2-D2; spans the full width and passes beneath the tank zone |
 | TR-lower | tank_rail | Y | 518.8 | 20 × 20 | envelope depth; joint assumption; illustrative tank height and hole position | height follows the illustrative tank position (SR-01 open); butts between the uprights |
 | TR-upper | tank_rail | Y | 518.8 | 20 × 20 | envelope depth; joint assumption; illustrative tank height and hole position | height follows the illustrative tank position (SR-01 open); butts between the uprights |
 
-Members: 20. Other components (placeholders): heater_plate, plate_hole_1, plate_hole_2, plate_hole_3, plate_hole_4, heater_body, heater_outlet_cue, fuel_tank, tank_filler_neck, tank_hole_lower_a, tank_hole_lower_b, tank_hole_upper.
+Members: 18. Other components (placeholders): heater_plate, plate_hole_1, plate_hole_2, plate_hole_3, plate_hole_4, heater_body, heater_outlet_cue, fuel_tank, tank_filler_neck, tank_hole_lower_a, tank_hole_lower_b, tank_hole_upper.
 
 ## Parameters
 
@@ -50,9 +48,10 @@ Members: 20. Other components (placeholders): heater_plate, plate_hole_1, plate_
 | TANK_BOTTOM_Z | 368.3 mm | Proposed/illustrative | plate underside at 7 in + plate + heater height + TANK_GAP_ABOVE_HEATER; the gap is a placeholder (D-15), SR-01 unreconciled |
 | PROFILE_MINOR | 20.0 mm | Owner decision 2026-10-29 | spec MR-01 as amended: 2020 (20 x 20 mm) T-slot, 6 mm slot, every member |
 | PROFILE_MAJOR | 20.0 mm | Owner decision 2026-10-29 | as above; square section |
-| SLOT_WIDTH | 6.0 mm | Manufacturer-stated | ZYLtech 2020 hardware kit page, read 2026-10-29; not stated on the extrusion page itself |
-| STOCK_LENGTH | 2000.0 mm | Proposed | longest ZYLtech EXT-2020 pre-cut length listed 2026-10-29; cut tolerance not stated by the supplier |
-| KERF_ALLOWANCE | 3.0 mm | Proposed/illustrative | assumed saw kerf per cut; to be replaced by the actual blade |
+| SLOT_WIDTH | 6.0 mm | Manufacturer-stated | TNUTZ EXM-2020 page: slot opening approx. 1/4 in or 6 mm, read 2026-10-29 |
+| ORDER_LENGTH_STEP | 1.6 mm | Manufacturer-stated | TNUTZ length selector in 1/16 in steps, read 2026-10-30; the exact millimetres go in the buyer notes (FAQ) |
+| STOCK_LENGTH | 2000.0 mm | Superseded | home-cutting alternative from 2000 mm ZYLtech stock (2026-10-29), superseded by TNUTZ custom cutting (Owner decision 2026-10-30); on record only |
+| KERF_ALLOWANCE | 3.0 mm | Proposed/illustrative | assumed saw kerf per cut; home-cutting alternative only |
 | HEATER_L | 340.4 mm | Manufacturer-stated | spec C21: 13.4 in (owner tape agrees, User-reported) |
 | HEATER_W | 114.3 mm | Manufacturer-stated | spec C21: 4.5 in |
 | HEATER_H | 139.7 mm | Manufacturer-stated | spec C21: 5.5 in |

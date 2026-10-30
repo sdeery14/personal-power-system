@@ -26,7 +26,7 @@ from pathlib import Path
 import cadquery as cq
 
 import params as P
-from model import BANNER, MEMBER_ROLES, Part, build_assembly, build_parts, members
+from model import BANNER, MEMBER_ROLES, Part, bracket_positions, build_assembly, build_parts, members
 
 OUT = Path(__file__).parent / "out"
 
@@ -201,7 +201,7 @@ def write_schedule(parts: list[Part], path: Path, variant: P.Variant) -> None:
     lines = [
         f"# Member schedule — {variant.title} — {BANNER}",
         "",
-        f"Generated {dt.date.today().isoformat()} by `build.py` from `params.py` (variant `{variant.key}`). All lengths in millimetres, nominal, as modelled. Section 2020 (20 × 20 mm, 6 mm slot) for every member (Owner decision 2026-10-29).",
+        f"Generated {dt.date.today().isoformat()} by `build.py` from `params.py` (variant `{variant.key}`). All lengths in millimetres, nominal, as modelled. Section 2020 (20 × 20 mm, 6 mm slot) for every member (Owner decision 2026-10-29). 18 members (Owner decision 2026-10-30, D-14 adopted): the middle level carries the two lengthwise support rails and the heater crossmembers only; `L2-W1` and `L2-W2` are removed. Schedules generated before 2026-10-30 listed 20 members.",
         "",
         "**This is not a cut list.** Every length is a nominal model length under the joint assumption below and the illustrative level heights and tank position; none is an approved fabrication dimension until the G1(e) review and the owner's purchase approval. Every member's placement and connection is provisional; the Basis column names what each depends on. Gates G1–G5 in spec.md §10 are closed.",
         "",
@@ -238,9 +238,10 @@ def write_schedule(parts: list[Part], path: Path, variant: P.Variant) -> None:
 def cut_pieces(parts: list[Part]) -> list[tuple[str, float, str]]:
     """Every piece of extrusion the initial build needs: (id, nominal length, role).
 
-    The 20 modelled members of MR-01 and nothing else: stabilization hardware is excluded
-    from the initial purchase and build (Owner decision 2026-10-29, design.md section 10).
-    Nominal lengths only.
+    The 18 modelled members of MR-01 as amended 2026-10-30 and nothing else: stabilization
+    hardware is excluded from the initial purchase and build (Owner decision 2026-10-29,
+    design.md section 10) and the middle widthwise members are removed (Owner decision
+    2026-10-30, D-14 adopted). Nominal lengths only.
     """
     return [(p.id, p.length, p.role) for p in members(parts)]
 
@@ -285,19 +286,14 @@ def pack_stock(lengths: list[float], stock: float = P.STOCK_LENGTH, kerf: float 
     raise RuntimeError("unreachable: one piece per bar always fits")
 
 
-# Preferred cutting arrangement for this exact member schedule (Owner approval 2026-10-29 after
-# Codex review): the exact packer's first six-bar solution left only 14.4 mm on four bars; this
-# arrangement also uses six bars and leaves 64.4 mm on its tightest bars at the 3 mm kerf.
-# It is used only if it still conserves every piece and fits the stock and kerf assumptions;
-# otherwise the general packer is the fallback.
-PREFERRED_PATTERN: tuple[tuple[float, ...], ...] = (
-    (889.0, 518.8, 518.8),
-    (889.0, 518.8, 518.8),
-    (889.0, 518.8, 518.8),
-    (889.0, 518.8, 518.8),
-    (468.0, 468.0, 468.0, 468.0),
-    (468.0, 468.0, 468.0, 468.0),
-)
+# Preferred cutting arrangement. The six-bar pattern approved on 2026-10-29 after Codex review
+# (4 bars of 889 + 518.8 + 518.8 and 2 bars of 4 x 468, 64.4 mm on the tightest bars) belonged
+# to the 20-member schedule and is superseded: the two middle widthwise members were removed on
+# 2026-10-30 and the supply is now custom-cut by the supplier, so no preferred home-cutting
+# pattern is defined. With the pattern empty, ``select_packing`` always sizes the superseded
+# home-cutting alternative with the general packer. The machinery is kept so a pattern can be
+# recorded again if home cutting is ever reconsidered.
+PREFERRED_PATTERN: tuple[tuple[float, ...], ...] = ()
 
 
 def pattern_is_valid(pattern, lengths: list[float], stock: float = P.STOCK_LENGTH, kerf: float = P.KERF_ALLOWANCE) -> bool:
@@ -313,8 +309,10 @@ def pattern_is_valid(pattern, lengths: list[float], stock: float = P.STOCK_LENGT
 def select_packing(lengths: list[float], stock: float = P.STOCK_LENGTH, kerf: float = P.KERF_ALLOWANCE) -> tuple[list[list[float]], str]:
     """The preferred pattern when it is valid for these pieces, stock, and kerf; otherwise the
     general packer. Returns (bars, basis)."""
-    if pattern_is_valid(PREFERRED_PATTERN, lengths, stock, kerf):
+    if PREFERRED_PATTERN and pattern_is_valid(PREFERRED_PATTERN, lengths, stock, kerf):
         return [list(bar) for bar in PREFERRED_PATTERN], "preferred pattern"
+    if not PREFERRED_PATTERN:
+        return pack_stock(lengths, stock, kerf), "general packer, fewest bars by exact search; no preferred pattern is defined for this member schedule"
     return pack_stock(lengths, stock, kerf), "general packer (fewest bars; exact search), because the preferred pattern does not fit these pieces, stock, and kerf"
 
 
@@ -335,39 +333,64 @@ def tightest_bar_margin(bars: list[list[float]], stock: float = P.STOCK_LENGTH, 
             "max_kerf_display": math.floor(max_kerf * 10 + 1e-9) / 10}
 
 
+def order_length(length_mm: float) -> tuple[float, str]:
+    """The supplier's listed length nearest to a nominal metric length: (inches, label).
+
+    TNUTZ lists whole inches with 1/16 in fractions (``P.ORDER_LENGTH_STEP``); the exact
+    millimetres are stated in the buyer notes (FAQ). Nearest, not rounded up: the supplier
+    cuts to the millimetre figure in the notes, so the listed length only sets the price band.
+    """
+    steps = round(length_mm / P.ORDER_LENGTH_STEP)
+    inches = steps * P.ORDER_LENGTH_STEP / P.IN
+    whole, sixteenths = divmod(steps, 16)
+    if sixteenths == 0:
+        label = f"{whole} in"
+    else:
+        num, den = sixteenths, 16
+        while num % 2 == 0:
+            num //= 2
+            den //= 2
+        label = f"{whole} {num}/{den} in"
+    return inches, label
+
+
 def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> list[list[float]]:
     pieces = cut_pieces(parts)
     bars, basis = select_packing([length for _, length, _ in pieces])
     total = sum(length for _, length, _ in pieces)
+    ends = bracket_positions(parts)
     by_len: dict[float, list[str]] = {}
     for pid, length, _ in pieces:
         by_len.setdefault(round(length, 1), []).append(pid)
     lines = [
-        f"# Proposed cut schedule and stock order — {variant.title} — {BANNER}",
+        f"# Proposed custom-cut piece schedule — {variant.title} — {BANNER}",
         "",
-        f"Generated {dt.date.today().isoformat()} by `build.py` from `params.py` (variant `{variant.key}`). Millimetres. Section 2020 (20 × 20 mm, 6 mm slot) throughout (Owner decision 2026-10-29).",
+        f"Generated {dt.date.today().isoformat()} by `build.py` from `params.py` (variant `{variant.key}`). Millimetres. Section 2020 (20 × 20 mm, 6 mm slot) throughout (Owner decision 2026-10-29). {len(pieces)} members (Owner decision 2026-10-30, D-14 adopted: `L2-W1` and `L2-W2` removed). Schedules generated before 2026-10-30 listed 20 members, 11,450.4 mm, and a six-bar stock packing; those figures are superseded.",
         "",
-        "**Proposed, not approved.** The lengths are the nominal model lengths of the 20 members in the member schedule. They become fabrication dimensions only when the G1(e) review records a reviewed cut list and the owner approves the purchase (spec.md §10); nothing is to be cut from this file. The stock packing is an estimate to size an order; it takes one kerf per piece and **no separate allowance for trimming an out-of-square stock end**, so any squaring cut must come out of the bar's margin below, and the supplier states neither a cut tolerance nor end squareness.",
-        "",
-        f"Assumptions: stock length {P.STOCK_LENGTH:.0f} mm (longest listed pre-cut length, ZYLtech EXT-2020, read 2026-10-29; supplier cut tolerance not stated); kerf allowance {P.KERF_ALLOWANCE:.0f} mm per cut (assumed); every piece gets its own cut; no trim allowance beyond the kerf.",
+        f"**Proposed, not approved.** The lengths are the nominal model lengths of the {len(pieces)} members in the member schedule. They become fabrication dimensions only when the G1(e) review records a reviewed cut list and the owner approves the purchase (spec.md §10); nothing is to be cut or ordered from this file. The supply direction (Owner decision 2026-10-30) is custom cutting by the supplier to the exact millimetre lengths: the order names the nearest listed inch length and the buyer notes state the millimetres (TNUTZ FAQ, read 2026-10-29). Custom-cut extrusion is nonreturnable (TNUTZ FAQ). The supplier states no numeric cut tolerance; delivered lengths are to be measured and recorded before assembly.",
         "",
         "## Pieces by nominal length",
         "",
-        "| Nominal length (mm) | Qty | Pieces | Roles (basis per piece in the member schedule) |",
-        "|---|---|---|---|",
+        "| Nominal length (mm) | Qty | Nearest listed length (1/16 in steps) | Pieces | Roles (basis per piece in the member schedule) |",
+        "|---|---|---|---|---|",
     ]
     role_by_id = {pid: role for pid, _, role in pieces}
     for length in sorted(by_len, reverse=True):
         ids = by_len[length]
         roles = sorted({role_by_id[i] for i in ids})
-        lines.append(f"| {length:.1f} | {len(ids)} | {', '.join(ids)} | {', '.join(roles)} |")
+        inches, label = order_length(length)
+        lines.append(f"| {length:.1f} | {len(ids)} | {label} ({inches * P.IN:.1f} mm listed; state {length:.1f} mm in the buyer notes) | {', '.join(ids)} | {', '.join(roles)} |")
     lines += [
         "",
-        f"Pieces: {len(pieces)} (the {len(members(parts))} modelled members of MR-01). Total nominal length: {total:.1f} mm ({total / 1000:.3f} m) before kerf and waste.",
+        f"Pieces: {len(pieces)} (the {len(members(parts))} modelled members of MR-01 as amended 2026-10-30). Total nominal length: {total:.1f} mm ({total / 1000:.3f} m). Cuts: {len(pieces)}, one per piece.",
         "",
-        f"## Stock packing into {P.STOCK_LENGTH:.0f} mm bars ({basis})",
+        "## Joint hardware count (one bracket per horizontal member end)",
         "",
-        "The preferred pattern for this member schedule is 4 bars of 889 + 518.8 + 518.8 and 2 bars of 4 × 468 (Owner approval 2026-10-29 after Codex review): it uses the same six bars as the fewest-bars search but leaves the largest margin on its tightest bar. It is applied only after a check that it conserves every piece and fits the stock and kerf assumptions; if the member schedule, stock length, or kerf change so that it no longer does, the general packer takes over and this heading says so.",
+        f"Horizontal member ends: {len(ends)} ({len(ends) // 2} horizontal members × 2; the four continuous uprights have no bracketed ends). One TNUTZ CBK-020-A corner-bracket kit per end (Owner decision 2026-10-30): **{len(ends)} kits**, each stated by the supplier to contain one 2-hole inside corner bracket, two M5 drop-in T-nuts, and two M5 × 8 mm button-head screws, so {2 * len(ends)} T-nuts and {2 * len(ends)} screws in the kits. No doubled brackets, no base joining plates (the 2026-10-29 selection of 40 brackets and 8 plates is superseded). Additional T-nuts for the heater-plate and tank-rail interfaces and spares are an owner decision recorded in bom.md §2.2, not derived from the model. This count is for procurement planning under the working engineering assumption that the bracket arrangement is sufficiently rigid; it is not verified joint strength or stability (MR-05, A-04, SR-10 open).",
+        "",
+        f"## Superseded alternative on record: home cutting from {P.STOCK_LENGTH:.0f} mm stock ({basis})",
+        "",
+        f"**Superseded (Owner decision 2026-10-30): the supply is custom-cut by the supplier; nothing is to be home-cut.** The packing below is kept only so the alternative stays sized on record. Assumptions: stock length {P.STOCK_LENGTH:.0f} mm (the longest pre-cut length the earlier ZYLtech plan listed, read 2026-10-29); kerf allowance {P.KERF_ALLOWANCE:.0f} mm per cut (assumed); every piece gets its own cut; **no separate allowance for trimming an out-of-square stock end**. The six-bar preferred pattern approved on 2026-10-29 belonged to the 20-member schedule and no longer applies; the general packer sizes this alternative.",
         "",
         "| Bar | Pieces (mm) | Used incl. kerf (mm) | Offcut (mm) |",
         "|---|---|---|---|",
@@ -379,16 +402,15 @@ def write_cut_schedule(parts: list[Part], path: Path, variant: P.Variant) -> lis
     margin = tightest_bar_margin(bars)
     lines += [
         "",
-        f"**Proposed order: {len(bars)} × {P.STOCK_LENGTH:.0f} mm** ({len(bars) * P.STOCK_LENGTH / 1000:.1f} m), of which {total / 1000:.3f} m becomes pieces and {waste / 1000:.3f} m is kerf and offcut ({100 * waste / (len(bars) * P.STOCK_LENGTH):.0f} %). A spare bar for cutting errors is a separate owner choice. The shorter listed lengths (300 to 1200 mm) would reduce cutting but their individual prices are not shown on the supplier page, so no comparison is made here.",
+        f"**Alternative order, not proposed: {len(bars)} × {P.STOCK_LENGTH:.0f} mm** ({len(bars) * P.STOCK_LENGTH / 1000:.1f} m), of which {total / 1000:.3f} m would become pieces and {waste / 1000:.3f} m kerf and offcut ({100 * waste / (len(bars) * P.STOCK_LENGTH):.0f} %).",
         "",
         f"**Margin:** the tightest bar holds {margin['pieces_sum']:.1f} mm of pieces in {margin['n']} pieces and, after {margin['n']} kerfs of {P.KERF_ALLOWANCE:.0f} mm, leaves {margin['margin']:.1f} mm. "
         f"For a full, untrimmed {P.STOCK_LENGTH:.0f} mm bar the kerf can therefore be at most {margin['max_kerf_display']:.1f} mm "
         f"(exactly {P.KERF_ALLOWANCE:.0f} + {margin['margin']:.1f} / {margin['n']} = {margin['max_kerf']:.4f} mm, shown rounded down). "
         f"With a delivered shortfall s, an end-trimming allowance t (for example to square a stock end), and a real kerf k, the pattern fits only while s + t + {margin['n']} × (k − {P.KERF_ALLOWANCE:.0f}) ≤ {margin['margin']:.1f} mm. "
-        "If the measured bars or blade exceed that, the packing is to be recalculated with the measured stock length, trim, and kerf (`select_packing`, which falls back to the general packer), which may or may not need another bar; it is not to be patched by assuming a seventh bar. "
-        "Measure the delivered bars and the kerf before cutting; this is one reason the schedule is not a cut list.",
+        "If the measured bars or blade exceeded that, the packing would be recalculated with the measured stock length, trim, and kerf (`select_packing`, which uses the general packer), which may or may not need another bar; it is not to be patched by assuming an extra bar.",
         "",
-        "Not in this schedule: stabilization hardware of any kind, which is excluded from the initial purchase and build and kept as a potential future enhancement (design.md section 10, D-12); any member added at the MR-05 review; and any change to the envelope (MR-02, preliminary 34 to 36 in).",
+        "Not in this schedule: the two middle widthwise members `L2-W1` and `L2-W2` (removed, Owner decision 2026-10-30, D-14 adopted); stabilization hardware of any kind, which is excluded from the initial purchase and build and kept as a potential future enhancement (design.md section 10, D-12); any member added at the MR-05 review; and any change to the envelope (MR-02, preliminary 34 to 36 in).",
     ]
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return bars
@@ -469,7 +491,7 @@ def write_comparison_md(parts_by_key: dict[str, list[Part]], path: Path) -> None
         "",
         f"Generated {dt.date.today().isoformat()} by `build.py`. Millimetres unless stated. Positions are modelled bounding boxes of placeholders.",
         "",
-        "**The bounding-box gaps below are modelled distances between placeholder boxes. They do not establish safe fuel-spill, fire, thermal, exhaust, or intake clearances.** The manufacturer states none (spec C-list, \"not stated\"); SR-01, SR-02, SR-04, SR-11 and the hazard register remain open, and gates G1–G5 are closed for every layout. B1 Adjusted is the preferred preliminary layout (Owner decision 2026-10-28; spec MR-02 as amended). A Original (the 2026-10-27 envelope) and B1 Compact (the 2026-10-28 starting point) are retained alternatives (design.md §16). Plate thickness and hole positions are owner-reported, not measured. Every member is 2020 (20 × 20 mm) section (Owner decision 2026-10-29); figures generated before that date used 20 × 40 mm.",
+        "**The bounding-box gaps below are modelled distances between placeholder boxes. They do not establish safe fuel-spill, fire, thermal, exhaust, or intake clearances.** The manufacturer states none (spec C-list, \"not stated\"); SR-01, SR-02, SR-04, SR-11 and the hazard register remain open, and gates G1–G5 are closed for every layout. B1 Adjusted is the preferred preliminary layout (Owner decision 2026-10-28; spec MR-02 as amended). A Original (the 2026-10-27 envelope) and B1 Compact (the 2026-10-28 starting point) are retained alternatives (design.md §16). Plate thickness and hole positions are owner-reported, not measured. Every member is 2020 (20 × 20 mm) section (Owner decision 2026-10-29); figures generated before that date used 20 × 40 mm. Every variant has 18 members (Owner decision 2026-10-30, D-14 adopted: `L2-W1` and `L2-W2` removed); outputs before that date had 20.",
         "",
         "| Quantity | " + " | ".join(P.VARIANTS[k].title for k in keys) + " |",
         "|---|" + "---|" * len(keys),

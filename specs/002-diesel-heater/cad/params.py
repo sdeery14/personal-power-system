@@ -24,6 +24,17 @@ module constants. Values that differ are fields of ``Variant``.
 Profile: 2020 (20 x 20 mm) T-slot with a 6 mm slot for every member (Owner
 decision 2026-10-29, spec MR-01 as amended). The earlier 20 x 40 mm assumption
 is withdrawn; outputs generated before 2026-10-29 used it.
+
+Member count: 18 (Owner decision 2026-10-30, D-14 adopted): the two middle-level
+widthwise members ``L2-W1`` and ``L2-W2`` are removed, so the middle level has
+no complete perimeter; the heater crossmembers butt between the two middle
+lengthwise support rails ``L2-D1`` and ``L2-D2``. Outputs generated before
+2026-10-30 modelled 20 members.
+
+Supply: TNUTZ EXM-2020 custom-cut to the nominal metric lengths, with one TNUTZ
+CBK-020-A corner-bracket kit per horizontal member end (Owner decision
+2026-10-30). The 2000 mm stock-packing plan is a superseded alternative kept on
+record only.
 """
 
 from dataclasses import dataclass
@@ -46,12 +57,18 @@ class Param:
 # kept so the model reads the same; for a square section they are equal.
 PROFILE_MINOR = 20.0  # T-slot section, one side
 PROFILE_MAJOR = 20.0  # T-slot section, the other side (square: 2020)
-SLOT_WIDTH = 6.0  # nominal slot opening of the chosen 2020 system (ZYLtech hardware kit page, Manufacturer-stated 2026-10-29)
+SLOT_WIDTH = 6.0  # nominal slot opening: TNUTZ EXM-2020 page "approx. 1/4 in or 6 mm" (Manufacturer-stated, read 2026-10-29)
 
-# --------------------------------------------------- stock and cutting (proposed)
-STOCK_LENGTHS = (300.0, 400.0, 500.0, 600.0, 900.0, 1000.0, 1200.0, 2000.0)  # ZYLtech EXT-2020 pre-cut lengths listed 2026-10-29
-STOCK_LENGTH = 2000.0  # proposed stock length for the cut schedule (longest listed; fewest pieces)
-KERF_ALLOWANCE = 3.0  # per cut, assumed for a hand or mitre saw blade; not a supplier figure
+# ------------------------------------------- supply and cutting (Owner decision 2026-10-30)
+# Every piece is custom-cut by the supplier (TNUTZ EXM-2020) to its nominal metric length: the
+# order names the nearest listed inch length and the buyer notes state the millimetres (TNUTZ FAQ,
+# read 2026-10-29). The length selector moves in 1/16 in steps (Manufacturer-stated, read 2026-10-30).
+ORDER_LENGTH_STEP = IN / 16  # mm; the supplier's length selector resolution
+# Superseded alternative, kept on record only: home cutting from 2000 mm stock (the ZYLtech
+# EXT-2020 plan of 2026-10-29). The packer still sizes that alternative in the cut schedule.
+STOCK_LENGTHS = (300.0, 400.0, 500.0, 600.0, 900.0, 1000.0, 1200.0, 2000.0)  # ZYLtech EXT-2020 pre-cut lengths listed 2026-10-29 (historical)
+STOCK_LENGTH = 2000.0  # stock length of the superseded home-cutting alternative
+KERF_ALLOWANCE = 3.0  # per cut, assumed for a hand or mitre saw blade; not a supplier figure; home-cutting alternative only
 # Stabilization hardware (foot bars, feet, outriggers) is excluded from the initial purchase and
 # build (Owner decision 2026-10-29, design section 10); nothing for it is modelled or scheduled.
 
@@ -198,9 +215,10 @@ DEFAULT_VARIANT = ADJUSTED
 SHARED_PARAMS = [
     Param("PROFILE_MINOR", PROFILE_MINOR, "mm", "Owner decision 2026-10-29", "spec MR-01 as amended: 2020 (20 x 20 mm) T-slot, 6 mm slot, every member"),
     Param("PROFILE_MAJOR", PROFILE_MAJOR, "mm", "Owner decision 2026-10-29", "as above; square section"),
-    Param("SLOT_WIDTH", SLOT_WIDTH, "mm", "Manufacturer-stated", "ZYLtech 2020 hardware kit page, read 2026-10-29; not stated on the extrusion page itself"),
-    Param("STOCK_LENGTH", STOCK_LENGTH, "mm", "Proposed", "longest ZYLtech EXT-2020 pre-cut length listed 2026-10-29; cut tolerance not stated by the supplier"),
-    Param("KERF_ALLOWANCE", KERF_ALLOWANCE, "mm", "Proposed/illustrative", "assumed saw kerf per cut; to be replaced by the actual blade"),
+    Param("SLOT_WIDTH", SLOT_WIDTH, "mm", "Manufacturer-stated", "TNUTZ EXM-2020 page: slot opening approx. 1/4 in or 6 mm, read 2026-10-29"),
+    Param("ORDER_LENGTH_STEP", ORDER_LENGTH_STEP, "mm", "Manufacturer-stated", "TNUTZ length selector in 1/16 in steps, read 2026-10-30; the exact millimetres go in the buyer notes (FAQ)"),
+    Param("STOCK_LENGTH", STOCK_LENGTH, "mm", "Superseded", "home-cutting alternative from 2000 mm ZYLtech stock (2026-10-29), superseded by TNUTZ custom cutting (Owner decision 2026-10-30); on record only"),
+    Param("KERF_ALLOWANCE", KERF_ALLOWANCE, "mm", "Proposed/illustrative", "assumed saw kerf per cut; home-cutting alternative only"),
     Param("HEATER_L", HEATER_L, "mm", "Manufacturer-stated", "spec C21: 13.4 in (owner tape agrees, User-reported)"),
     Param("HEATER_W", HEATER_W, "mm", "Manufacturer-stated", "spec C21: 4.5 in"),
     Param("HEATER_H", HEATER_H, "mm", "Manufacturer-stated", "spec C21: 5.5 in"),
@@ -230,12 +248,16 @@ SHARED_PARAMS = [
 
 JOINT_ASSUMPTION = (
     "Uprights are continuous over the full height; every horizontal member butts "
-    "between uprights or between perimeter members. The joint system is interior "
-    "90-degree corner brackets with M5 hammer nuts in the 6 mm slots, plus flat joining "
-    "plates at the base corners (Owner decision 2026-10-29, D-01); brackets do not change "
-    "member lengths, so the butt geometry stands. Member lengths derived from it are "
-    "nominal model lengths, not approved cut lengths, until the G1(e) review and the "
-    "owner's purchase approval (spec section 10)."
+    "between uprights or between the middle lengthwise rails. The joint system is one "
+    "inside corner bracket at each of the 28 horizontal member ends (TNUTZ CBK-020-A kit: "
+    "one 2-hole bracket, two M5 drop-in T-nuts, two M5 x 8 mm screws), with no doubled "
+    "brackets and no base joining plates (Owner decision 2026-10-30, D-01; the 2026-10-29 "
+    "selection of doubled brackets and plates is superseded). Brackets do not change member "
+    "lengths, so the butt geometry stands. The bracket arrangement is treated as sufficiently "
+    "rigid as a working engineering assumption for geometry and procurement planning only; "
+    "it is not verified joint strength or stability (MR-05, A-04, SR-10 open). Member lengths "
+    "derived from it are nominal model lengths, not approved cut lengths, until the G1(e) "
+    "review and the owner's purchase approval (spec section 10)."
 )
 
 TANK_WALL_ASSUMPTION = (

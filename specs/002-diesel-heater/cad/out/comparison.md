@@ -1,8 +1,8 @@
 # Layout comparison — PRELIMINARY — NOT FOR FABRICATION
 
-Generated 2026-10-29 by `build.py`. Millimetres unless stated. Positions are modelled bounding boxes of placeholders.
+Generated 2026-10-30 by `build.py`. Millimetres unless stated. Positions are modelled bounding boxes of placeholders.
 
-**The bounding-box gaps below are modelled distances between placeholder boxes. They do not establish safe fuel-spill, fire, thermal, exhaust, or intake clearances.** The manufacturer states none (spec C-list, "not stated"); SR-01, SR-02, SR-04, SR-11 and the hazard register remain open, and gates G1–G5 are closed for every layout. B1 Adjusted is the preferred preliminary layout (Owner decision 2026-10-28; spec MR-02 as amended). A Original (the 2026-10-27 envelope) and B1 Compact (the 2026-10-28 starting point) are retained alternatives (design.md §16). Plate thickness and hole positions are owner-reported, not measured. Every member is 2020 (20 × 20 mm) section (Owner decision 2026-10-29); figures generated before that date used 20 × 40 mm.
+**The bounding-box gaps below are modelled distances between placeholder boxes. They do not establish safe fuel-spill, fire, thermal, exhaust, or intake clearances.** The manufacturer states none (spec C-list, "not stated"); SR-01, SR-02, SR-04, SR-11 and the hazard register remain open, and gates G1–G5 are closed for every layout. B1 Adjusted is the preferred preliminary layout (Owner decision 2026-10-28; spec MR-02 as amended). A Original (the 2026-10-27 envelope) and B1 Compact (the 2026-10-28 starting point) are retained alternatives (design.md §16). Plate thickness and hole positions are owner-reported, not measured. Every member is 2020 (20 × 20 mm) section (Owner decision 2026-10-29); figures generated before that date used 20 × 40 mm. Every variant has 18 members (Owner decision 2026-10-30, D-14 adopted: `L2-W1` and `L2-W2` removed); outputs before that date had 20.
 
 | Quantity | A Original | B1 Compact | B1 Adjusted |
 |---|---|---|---|
@@ -10,7 +10,7 @@ Generated 2026-10-29 by `build.py`. Millimetres unless stated. Positions are mod
 | Envelope W × D × H (mm) | 508.0 × 609.6 × 965.2 | 508.0 × 558.8 × 711.2 | 508.0 × 558.8 × 889.0 |
 | Envelope tag | Owner decision, preliminary | Proposed/illustrative | Owner decision 2026-10-28, preliminary |
 | Layout | stacked | beside | beside-above |
-| Members / parts | 20 / 27 | 20 / 28 | 20 / 32 |
+| Members / parts | 18 / 25 | 18 / 26 | 18 / 30 |
 | Level member bottom faces Z | 0.0, 350.0, 945.2 | 0.0, 157.8, 691.2 | 0.0, 157.8, 869.0 |
 | Heater axis (13.4 in length) | X | Y | Y |
 | Plate underside Z (open height above the bottom members in brackets) | 370.0 (350.0) | 177.8 (157.8) | 177.8 (157.8) |
