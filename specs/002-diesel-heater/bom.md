@@ -125,7 +125,7 @@ Total: 18 pieces, 18 square cuts.
 Please do not substitute rounded fractional-inch lengths.
 ```
 
-**Totals and limits:** 18 extrusion members, **10,514.4 mm actual requested** (≈413.9528 in); fractional dropdown selections total **414 1/8 in** (≈10,522.3 mm), which are *not* the requested finished lengths. 28 bracket kits supply 28 brackets, 56 screws and 56 T-nuts; the ten extra T-nuts are separate. The complete G1-P list has **no** separate plate/tank screws, washers, feet, outriggers, fuel or electrical parts. All seven release gates remain closed; this shopping reference and any review or PR merge are **not purchasing authorization**. Current actual cart subtotal, freight, tax and nonreturnable-cut risk require the owner's separate G1-P review.
+**Totals and limits:** 18 extrusion members, **10,514.4 mm actual requested** (≈413.9528 in); fractional dropdown selections total **414 1/8 in** (≈10,518.775 mm), which are *not* the requested finished lengths. 28 bracket kits supply 28 brackets, 56 screws and 56 T-nuts; the ten extra T-nuts are separate. The complete G1-P list has **no** separate plate/tank screws, washers, feet, outriggers, fuel or electrical parts. All seven release gates remain closed; this shopping reference and any review or PR merge are **not purchasing authorization**. Current actual cart subtotal, freight, tax and nonreturnable-cut risk require the owner's separate G1-P review.
 
 **Provisional mounting fasteners (owner's starting lengths, 2026-10-30; Proposed, unverified; not TNUTZ parts; not in the package; not to be bought until the checks are recorded):**
 
