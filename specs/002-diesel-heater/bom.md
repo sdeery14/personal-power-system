@@ -99,7 +99,33 @@ Supplier figures are Manufacturer-stated when recorded and do not by themselves 
 
 Stabilization hardware is not in the package (Owner decision 2026-10-29; design.md §10). Nothing for the tank side of the three mounting points is in the package (see the tank-fasteners row in §2), and no Interface B screws are in it: the package contains no fastener that is not specified by the owner's decision, so the Interface B screw and the tank-side bolts remain to be specified at the dry fit and the Q-04/Q-05 assessment respectively. The owner's 2026-10-30 starting lengths for them are listed separately below, outside the TNUTZ list; they are **not included or released by G1-P**, so nothing provisional is read as an approved part.
 
-**Final TNUTZ shopping quantities (proposed, not approved; unchanged 2026-10-30):** 4 × EXM-2020 at 35 in (889.0 mm); 8 × EXM-2020 at 20 7/16 in (518.8 mm); 6 × EXM-2020 at 18 7/16 in (468.0 mm); 18 cuts; 28 × CBK-020-A; 10 × DB-020-M5. Extrusion 10,514.4 mm nominal (414 1/8 in as listed lengths). This is the complete TNUTZ list; it contains no mounting screw or washer.
+**Complete TNUTZ shopping list, imperial-entry reference (Owner request 2026-10-30; proposed, NOT approved):** TNUTZ's EXM-2020 product form uses a whole-inch *Length (in)* selector and a separate *Fractional length* selector (0 to 15/16 in in 1/16 in steps), **not a free-form decimal-inch length field**. Select the closest fraction below for the cart, then request the **exact final millimeter cut length** in the checkout buyer notes per the [TNUTZ FAQ](https://www.tnutz.com/faq/). The metric cuts, not the rounded fractional selector values, are the existing CAD schedule. All extrusion entries: EXM-2020 **clear anodized**, square cut, **no machining or end taps at either end**.
+
+| Cart line | Qty | Select `Length (in)` | Select `Fractional length` | Exact final cut requested in buyer notes | Decimal-inch reference (not a dropdown choice) |
+|---|---:|---:|---|---:|---:|
+| [EXM-2020](https://www.tnutz.com/product/exm-2020/) uprights | 4 | 35 | 0 | **889.0 mm** | 35.0000 in |
+| EXM-2020 depth members and tank rails | 8 | 20 | 7/16 in (0.438 listed) | **518.8 mm** | ≈20.4252 in |
+| EXM-2020 width members and heater crossmembers | 6 | 18 | 7/16 in (0.438 listed) | **468.0 mm** | ≈18.4252 in |
+| Supplier square cuts | 18 cuts | — | — | One cut for each extrusion piece | — |
+| [CBK-020-A](https://www.tnutz.com/product/cbk-020-a/) 2-hole bracket **kits** | **28 kits** | — | — | One bracket, two M5 × 8 screws, two M5 T-nuts *per kit*; all 56 kit screws and nuts included | — |
+| [DB-020-M5](https://www.tnutz.com/product/db-020-m5/) additional M5 drop-in T-nuts | **10 nuts** | — | — | 4 heater plate / 3 tank rails / 3 spare | — |
+
+**Important cut-length distinction:** the 7/16-in selector corresponds to 0.4375 in; if TNUTZ cut to that selector alone, the 20 7/16-in and 18 7/16-in pieces would each be **0.3125 mm longer** than the modelled metric members. Their buyer-note dimensions **518.8 mm and 468.0 mm** preserve the exact existing design instead. Decimal values are *reference conversions* only, not a claim that the supplier accepts them in the selectors. **Confirm TNUTZ will honor the buyer-note metric instructions before submitting this nonreturnable order**; do not silently replace the chosen cuts with the fractionally rounded sizes.
+
+**Buyer notes — copy at checkout after separate G1-P owner approval:**
+
+```text
+EXM-2020 clear anodized, square cuts, no end machining or taps.
+Please cut to the following EXACT FINISHED METRIC lengths
+(the imperial drop-down selections are the closest available):
+4 pieces x 889.0 mm
+8 pieces x 518.8 mm
+6 pieces x 468.0 mm
+Total: 18 pieces, 18 square cuts.
+Please do not substitute rounded fractional-inch lengths.
+```
+
+**Totals and limits:** 18 extrusion members, **10,514.4 mm actual requested** (≈413.9528 in); fractional dropdown selections total **414 1/8 in** (≈10,522.3 mm), which are *not* the requested finished lengths. 28 bracket kits supply 28 brackets, 56 screws and 56 T-nuts; the ten extra T-nuts are separate. The complete G1-P list has **no** separate plate/tank screws, washers, feet, outriggers, fuel or electrical parts. All seven release gates remain closed; this shopping reference and any review or PR merge are **not purchasing authorization**. Current actual cart subtotal, freight, tax and nonreturnable-cut risk require the owner's separate G1-P review.
 
 **Provisional mounting fasteners (owner's starting lengths, 2026-10-30; Proposed, unverified; not TNUTZ parts; not in the package; not to be bought until the checks are recorded):**
 
@@ -173,3 +199,4 @@ No cut list is produced in this document.
 | 2026-10-30 | Codex review of PR #14: clarified that the M5/T-nut/large-washer tank connection is selected, while screw length and washer dimensions are unapproved; G1(b) requires a reviewed adjustable height/separation range and written SR-01 reconciliation, not a fixed tank height. No part quantities changed. |
 | 2026-10-30 | Proposed G1-P limited structural-only procurement and G2-D separately approved unloaded cold-fit path. Full G1/G2 mounting and safety conditions preserved; no product, CAD, count or price changes, no orders, and no release open. |
 | 2026-10-30 | Codex PR #16 correction: delivered loose-part nut/slot dimensions following G1-P (during approved G2-D where applicable) may inform the later full G1 fastener purchase; G2-D still excludes mounted equipment and loaded tests, and full G2 retains installed-fit acceptance. |
+| 2026-10-30 | Owner-requested imperial TNUTZ shopping reference: translated exact existing 18-piece metric schedule into TNUTZ's whole-inch/fractional dropdown selections with explicit finished-millimeter buyer notes. No change to cut dimensions, quantities, parts, estimates, or release status; G1-P still requires separate cart and nonreturnable purchase approval. |
