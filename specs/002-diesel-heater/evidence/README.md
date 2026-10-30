@@ -1,12 +1,13 @@
 # Diesel Heater Module (002) — Physical evidence archive (curated photographs and prior reports)
 
-**Status:** recovered on 2026-10-29 from the owner's earlier ChatGPT conversations and committed for shared review. **Not a measurement record, a verification, a fit check, a structural acceptance, or an operating authorization.** The heater equipment is owned; no frame is purchased or built; G1–G5 in [spec.md §10](../spec.md#10-release-gates) stay closed.
+**Status:** photographs and prior reports recovered on 2026-10-29 from the owner's earlier ChatGPT conversations and committed for shared review; manufacturer-document provenance added 2026-10-30. **Not a measurement record, a verification, a fit check, a structural acceptance, or an operating authorization.** The heater equipment is owned; no frame is purchased or built; G1–G5 in [spec.md §10](../spec.md#10-release-gates) stay closed.
 
 | File | Role |
 |---|---|
 | [`photo-index.md`](photo-index.md) | E-01 to E-10: provenance (original filename and owner-asserted hash), committed-derivative hash and size, what each image visibly shows, what it cannot settle, and the measurement identifiers it relates to |
 | [`prior-reports.md`](prior-reports.md) | The owner's earlier dimensions and observations with their evidence tags and dates, the open identifier for each, and the discrepancies between the package as received and the repository record |
 | [`photos/`](photos/) | The ten curated JPEG derivatives, named as in the index |
+| [`manufacturer-documents.md`](manufacturer-documents.md) | Provenance of the VEVOR documents M1, M2, and M3 (file name, size, SHA-256, PDF dates; M3 not committed), the page-specific findings of the 2026-10-30 reading of M3, the M1-versus-M3 comparison, and what M3 does not state |
 
 ## What the photographs are
 

@@ -150,7 +150,7 @@ Record the scale, its resolution, and a zero check.
 | ELC-04 | Harness | observation: connectors and their count in words. raw: lengths between them | Observation, tape | D-09 |
 | ELC-05 | Remote control | observation: present; battery type as marked | Observation | |
 | DOC-01 | Paper manual | observation: any revision mark, date, or code printed on it | Observation | Q-01, A-01 |
-| DOC-02 | Differences from M1 | observation: pages that differ from M1, in particular the installation diagram and safety pages; describe, do not paraphrase safety text | Observation | Q-01 |
+| DOC-02 | Differences from M1 and M3 | observation: cover models; pages that differ from M1 and from M3 (the owner-supplied 2026 manual, spec.md §2), in particular the installation diagram, the fuel-tank installation page, and the safety pages; describe, do not paraphrase safety text | Observation | Q-01, Q-12 |
 | DOC-03 | Assembly state found and inventory | observation: which items were already assembled and to what; count every packing-list item (M1 p.7–8) present or missing | Observation | Q-02; bom.md §1 |
 
 ## Identifiers added after the first version
