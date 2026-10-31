@@ -127,22 +127,20 @@ Please do not substitute rounded fractional-inch lengths.
 
 **Totals and limits:** 18 extrusion members, **10,514.4 mm actual requested** (≈413.9528 in); fractional dropdown selections total **414 1/8 in** (≈10,518.775 mm), which are *not* the requested finished lengths. 28 bracket kits supply 28 brackets, 56 screws and 56 T-nuts; the ten extra T-nuts are separate. The complete G1-P list has **no** separate plate/tank screws, washers, feet, outriggers, fuel or electrical parts. All seven release gates remain closed; this shopping reference and any review or PR merge are **not purchasing authorization**. Current actual cart subtotal, freight, tax and nonreturnable-cut risk require the owner's separate G1-P review.
 
-**Optional simultaneous fastener-sample shopping (Owner request 2026-10-31; NOT approved for purchase or installation):** G1-P may include these **unselected loose candidates** in the same purchasing round as the TNUTZ frame. They are a low-cost dimensional assortment, not selected heater/tank fasteners and not a change to the structural BOM.
+**Single-size additional mounting hardware (Owner decision 2026-10-31; G1-P proposed purchasing items, NOT installation-approved):** The owner **rejected** a multi-length/multi-washer assortment and wants only the anticipated quantity for each of the seven mounting points. These are explicit purchasing selections from the best current estimate, **not measured or verified safe fits**.
 
-| Candidate | Qty | Supplier example | Purpose / limitation |
+| Selected purchase item (no alternatives) | Qty | Supplier reference | Assumption and intended use |
 |---|---:|---|---|
-| M5 × 0.8 button-head socket screws, **8 mm** | 6 | [TNUTZ metric button-head screw](https://www.tnutz.com/product/metric-button-head/) | Provisional heater plate length |
-| M5 × 0.8 button-head socket screws, **10 mm** | 6 | TNUTZ, same product | Heater plate alternate |
-| M5 × 0.8 button-head socket screws, **12 mm** | 6 | TNUTZ, same product | Heater/tank alternate |
-| M5 × 0.8 button-head socket screws, **14 mm** | 6 | TNUTZ, same product | Tank alternate |
-| M5 × 0.8 button-head socket screws, **16 mm** | 6 | TNUTZ, same product | Tank alternate |
-| M5 standard flat washers **10 mm OD**, DIN 125/ISO 7089 | 10 | Metric hardware supplier | Heater plate candidates |
-| M5 large flat washers **15 mm OD**, DIN 9021 | 10 | Metric hardware supplier | Tank recess candidates |
-| M5 fender flat washers **20 mm OD** | 10 | Metric hardware supplier | Alternate tank recess candidates |
+| **M5 × 0.8 × 8 mm button-head socket screw** | **4** | [TNUTZ metric button-head screws](https://www.tnutz.com/product/metric-button-head/) | Heater plate: estimated plate ≈0.8 mm + 1.0 mm washer leaves ≈6.2 mm projection before the slot lip |
+| **M5 standard flat washer**, DIN 125 / ISO 7089, **5.3 mm ID × 10 mm OD × 1.0 mm thick** | **4** | [Standard metric M5 washer dimensions](https://www.minitecframing.com/product/m5-round-washer/) | One under each heater screw |
+| **M5 × 0.8 × 14 mm button-head socket screw** | **3** | [TNUTZ metric button-head screws](https://www.tnutz.com/product/metric-button-head/) | Tank: estimated plastic ≈6.4 mm + 1.5 mm washer leaves ≈6.1 mm projection before slot lip; **14 mm selected in place of the earlier unverified 12 mm starting length** to allow more plausible T-nut engagement |
+| **M5 wide flat washer**, **5.3 mm ID × 20 mm OD × 1.5 mm thick**, steel zinc plated | **3** | [Bossard BN 732 dimensional example](https://www.tme.com/us/en-us/details/b5_bn732/washers/bossard/1270362/) | One under each tank screw to distribute load across the factory recess; **actual bearing on the conical plastic is still unknown** |
 
-**Sample additions: 30 screws and 30 washers.** TNUTZ lists M5 button-head screws in all five lengths at $0.08–$0.26 each depending on selected configuration (not a verified cart quote). Washer sourcing, costs, thickness, material, and seat geometry are unverified. This optional sample assortment is **not included in the previous $160–$180 structural-only estimate**, and may be omitted. The **actual combined cart, supplier(s), freight, tax and nonreturnable cut risk** still require separate specific owner approval. **G1-P purchases alone never approve use:** the tank's conical recess may not bear safely on any listed flat washer; thread engagement, bottoming, tank boss integrity, membrane preparation and the installed load path require full G1/G2 review. No tank/heater mounting or powered/fuelled test under G1-P or G2-D.
+**Totals: precisely 7 additional screws and 7 washers; no alternative lengths or diameters and no backup quantities.** All 28 CBK-020-A bracket kits include their 56 M5 × 8 screws and 56 nuts; none of those 56 screws should be double-counted for the plate/tank mounts. The ten separate DB-020-M5 T-nuts still allocate 4 to heater plate, 3 to tank, 3 spares. These 7 screw/washer sets are **additional to** the dated $160–$180 structural-only estimate. Current price, availability and any seller minimum packs are **not verified**.
 
-**Original provisional installed-fastener starting lengths (not final specifications):**
+**G1-P permission is strictly purchase-only** and still needs explicit owner approval of the actual final cart. Before using any screw: verify the chosen length does not bottom and provides adequate T-nut engagement; confirm the washer seats correctly and safely bears on the tank's conical mounting recess, the mounting passage accepts M5 without unauthorized modification, and the plastic boss load path is acceptable. The three mounting passages remain the owner's established membrane-covered factory through-points; **no new holes** are proposed. Full G1 and G2 installation controls, and G3–G5 operation controls, remain closed.
+
+
 
 | Connection | Provisional part | Why it is only a starting length | Checks before it can be specified |
 |---|---|---|---|
