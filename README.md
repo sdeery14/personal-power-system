@@ -38,15 +38,18 @@ The remaining files under `specs/001-battery-box/` were written in January–Mar
 
 ## Diesel Heater Module (002)
 
-**Specification phase.** A portable T-slot aluminum frame for the owner's VEVOR 12 V 2 kW diesel air heater (model XMZ-D2) and its supplied 10 L tank, for winter camping. The heater, its supplied components, and a 12-gallon tote are already owned, and some heater components have been partially assembled. No aluminum frame has been purchased or fabricated, and no heater installation has been approved, commissioned, or verified. All safety hazards are open; the frame envelope and rail count are preliminary; Battery Box V1 is not approved to power it.
+**Current direction (owner decision/order, 2026-10-31):** The owner has **ordered the Hcalory TB2S+ Diesel Heater Toolbox 2S Plus, 6 L Wireless Remote Upgraded** for winter camping. The wireless temperature-sensing remote is the primary reason for the choice. **Order placed is User-reported; delivery, kit inspection, installation, testing and commissioning have not been reported.** The existing VEVOR XMZ-D2 2 kW split heater is being retained for possible future use. The 18-member TNUTZ aluminum frame and all related structural hardware **have not been purchased and are now paused**. Battery Box V1 remains unapproved to power heater loads.
+
+**Read first:** [Decision and order record](specs/002-diesel-heater/decision-and-order-2026-10-31.md) is authoritative for the current selection and procurement status. The previous custom-frame design documents are **retained as historical engineering work**, not active procurement, fabrication, or instructions for the purchased Hcalory.
 
 | Document | Purpose |
 |---|---|
-| [specs/002-diesel-heater/spec.md](specs/002-diesel-heater/spec.md) | Requirements, manufacturer constraints with manual page citations, unsupported assumptions, acceptance criteria, and the purchase, fabrication, and first-operation gates (all closed). |
-| [specs/002-diesel-heater/design.md](specs/002-diesel-heater/design.md) | Preliminary frame concept, member schedule without cut lengths, hazard register, open decisions and questions, rejected alternatives. |
-| [specs/002-diesel-heater/bom.md](specs/002-diesel-heater/bom.md) | Owned equipment and the manufacturer's packing list; procurement categories marked not purchase-ready. |
-| [specs/002-diesel-heater/cad/](specs/002-diesel-heater/cad/README.md) | Parametric placeholder model of the frame concept in two layout variants (CadQuery), with committed previews and member schedules. **PRELIMINARY — NOT FOR FABRICATION**: no cut list, and modelled gaps are not clearances. |
-| [specs/002-diesel-heater/measurements/](specs/002-diesel-heater/measurements/README.md) | Measurement workflow for the owned heater, plate, tank, and supplied parts: datum conventions, identifier checklist, record template, and dated records. A record makes a value Measured; it verifies nothing and opens no gate. No records exist yet. |
+| [specs/002-diesel-heater/decision-and-order-2026-10-31.md](specs/002-diesel-heater/decision-and-order-2026-10-31.md) | **Current** model selection, owner-reported order, reasons, disposition of VEVOR and frame, and next verification tasks. |
+| [specs/002-diesel-heater/spec.md](specs/002-diesel-heater/spec.md) | **Historical/paused** VEVOR frame requirements, manufacturer constraints and closed release gates; not an Hcalory specification. |
+| [specs/002-diesel-heater/design.md](specs/002-diesel-heater/design.md) | **Historical/paused** custom 2020 T-slot frame concept and open design questions. |
+| [specs/002-diesel-heater/bom.md](specs/002-diesel-heater/bom.md) | **Historical/paused** inventory and proposed, **not ordered**, TNUTZ structural procurement. |
+| [specs/002-diesel-heater/cad/](specs/002-diesel-heater/cad/README.md) | **Historical/paused** preliminary CAD model, previews and nominal cut schedules; **not for fabrication or ordering**. |
+| [specs/002-diesel-heater/measurements/](specs/002-diesel-heater/measurements/README.md) | Existing VEVOR measurement workflow and records, not measurements of the newly ordered Hcalory. |
 
 ## How work is done
 
