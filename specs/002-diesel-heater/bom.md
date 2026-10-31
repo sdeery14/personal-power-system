@@ -99,7 +99,7 @@ Supplier figures are Manufacturer-stated when recorded and do not by themselves 
 
 Stabilization hardware is not in the package (Owner decision 2026-10-29; design.md §10). **The structural package contains no plate/tank fasteners as part of its 28 kits:** seven additional screws and washers are selected as separate G1-P purchasing lines (§2.2), without being declared fit or approved for installation. The updated 2026-10-31 single-size purchasing picks are listed separately below, outside the 28 bracket kits; they are **not approved as installed fasteners under G1-P**; the **exact seven purchase items below** may be bought for later inspection without establishing final mounting suitability.
 
-**Complete TNUTZ shopping list, imperial-entry reference (Owner request 2026-10-30; proposed, NOT approved):** TNUTZ's EXM-2020 product form uses a whole-inch *Length (in)* selector and a separate *Fractional length* selector (0 to 15/16 in in 1/16 in steps), **not a free-form decimal-inch length field**. Select the closest fraction below for the cart, then request the **exact final millimeter cut length** in the checkout buyer notes per the [TNUTZ FAQ](https://www.tnutz.com/faq/). The metric cuts, not the rounded fractional selector values, are the existing CAD schedule. All extrusion entries: EXM-2020 **clear anodized**, square cut, **no machining or end taps at either end**.
+**Complete TNUTZ shopping list, imperial-entry reference (Owner request 2026-10-30; proposed, NOT approved):** TNUTZ's EXM-2020 product form uses a whole-inch *Length (in)* selector and a separate *Fractional length* selector (0 to 15/16 in in 1/16 in steps), **not a free-form decimal-inch length field**. Select the closest fraction below for the cart, then request the **exact final millimeter cut length** in the checkout buyer notes per the [TNUTZ FAQ](https://www.tnutz.com/faq/). The metric cuts, not the rounded fractional selector values, are the existing CAD schedule. All extrusion entries: EXM-2020 **clear anodized**, square cut, **select “No machining” under BOTH “Machining for one end” and “Machining for opposite end”** ($0.00 each); no tapping, access holes, 45° miters, counterbores, or other end machining. The *ordinary square cut to length is still required* and is separate from these options.
 
 | Cart line | Qty | Select `Length (in)` | Select `Fractional length` | Exact final cut requested in buyer notes | Decimal-inch reference (not a dropdown choice) |
 |---|---:|---:|---|---:|---:|
@@ -115,7 +115,7 @@ Stabilization hardware is not in the package (Owner decision 2026-10-29; design.
 **Buyer notes — copy at checkout after separate G1-P owner approval:**
 
 ```text
-EXM-2020 clear anodized, square cuts, no end machining or taps.
+EXM-2020 clear anodized, square cuts. Select NO MACHINING for BOTH ends of EVERY piece (no taps, access holes, or miters).
 Please cut to the following EXACT FINISHED METRIC lengths
 (the imperial drop-down selections are the closest available):
 4 pieces x 889.0 mm
