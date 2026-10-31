@@ -1,5 +1,7 @@
 # Diesel Heater Module (002) — CAD-as-code proof of concept
 
+> **CURRENT DIRECTION UPDATE — 2026-10-31 (Owner decision, order User-reported):** The 2020 aluminum-frame CAD model and cut schedules in this directory are **paused historical VEVOR design work**. The owner has ordered an enclosed Hcalory TB2S+ instead. **Do not use these outputs for purchase, fabrication or Hcalory installation.** No aluminum frame parts have been purchased. **Current record:** [decision-and-order-2026-10-31.md](decision-and-order-2026-10-31.md).
+
 **PRELIMINARY — NOT FOR FABRICATION.** This directory holds an editable, parametric placeholder model of the frame concept in [design.md](../design.md), in three layout variants for visual comparison. It exists to show that geometry and previews can be regenerated from the specification and to support design iteration in a viewer. It does not open any release gate: G1 to G5 in [spec.md §10](../spec.md#10-release-gates) remain closed, nothing here is a cut list, and nothing here demonstrates clearance, stability, or structural adequacy.
 
 ## Three layout variants
